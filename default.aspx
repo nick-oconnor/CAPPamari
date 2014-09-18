@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Test Form</title>
+    <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
     <form id="form1" runat="server">
