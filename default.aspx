@@ -22,6 +22,10 @@
             <br />
             <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
         </div>
-    </form>
+        <img alt="" src="" style="height: 250px" /></form>
+    <p>
+        &nbsp;</p>
+    <p>
+        &nbsp;</p>
 </body>
 </html>
