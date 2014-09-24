@@ -22,6 +22,11 @@
             <br />
             <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
         </div>
+        <p>
+            <input id="Checkbox2" type="checkbox" /></p>
+        <p>
+            <asp:Image ID="Image1" runat="server" ImageUrl="~/favicon.ico" />
+        </p>
     </form>
 </body>
 </html>
