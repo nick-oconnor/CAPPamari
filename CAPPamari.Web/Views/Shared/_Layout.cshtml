@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title</title>
+        <title>CAPPamari</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -13,11 +13,16 @@
     </head>
     <body>
         <div id="headerBarRoot">
-            <!-- check user from forms, if not null populate, otherwise show log in/register header -->
             <div id="headerBarWrapper">
-                <span style="position:relative;float:left">Student Name</span>
-                <span style="position:relative;float:right">GPA</span><br />
-                <span>Advistor with <u>Email Link</u></span>
+                @if(Request.IsAuthenticated) {
+                    <span style="position:relative;float:left">Student Name</span>
+                    <span style="position:relative;float:right">GPA</span><br />
+                    <span>Advistor with <u>Email Link</u></span>
+                }
+                else
+                {
+                    <span>Unvalidated User</span>
+                }
             </div>
         </div>
         <div id="mainScreen">
