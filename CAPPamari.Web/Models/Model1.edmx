@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="JustinModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="JustinModelStoreContainer">
+          <EntitySet Name="Advises" EntityType="JustinModel.Store.Advises" store:Type="Tables" store:Schema="dbo" store:Name="Advises">
+            <DefiningQuery>SELECT 
+      [Advises].[AdvisorID] AS [AdvisorID], 
+      [Advises].[UserName] AS [UserName]
+      FROM [dbo].[Advises] AS [Advises]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Advisor" EntityType="JustinModel.Store.Advisor" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ApplicationUser" EntityType="JustinModel.Store.ApplicationUser" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserSession" EntityType="JustinModel.Store.UserSession" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_AdvisorID" Association="JustinModel.Store.FK_AdvisorID">
+            <End Role="Advisor" EntitySet="Advisor" />
+            <End Role="Advises" EntitySet="Advises" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationUser" Association="JustinModel.Store.FK_ApplicationUser">
+            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
+            <End Role="Advises" EntitySet="Advises" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSession_ApplicationUser" Association="JustinModel.Store.FK_UserSession_ApplicationUser">
+            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
+            <End Role="UserSession" EntitySet="UserSession" />
+          </AssociationSet>
+        </EntityContainer>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'Justin.dbo.Advises' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Advises">
+          <Key>
+            <PropertyRef Name="AdvisorID" />
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="AdvisorID" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="Advisor">
+          <Key>
+            <PropertyRef Name="AdvisorID" />
+          </Key>
+          <Property Name="AdvisorID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="EMailAddress" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ApplicationUser">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="Major" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserSession">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="Expiration" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AdvisorID">
+          <End Role="Advisor" Type="JustinModel.Store.Advisor" Multiplicity="1" />
+          <End Role="Advises" Type="JustinModel.Store.Advises" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Advisor">
+              <PropertyRef Name="AdvisorID" />
+            </Principal>
+            <Dependent Role="Advises">
+              <PropertyRef Name="AdvisorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationUser">
+          <End Role="ApplicationUser" Type="JustinModel.Store.ApplicationUser" Multiplicity="1" />
+          <End Role="Advises" Type="JustinModel.Store.Advises" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationUser">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="Advises">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSession_ApplicationUser">
+          <End Role="ApplicationUser" Type="JustinModel.Store.ApplicationUser" Multiplicity="1" />
+          <End Role="UserSession" Type="JustinModel.Store.UserSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationUser">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserSession">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JustinModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="JustinEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="ApplicationUsers" EntityType="JustinModel.ApplicationUser" />
+          <EntitySet Name="Advisors" EntityType="JustinModel.Advisor" />
+          <AssociationSet Name="Advises" Association="JustinModel.Advises">
+            <End Role="Advisor" EntitySet="Advisors" />
+            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+          </AssociationSet>
+          <EntitySet Name="UserSessions" EntityType="JustinModel.UserSession" />
+          <AssociationSet Name="FK_UserSession_ApplicationUser" Association="JustinModel.FK_UserSession_ApplicationUser">
+            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+            <End Role="UserSession" EntitySet="UserSessions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ApplicationUser">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="Major" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Advisors" Relationship="JustinModel.Advises" FromRole="ApplicationUser" ToRole="Advisor" />
+          <NavigationProperty Name="UserSessions" Relationship="JustinModel.FK_UserSession_ApplicationUser" FromRole="ApplicationUser" ToRole="UserSession" />
+        </EntityType>
+        <EntityType Name="Advisor">
+          <Key>
+            <PropertyRef Name="AdvisorID" />
+          </Key>
+          <Property Type="Int32" Name="AdvisorID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMailAddress" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ApplicationUsers" Relationship="JustinModel.Advises" FromRole="Advisor" ToRole="ApplicationUser" />
+        </EntityType>
+        <Association Name="Advises">
+          <End Type="JustinModel.Advisor" Role="Advisor" Multiplicity="*" />
+          <End Type="JustinModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="UserSession">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Type="Int32" Name="SessionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Expiration" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ApplicationUser" Relationship="JustinModel.FK_UserSession_ApplicationUser" FromRole="UserSession" ToRole="ApplicationUser" />
+        </EntityType>
+        <Association Name="FK_UserSession_ApplicationUser">
+          <End Type="JustinModel.ApplicationUser" Role="ApplicationUser" Multiplicity="1" />
+          <End Type="JustinModel.UserSession" Role="UserSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationUser">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserSession">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JustinModelStoreContainer" CdmEntityContainer="JustinEntities">
+          <EntitySetMapping Name="ApplicationUsers">
+            <EntityTypeMapping TypeName="JustinModel.ApplicationUser">
+              <MappingFragment StoreEntitySet="ApplicationUser">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Major" ColumnName="Major" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Advisors">
+            <EntityTypeMapping TypeName="JustinModel.Advisor">
+              <MappingFragment StoreEntitySet="Advisor">
+                <ScalarProperty Name="EMailAddress" ColumnName="EMailAddress" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Advises" TypeName="JustinModel.Advises" StoreEntitySet="Advises">
+            <EndProperty Name="ApplicationUser">
+              <ScalarProperty Name="UserName" ColumnName="UserName" />
+            </EndProperty>
+            <EndProperty Name="Advisor">
+              <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="UserSessions">
+            <EntityTypeMapping TypeName="JustinModel.UserSession">
+              <MappingFragment StoreEntitySet="UserSession">
+                <ScalarProperty Name="Expiration" ColumnName="Expiration" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
