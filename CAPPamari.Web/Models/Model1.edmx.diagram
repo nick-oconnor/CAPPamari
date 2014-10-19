@@ -8,6 +8,8 @@
         <EntityTypeShape EntityType="JustinModel.ApplicationUser" Width="1.5" PointX="0.625" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="JustinModel.Advisor" Width="1.5" PointX="3" PointY="0.5" />
         <AssociationConnector Association="JustinModel.Advises" />
+        <EntityTypeShape EntityType="JustinModel.UserSession" Width="1.5" PointX="0.625" PointY="3.125" />
+        <AssociationConnector Association="JustinModel.FK_UserSession_ApplicationUser" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

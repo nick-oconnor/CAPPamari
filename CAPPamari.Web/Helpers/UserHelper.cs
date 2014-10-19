@@ -11,12 +11,13 @@ namespace CAPPamari.Web.Helpers
     {
         public static ApplicationUserModel GetApplicationUser(string UserName)
         {
+            var sessionID = EntitiesHelper.GetSessionID(UserName);
             var major = EntitiesHelper.GetMajor(UserName);
             var dbAdvisors = EntitiesHelper.GetAdvisors(UserName);
             var advisors = new List<AdvisorModel>();
             dbAdvisors.ForEach(dbAd => advisors.Add(new AdvisorModel(dbAd.Name, dbAd.EMailAddress)));
 
-            return new ApplicationUserModel(UserName, major, advisors);
+            return new ApplicationUserModel(UserName, major, advisors, sessionID);
         }
     }
 }

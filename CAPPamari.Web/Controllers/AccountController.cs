@@ -17,16 +17,32 @@ namespace CAPPamari.Web.Controllers
     public class AccountController : Controller
     {
         [HttpPost]
-        public ApplicationUserModel Login(string UserName, string Password)
+        public ApiResponse<ApplicationUserModel> Login([System.Web.Http.FromBody]LoginRequest Request)
         {
-            if (ValidationHelper.Validate(UserName, Password))
+            if (ValidationHelper.Validate(Request.UserName, Request.Password))
             {
-                return UserHelper.GetApplicationUser(UserName);
+                var user = UserHelper.GetApplicationUser(Request.UserName);
+                return ApiResponse<ApplicationUserModel>.SuccessResponse("Logged in successfully", user);
             }
             else
             {
-                return ApplicationUserModel.InvalidUser();
+                var badUser = ApplicationUserModel.InvalidUser();
+                return ApiResponse<ApplicationUserModel>.FailureResponse("Sign in failure", badUser);
             }
+        }
+
+        [HttpPost]
+        public void Logout([System.Web.Http.FromBody]string UserName)
+        {
+            var sessionID = EntitiesHelper.GetSessionID(UserName);
+            EntitiesHelper.RemoveSession(sessionID, UserName);
+        }
+
+        [HttpPost]
+        public ApplicationUserModel Register(RegistrationRequest Request)
+        {
+            // do stuff to add this new user to the database
+            return ApplicationUserModel.InvalidUser();
         }
     }
 }
