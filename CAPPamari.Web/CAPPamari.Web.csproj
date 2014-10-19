@@ -200,11 +200,13 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AdvisorModel.cs" />
+    <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\ApplicationUser.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ApplicationUserModel.cs" />
     <Compile Include="Models\CourseModel.cs" />
+    <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -220,12 +222,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegistrationRequest.cs" />
     <Compile Include="Models\Requirements\DepthRequirement.cs" />
     <Compile Include="Models\Requirements\ExclusionRequirement.cs" />
     <Compile Include="Models\Requirements\LevelRequirement.cs" />
     <Compile Include="Models\Requirements\Requirement.cs" />
     <Compile Include="Models\Requirements\RequirementSet.cs" />
     <Compile Include="Models\Requirements\SingleRequirement.cs" />
+    <Compile Include="Models\UserSession.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

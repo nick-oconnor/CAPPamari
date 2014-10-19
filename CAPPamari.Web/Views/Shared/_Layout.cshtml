@@ -14,22 +14,26 @@
     <body>
         <div id="headerBarRoot">
             <div id="headerBarWrapper">
-                @if(Request.IsAuthenticated) {
-                    <span style="position:relative;float:left">Student Name</span>
-                    <span style="position:relative;float:right">GPA</span><br />
-                    <span>Advistor with <u>Email Link</u></span>
-                }
-                else
-                {
-                    <span>Unvalidated User</span>
-                }
+                <div id="userHeader" style="position:relative;display:none;width:100%">
+                    <span id="userHeaderStudentName" style="position:relative;float:left">Student Name</span>
+                    <span style="position:relative;float:right" onclick="user.signOut()">Logout</span><br />
+                    <!-- major --><br />
+                    <!-- advisors -->
+                </div>
+                <div id="loginHeader" style="position:relative;display:inline-block;width:100%">
+                    <input id="loginHeaderSignInButton" style="position:relative;float:right;" type="button" onclick="SignInButtonClick()" value="Log In"/>
+                    <input id="loginHeaderPassword" style="position:relative;float:right;" type="password"/>
+                    <span style="position:relative;float:right;">Password:</span>
+                    <input id="loginHeaderUserName" style="position:relative;float:right;" type="text"/>
+                    <span style="position:relative;float:right;">User Name:</span>
+                </div>
             </div>
         </div>
         <div id="mainScreen">
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
                 </div>
-                <div id="openCloseSidebarDiv">
+                <div id="openCloseSidebarDiv" onclick="ToggleSidebar()">
                     <span id="arrowSpan">></span>
                 </div>
             </div>

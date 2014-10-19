@@ -27,5 +27,6 @@ namespace CAPPamari.Web.Models
     
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Advisor> Advisors { get; set; }
+        public DbSet<UserSession> UserSessions { get; set; }
     }
 }

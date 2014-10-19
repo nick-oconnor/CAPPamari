@@ -14,6 +14,7 @@
           </EntitySet>
           <EntitySet Name="Advisor" EntityType="JustinModel.Store.Advisor" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ApplicationUser" EntityType="JustinModel.Store.ApplicationUser" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserSession" EntityType="JustinModel.Store.UserSession" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_AdvisorID" Association="JustinModel.Store.FK_AdvisorID">
             <End Role="Advisor" EntitySet="Advisor" />
             <End Role="Advises" EntitySet="Advises" />
@@ -21,6 +22,10 @@
           <AssociationSet Name="FK_ApplicationUser" Association="JustinModel.Store.FK_ApplicationUser">
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
             <End Role="Advises" EntitySet="Advises" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSession_ApplicationUser" Association="JustinModel.Store.FK_UserSession_ApplicationUser">
+            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
+            <End Role="UserSession" EntitySet="UserSession" />
           </AssociationSet>
         </EntityContainer>
         <!--Errors Found During Generation:
@@ -50,6 +55,14 @@
           <Property Name="Password" Type="varchar" Nullable="false" MaxLength="25" />
           <Property Name="Major" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
+        <EntityType Name="UserSession">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="Expiration" Type="datetime" Nullable="false" />
+        </EntityType>
         <Association Name="FK_AdvisorID">
           <End Role="Advisor" Type="JustinModel.Store.Advisor" Multiplicity="1" />
           <End Role="Advises" Type="JustinModel.Store.Advises" Multiplicity="*" />
@@ -74,6 +87,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserSession_ApplicationUser">
+          <End Role="ApplicationUser" Type="JustinModel.Store.ApplicationUser" Multiplicity="1" />
+          <End Role="UserSession" Type="JustinModel.Store.UserSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationUser">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserSession">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -85,6 +110,11 @@
             <End Role="Advisor" EntitySet="Advisors" />
             <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
           </AssociationSet>
+          <EntitySet Name="UserSessions" EntityType="JustinModel.UserSession" />
+          <AssociationSet Name="FK_UserSession_ApplicationUser" Association="JustinModel.FK_UserSession_ApplicationUser">
+            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+            <End Role="UserSession" EntitySet="UserSessions" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ApplicationUser">
           <Key>
@@ -94,6 +124,7 @@
           <Property Name="Password" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
           <Property Name="Major" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Advisors" Relationship="JustinModel.Advises" FromRole="ApplicationUser" ToRole="Advisor" />
+          <NavigationProperty Name="UserSessions" Relationship="JustinModel.FK_UserSession_ApplicationUser" FromRole="ApplicationUser" ToRole="UserSession" />
         </EntityType>
         <EntityType Name="Advisor">
           <Key>
@@ -107,6 +138,27 @@
         <Association Name="Advises">
           <End Type="JustinModel.Advisor" Role="Advisor" Multiplicity="*" />
           <End Type="JustinModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="UserSession">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Type="Int32" Name="SessionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Expiration" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ApplicationUser" Relationship="JustinModel.FK_UserSession_ApplicationUser" FromRole="UserSession" ToRole="ApplicationUser" />
+        </EntityType>
+        <Association Name="FK_UserSession_ApplicationUser">
+          <End Type="JustinModel.ApplicationUser" Role="ApplicationUser" Multiplicity="1" />
+          <End Type="JustinModel.UserSession" Role="UserSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationUser">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserSession">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -140,6 +192,15 @@
               <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="UserSessions">
+            <EntityTypeMapping TypeName="JustinModel.UserSession">
+              <MappingFragment StoreEntitySet="UserSession">
+                <ScalarProperty Name="Expiration" ColumnName="Expiration" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

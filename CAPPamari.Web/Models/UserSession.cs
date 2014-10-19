@@ -12,19 +12,12 @@ namespace CAPPamari.Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ApplicationUser
+    public partial class UserSession
     {
-        public ApplicationUser()
-        {
-            this.Advisors = new HashSet<Advisor>();
-            this.UserSessions = new HashSet<UserSession>();
-        }
-    
+        public int SessionID { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Major { get; set; }
+        public System.DateTime Expiration { get; set; }
     
-        public virtual ICollection<Advisor> Advisors { get; set; }
-        public virtual ICollection<UserSession> UserSessions { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }
