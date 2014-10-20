@@ -5,26 +5,18 @@ using System.Web;
 
 namespace CAPPamari.Web.Models.Requirements
 {
-    public class LevelRequirement : Requirement
+    public class CommRequirement : Requirement
     {
         public List<string> DepartmentCodes { get; private set; }
-        public string MinLevel { get; private set; }
 
-        public LevelRequirement(List<string> DepartmentCodes, string MinLevel)
+        public CommRequirement(List<string> DepartmentCodes)
         {
             this.DepartmentCodes = DepartmentCodes;
-            this.MinLevel = MinLevel;
         }
 
         public override bool Fulfills(CourseModel CourseTaken)
         {
-            //I think this compares the first digits
-            //does it work? does an atof conversion need to happen?
-            if (CourseTaken.CourseNumber[0] < MinLevel[0])
-            {
-                return false;
-            }
-            if (CourseTaken.Credits < CreditsNeeded)
+            if (CourseTaken.Communication == false)
             {
                 return false;
             }

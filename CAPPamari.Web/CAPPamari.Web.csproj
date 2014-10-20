@@ -223,11 +223,15 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\RegistrationRequest.cs" />
+    <Compile Include="Models\Requirements\CommRequirement.cs" />
     <Compile Include="Models\Requirements\DepthRequirement.cs" />
+    <Compile Include="Models\Requirements\DeptRSR.cs" />
     <Compile Include="Models\Requirements\ExclusionRequirement.cs" />
+    <Compile Include="Models\Requirements\LevelLimitRSR.cs" />
     <Compile Include="Models\Requirements\LevelRequirement.cs" />
     <Compile Include="Models\Requirements\Requirement.cs" />
     <Compile Include="Models\Requirements\RequirementSet.cs" />
+    <Compile Include="Models\Requirements\RequirementSetRequirement.cs" />
     <Compile Include="Models\Requirements\SingleRequirement.cs" />
     <Compile Include="Models\UserSession.cs">
       <DependentUpon>Model1.tt</DependentUpon>

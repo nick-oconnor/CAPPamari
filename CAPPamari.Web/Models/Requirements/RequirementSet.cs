@@ -21,7 +21,22 @@ namespace CAPPamari.Web.Models.Requirements
         public bool Fulfilled()
         {
             // go through each requirement and make sure they are all met
-            return false;
+            // by some course 
+            for (int i = 0; i < Requirements.Count(); i++)
+            {
+               bool foundCourse = false;
+               for(int j=0; j<AppliedCourses.Count(); j++){
+                   if(Requirements[i].Fulfills(AppliedCourses[j])){
+                       foundCourse = true;
+                       break;
+                   }
+               }
+                if(foundCourse == false){
+                    return false;
+                }
+                    
+            }
+            return true;
         }
 
         public void ApplyCourse(CourseModel NewCourse)

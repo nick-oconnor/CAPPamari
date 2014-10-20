@@ -13,15 +13,20 @@ namespace CAPPamari.Web.Models
         public double Grade { get; private set; }
         public int Credits { get; private set; }
         public string Semester { get; private set; }
+        public bool PNC { get; private set; }
+        public bool Communication { get; private set; }
 
         [JsonConstructor]
-        public CourseModel(string DepartmentCode, string CourseNumber, double Grade, int Credits, string Semester)
+        public CourseModel(string DepartmentCode, string CourseNumber, double Grade, int Credits, string Semester, bool PNC, bool Communication)
         {
             this.DepartmentCode = DepartmentCode;
             this.CourseNumber = CourseNumber;
             this.Grade = Grade;
             this.Credits = Credits;
             this.Semester = Semester;
+            this.PNC = PNC;
+            this.Communication = Communication;
+
         }
     }
 }
