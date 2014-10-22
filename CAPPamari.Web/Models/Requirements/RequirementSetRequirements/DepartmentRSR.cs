@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CAPPamari.Web.Models.Requirements
+namespace CAPPamari.Web.Models.Requirements.RequirementSetRequirements
 {
-    //for requiring a certain number of courses in a department
-    public class DeptRSR : RequirementSetRequirement
+    /// <summary>
+    /// Requires *NumCourses* in the course set to be from *Department*
+    /// </summary>
+    public class DepartmentRSR : RequirementSetRequirement
     {
         public string Department { get; private set; }
         public int NumCourses { get; private set; }
         
-        public DeptRSR(string Department, int NumCourses)
+        public DepartmentRSR(string Department, int NumCourses)
         {
             this.Department = Department;
             this.NumCourses = NumCourses;

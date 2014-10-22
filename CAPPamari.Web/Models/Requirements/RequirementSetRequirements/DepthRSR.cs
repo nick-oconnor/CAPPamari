@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CAPPamari.Web.Models.Requirements
+namespace CAPPamari.Web.Models.Requirements.RequirementSetRequirements
 {
-    public class DepthRequirement : RequirementSetRequirement
+    /// <summary>
+    /// Requires a pair of courses from the set to fulfill the depth requirement
+    /// Used in the HASS requirement set only
+    /// </summary>
+    public class DepthRSR : RequirementSetRequirement
     {
         //no member variables i think
 
-        public DepthRequirement()
+        public DepthRSR()
         {
             
         }

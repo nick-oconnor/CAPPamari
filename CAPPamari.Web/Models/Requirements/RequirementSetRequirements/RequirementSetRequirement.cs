@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CAPPamari.Web.Models.Requirements
+namespace CAPPamari.Web.Models.Requirements.RequirementSetRequirements
 {
-    public class RequirementSetRequirement
+    /// <summary>
+    /// abstract class for Requirement Set Requirements
+    /// </summary>
+    public abstract class RequirementSetRequirement
     {
         public int TotalCreditsNeeded { get; private set; }
         public bool PNCAllowed { get; private set; }

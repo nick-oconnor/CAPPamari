@@ -5,6 +5,10 @@ using System.Web;
 
 namespace CAPPamari.Web.Models.Requirements
 {
+    /// <summary>
+    /// Requires that a course is included that is from among *DepartmentCodes* and
+    /// is communication intensive
+    /// </summary>
     public class CommRequirement : Requirement
     {
         public List<string> DepartmentCodes { get; private set; }

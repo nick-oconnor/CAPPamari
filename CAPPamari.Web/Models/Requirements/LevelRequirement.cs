@@ -5,6 +5,10 @@ using System.Web;
 
 namespace CAPPamari.Web.Models.Requirements
 {
+    /// <summary>
+    /// Requires a course from among *DepartmentCodes* that is of level
+    /// greater than or equal to *MinLevel*
+    /// </summary>
     public class LevelRequirement : Requirement
     {
         public List<string> DepartmentCodes { get; private set; }

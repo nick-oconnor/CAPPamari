@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CAPPamari.Web.Models.Requirements
+namespace CAPPamari.Web.Models.Requirements.RequirementSetRequirements
 {
-    //for limiting the number of *x* level courses that may be applied to req set
+    /// <summary>
+    /// Requires that no more than *UpperLimit* courses are less equals level *Level*
+    /// </summary>
     public class LevelLimitRSR : RequirementSetRequirement
     {
         public string Level { get; private set; }

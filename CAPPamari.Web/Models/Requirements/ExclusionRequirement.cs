@@ -5,6 +5,9 @@ using System.Web;
 
 namespace CAPPamari.Web.Models.Requirements
 {
+    /// <summary>
+    /// Requires that a specific course is not applied to a requirement set
+    /// </summary>
     public class ExclusionRequirement : Requirement
     {
         public string DepartmentCode { get; private set; }
