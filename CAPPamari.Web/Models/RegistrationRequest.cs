@@ -8,16 +8,8 @@ namespace CAPPamari.Web.Models
 {
     public class RegistrationRequest
     {
-        public string UserName { get; private set; }
-        public string Password { get; private set; }
-        public string Major { get; private set; }
-
-        [JsonConstructor]
-        private RegistrationRequest(string UserName, string Password, string Major)
-        {
-            this.UserName = UserName;
-            this.Password = Password;
-            this.Major = Major;
-        }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string Major { get; set; }
     }
 }

@@ -14,18 +14,19 @@
     <body>
         <div id="headerBarRoot">
             <div id="headerBarWrapper">
-                <div id="userHeader" style="position:relative;display:none;width:100%">
+                <div id="userHeader" style="position:relative;display:none;width:100%;">
                     <span id="userHeaderStudentName" style="position:relative;float:left">Student Name</span>
-                    <span style="position:relative;float:right" onclick="user.signOut()">Logout</span><br />
-                    <!-- major --><br />
+                    <span style="position:relative;float:right;cursor:pointer;" onclick="user.signOut()">Logout</span><br />
+                    <span id="userHeaderMajor" style="position:relative;float:left">Major</span><br />
                     <!-- advisors -->
                 </div>
-                <div id="loginHeader" style="position:relative;display:inline-block;width:100%">
+                <div id="loginHeader" style="position:relative;display:inline-block;width:100%;">
                     <input id="loginHeaderSignInButton" style="position:relative;float:right;" type="button" onclick="SignInButtonClick()" value="Log In"/>
                     <input id="loginHeaderPassword" style="position:relative;float:right;" type="password"/>
                     <span style="position:relative;float:right;">Password:</span>
                     <input id="loginHeaderUserName" style="position:relative;float:right;" type="text"/>
                     <span style="position:relative;float:right;">User Name:</span>
+                    <span style="position:relative;float:left;cursor:pointer;" onclick="ShowRegistrationDialog()">Register</span>
                 </div>
             </div>
         </div>

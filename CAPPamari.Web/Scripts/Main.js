@@ -1,5 +1,4 @@
-﻿// put user in viewModel once we have data to push out to main screen
-var user = null;
+﻿var user = null;
 
 $(window).resize(function () {
     ResizeDisplay();
@@ -10,10 +9,67 @@ $(window).load(function () {
     ResizeDisplay();
 });
 
+ShowRegistrationDialog = function () {
+    var userName = prompt('Enter desired user name');
+    var waiting = true;
+    var userNameAvailable = false;
+    $.ajax({
+        url: window.location.origin + '/Account/CheckUserName',
+        data: JSON.stringify({ UserName: userName }),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function (data, textStatus, jqXHR) {
+            if (!data.Success) {
+                alert(data.Message);
+                return;
+            }
+
+            if (!data.Payload) {
+                alert('User name ' + userName + ' not available');
+                return;
+            }
+
+            var password = prompt('Enter password');
+            var major = prompt('Enter major');
+            var registrationRequest = { UserName: userName, Password: password, Major: major };
+            $.ajax({
+                url: window.location.origin + '/Account/Register',
+                data: JSON.stringify(registrationRequest),
+                type: 'POST',
+                contentType: 'application/json',
+                success: function (data, textStatus, jqXHR) {
+                    if (!data.Success) {
+                        alert(data.Message);
+                        return;
+                    }
+
+                    var appUser = data.Payload;
+                    user = new User(appUser.SessionID, appUser.UserName, appUser.Major);
+                    ko.utils.arrayForEach(appUser.Advisors, function (advisor) {
+                        user.advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                    });
+
+                    // set cookie
+
+                    RedisplayHeader();
+                }
+            });
+        },
+        error: function () {
+            alert('There is an issue with the server, please try again later');
+            waiting = false;
+        }
+    });
+    // while userName exists, ask for userName
+    // get password
+    // get major
+}
 SignInButtonClick = function () {
-    var userName = $('#loginHeaderUserName').text();
-    var password = $('#loginHeaderPassword').text();
+    var userName = $('#loginHeaderUserName').val();
+    var password = $('#loginHeaderPassword').val();
     SignInUser(userName, password);
+    $('#loginHeaderUserName').val('');
+    $('#loginHeaderPassword').val('');
 }
 ResizeDisplay = function () {
     var headerBarRoot = $('#headerBarRoot');
@@ -50,22 +106,23 @@ RedisplayHeader = function () {
         userHeader.hide();
         loginHeader.show();
     } else {
-        // put user data into header
         loginHeader.hide();
         userHeader.show();
+        $('#userHeaderStudentName').text(user.userName);
+        $('#userHeaderMajor').text(user.major);
     }
     ResizeDisplay();
 }
 SignInUser = function (userName, password) {
-    var jsonData = JSON.stringify({ UserName: userName, Password: password });
+    var jsonData = { UserName: userName, Password: password };
     $.ajax({
-        url: window.location.origin + '/Account/LogIn',
-        data: jsonData,
+        url: window.location.origin + '/Account/Login',
+        data: JSON.stringify(jsonData),
         type: 'POST',
         contentType: 'application/json',
         success: function (data, textStatus, jqXHR) {
             if (!data.Success) {
-                // display error message in login prompt
+                alert(data.Message);
                 return;
             }
 
@@ -75,7 +132,9 @@ SignInUser = function (userName, password) {
                 user.advisors.push(new Advisor(advisor.Name, advisor.EMail));
             });
 
-            // load user data into header bar
+            // set cookie
+
+            RedisplayHeader();
         },
         error: function () {
             alert('There is an issue with the server, please try again later');
@@ -93,8 +152,16 @@ User = function (sessionID, userName, major) {
 
     /* Functions */
     self.signOut = function () {
-        // make ajax request to account controller
-        // if successful, set user = null and redisplay header bar
+        var jsonData = { UserName: self.userName };
+        $.ajax({
+            url: window.location.origin + '/Account/Logout',
+            data: JSON.stringify(jsonData),
+            type: 'POST',
+            contentType: 'application/json'
+        });
+        user = null;
+
+        RedisplayHeader();
     }
 }
 Advisor = function (name, emailAddress) {
