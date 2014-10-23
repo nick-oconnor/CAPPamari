@@ -15,11 +15,12 @@ namespace CAPPamari.Web.Models.Requirements
     public class RequirementSet
     {
         public string Name { get; private set; }
+        public string Description { get; private set; }
         public List<Requirement> Requirements { get; private set; }
         public List<RequirementSetRequirement> RSRs { get; private set; }
         public List<CourseModel> AppliedCourses { get; private set; }
 
-        public RequirementSet(string Name, List<Requirement> Requirements, List<RequirementSetRequirement> RSRs, List<CourseModel> AppliedCourses)
+        public RequirementSet(string Name, string Description, List<Requirement> Requirements, List<RequirementSetRequirement> RSRs, List<CourseModel> AppliedCourses)
         {
             this.Name = Name;
             this.Requirements = Requirements;
