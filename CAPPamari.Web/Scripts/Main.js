@@ -6,7 +6,6 @@ $(window).resize(function () {
 });
 $(window).load(function () {
     // try to load user from cookie
-
     ResizeDisplay();
 });
 
@@ -35,9 +34,11 @@ ToggleSidebar = function () {
     var arrowSpan = $('#arrowSpan');
 
     if (sidebarWrapper.width() > 0) {
+        sidebarWrapper.hide(0);
         sidebarWrapper.width(0);
         arrowSpan.text('>');
     } else {
+        sidebarWrapper.show(0);
         sidebarWrapper.width(200);
         arrowSpan.text('<');
     }

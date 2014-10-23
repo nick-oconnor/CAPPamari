@@ -10,6 +10,5 @@ namespace CAPPamari.Web.Controllers
 {
     public class MainController : ApiController
     {
-        public ApiResponse<Course> Cours 
     }
 }

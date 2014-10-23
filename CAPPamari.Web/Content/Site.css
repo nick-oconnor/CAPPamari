@@ -40,6 +40,7 @@
 }
 #sidebarWrapper
 {
+    display: none;
     position: relative;
     width: 0px;
     height: 100%;
@@ -54,4 +55,15 @@
     width: 10px;
     cursor: pointer;
     float: right;
+}
+/* REQUIREMENT BOXES */
+.requirementBox
+{
+    margin: 25px !important;
+    width: auto !important;
+}
+/* COURSES */
+.course
+{
+    z-index: 999;
 }

@@ -6,6 +6,7 @@
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/themes/base/css")
         @Scripts.Render("~/bundles/modernizr")
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/jqueryui")
@@ -32,6 +33,7 @@
         <div id="mainScreen">
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
+                    @RenderSection("courses", required: true)
                 </div>
                 <div id="openCloseSidebarDiv" onclick="ToggleSidebar()">
                     <span id="arrowSpan">></span>
