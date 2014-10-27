@@ -5,17 +5,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c3ab7cbf3fa04a71b5d9940bdfeb29e8" Name="Diagram1">
-        <EntityTypeShape EntityType="JustinModel.Advisor" Width="1.5" PointX="0.75" PointY="2.25" />
-        <EntityTypeShape EntityType="JustinModel.ApplicationUser" Width="1.5" PointX="3" PointY="2.125" />
-        <EntityTypeShape EntityType="JustinModel.CAPPReport" Width="1.5" PointX="5.25" PointY="1" />
-        <EntityTypeShape EntityType="JustinModel.Course" Width="1.5" PointX="7.875" PointY="3.5" />
-        <EntityTypeShape EntityType="JustinModel.UserSession" Width="1.5" PointX="5.25" PointY="3.625" />
-        <AssociationConnector Association="JustinModel.FK_CAPPReports_ApplicationUser" />
+        <EntityTypeShape EntityType="JustinModel.Advisor" Width="1.5" PointX="0.75" PointY="2.875" />
+        <EntityTypeShape EntityType="JustinModel.ApplicationUser" Width="1.5" PointX="3" PointY="2.625" />
+        <EntityTypeShape EntityType="JustinModel.CAPPReport" Width="1.5" PointX="5.25" PointY="4" />
+        <EntityTypeShape EntityType="JustinModel.Course" Width="1.5" PointX="9.75" PointY="3.625" />
+        <EntityTypeShape EntityType="JustinModel.RequirementSet" Width="1.5" PointX="7.5" PointY="4" />
+        <EntityTypeShape EntityType="JustinModel.UserSession" Width="1.5" PointX="5.25" PointY="1.125" />
+        <AssociationConnector Association="JustinModel.FK_CAPPReport_ApplicationUser" />
         <AssociationConnector Association="JustinModel.FK_UserSession_ApplicationUser" />
-        <AssociationConnector Association="JustinModel.Advises" />
-        <EntityTypeShape EntityType="JustinModel.RequirementSet" Width="1.5" PointX="7.875" PointY="1" />
-        <AssociationConnector Association="JustinModel.HasA" />
         <AssociationConnector Association="JustinModel.FK_Course_RequirementSet" />
+        <AssociationConnector Association="JustinModel.Advises" />
+        <AssociationConnector Association="JustinModel.Contains" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
