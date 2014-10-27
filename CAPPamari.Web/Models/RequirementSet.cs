@@ -15,18 +15,30 @@ namespace CAPPamari.Web.Models
 using System;
     using System.Collections.Generic;
     
-public partial class UserSession
+public partial class RequirementSet
 {
 
-    public int SessionID { get; set; }
+    public RequirementSet()
+    {
 
-    public string UserName { get; set; }
+        this.CAPPReports = new HashSet<CAPPReport>();
 
-    public System.DateTime Expiration { get; set; }
+        this.Courses = new HashSet<Course>();
+
+    }
+
+
+    public int RequirementSetID { get; set; }
+
+    public string Credits { get; set; }
+
+    public string PassNCCredits { get; set; }
 
 
 
-    public virtual ApplicationUser ApplicationUser { get; set; }
+    public virtual ICollection<CAPPReport> CAPPReports { get; set; }
+
+    public virtual ICollection<Course> Courses { get; set; }
 
 }
 

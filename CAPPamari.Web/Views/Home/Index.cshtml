@@ -5,4 +5,48 @@
     <script type="text/javascript" src="~/Scripts/Main.js"></script>
     <script type="text/javascript" src="~/Scripts/knockout-2.2.0.js"></script>
 }
-<div style="padding:2px;"><span>Index</span></div>
+@section scripts {
+    <script>
+        $(".requirementBox").accordion({collapsible: true });
+        $(".requirementBox").droppable({
+            drop: function (event, ui) {
+                ui.draggable.css({ background: "green" });
+            }
+
+        });
+        $(".course").draggable();
+    </script>
+}
+@section courses {
+    <div class="course">Course!</div>
+}
+<div class="requirementBox">
+    <h3><a href="#">Communication Intensive</a></h3>
+    <div>
+    </div>
+</div>
+<div class="requirementBox">
+    <h3><a href="#">Math</a></h3>
+    <div>
+    </div>
+</div>
+<div class="requirementBox">
+    <h3><a href="#">Science</a></h3>
+    <div>
+    </div>
+</div>
+<div class="requirementBox">
+    <h3><a href="#">Computer Science</a></h3>
+    <div>
+    </div>
+</div>
+<div class="requirementBox">
+    <h3><a href="#">Computer Science Options</a></h3>
+    <div>
+    </div>
+</div>
+<div class="requirementBox">
+    <h3><a href="#">HASS</a></h3>
+    <div>
+    </div>
+</div>
