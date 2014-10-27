@@ -1,18 +1,73 @@
 ﻿var user = null;
+var viewModel = null;
 
 $(window).resize(function () {
     ResizeDisplay();
 });
 $(window).load(function () {
+    viewModel = new ViewModel();
     // try to load user from cookie
+
+    // UNCOMMENT WHEN WE HAVE UI ELEMENTS ACTUALLY SHOWING STUFF
+    // ko.applyBindings(viewModel);
 
     ResizeDisplay();
 });
 
+SubmitSingletonClassAddInformation = function () {
+    var deptCode = $('#singletonDepartment').val();
+    var courseNumber = $('#singletonCourseNumber').val();
+    var semesterCode = $('#singletonSemesterCode').val();
+    var passNoCredit = $('#singletonPassNoCredit')[0].checked;
+    var grade = $('#singletonGrade').val();
+    var credits = $('#singletonCredits').val();
+
+    if (deptCode.length !== 4) {
+        alert('Please enter valid Department Code');
+        return;
+    }
+    if (courseNumber.length !== 4) {
+        alert('Please enter valid Course Number');
+        return;
+    }
+    if (semesterCode.length !== 3) {
+        alert('Please enter valid Semester Code');
+        return;
+    }
+    if (credits.length !== 1) {
+        alert('Please enter number of credits');
+        return;
+    }
+
+    var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits);
+    viewModel.addNewCouse(course);
+
+    $('#singletonClassAddDialogRoot').hide();
+}
+CancelSingletonClassAdd = function () {
+    $('#singletonDepartment').val('');
+    $('#singletonCourseNumber').val('');
+    $('#singletonSemesterCode').val('');
+    $('#singletonPassNoCredit')[0].checked = false;
+    $('#singletonGrade').val('');
+    $('#singletonCredits').val('');
+
+    $('#singletonClassAddDialogRoot').hide();
+}
+ShowSingletonClassAddDialog = function () {
+    $('#singletonClassAddDialogRoot').show();
+    // add validators if needed
+}
 ShowRegistrationDialog = function () {
-    var userName = prompt('Enter desired user name');
-    var waiting = true;
-    var userNameAvailable = false;
+    $('#registrationDialogRoot').show();
+    // add validators if needed
+}
+SubmitRegistrationInformation = function () {
+    var userName = $('#registrationUserName').val();
+    var password = $('#registrationPassword1').val();
+    var confirmPswd = $('#registrationPassword2').val();
+    var major = $('#registrationMajor').val();
+
     $.ajax({
         url: window.location.origin + '/Account/CheckUserName',
         data: JSON.stringify({ UserName: userName }),
@@ -28,9 +83,17 @@ ShowRegistrationDialog = function () {
                 alert('User name ' + userName + ' not available');
                 return;
             }
+            if (password != confirmPswd) {
+                alert('Passwords do not match');
+                $('#registrationPassword1').val('');
+                $('#registrationPassword2').val('');
+                return;
+            }
+            if (major.length < 1) {
+                alert('Please enter a major or "Undeclared" if you do not have one yet');
+                return;
+            }
 
-            var password = prompt('Enter password');
-            var major = prompt('Enter major');
             var registrationRequest = { UserName: userName, Password: password, Major: major };
             $.ajax({
                 url: window.location.origin + '/Account/Register',
@@ -51,6 +114,8 @@ ShowRegistrationDialog = function () {
 
                     // set cookie
 
+                    $('#registrationDialogRoot').hide();
+
                     RedisplayHeader();
                 }
             });
@@ -60,15 +125,19 @@ ShowRegistrationDialog = function () {
             waiting = false;
         }
     });
-    // while userName exists, ask for userName
-    // get password
-    // get major
+}
+CancelRegistration = function () {
+    $('#registrationUserName').val('');
+    $('#registrationPassword1').val('');
+    $('#registrationPassword2').val('');
+    $('#registrationMajor').val('');
+
+    $('#registrationDialogRoot').hide();
 }
 SignInButtonClick = function () {
     var userName = $('#loginHeaderUserName').val();
     var password = $('#loginHeaderPassword').val();
     SignInUser(userName, password);
-    $('#loginHeaderUserName').val('');
     $('#loginHeaderPassword').val('');
 }
 ResizeDisplay = function () {
@@ -90,12 +159,12 @@ ToggleSidebar = function () {
     var sidebarWrapper = $('#sidebarWrapper');
     var arrowSpan = $('#arrowSpan');
 
-    if (sidebarWrapper.width() > 0) {
-        sidebarWrapper.width(0);
-        arrowSpan.text('>');
-    } else {
-        sidebarWrapper.width(200);
+    if (sidebarWrapper.css('display') === 'none') {
+        sidebarWrapper.show();
         arrowSpan.text('<');
+    } else {
+        sidebarWrapper.hide();
+        arrowSpan.text('>');
     }
     ResizeDisplay();
 }
@@ -169,4 +238,25 @@ Advisor = function (name, emailAddress) {
     var self = this;
     self.name = name;
     self.emailAddress = emailAddress;
+}
+Course = function (department, number, semester, passNoCredit, grade, credits) {
+    /* Properties */
+    var self = this;
+    self.department = ko.observable(department);
+    self.number = ko.observable(number);
+    self.semester = ko.observable(semester);
+    self.passNoCredit = passNoCredit;
+    self.grade = ko.observable(grade);
+    self.credits = ko.observable(credits);
+}
+ViewModel = function () {
+    /* Properties */
+    var self = this;
+    self.unassignedCourses = ko.observableArray([]);
+
+    /* Functions */
+    self.addNewCouse = function (course) {
+        // add logic to detect where it should go and prompt user if correct
+        self.unassignedCourses.push(course);
+    }
 }

@@ -12,6 +12,34 @@
         @RenderSection("header", required: false)
     </head>
     <body>
+        <div id="registrationDialogRoot">
+            <span>Desired User Name:</span>
+            <input id="registrationUserName" type="text" /><br />
+            <span>Password:</span>
+            <input id="registrationPassword1" type="password" /><br />
+            <span>Confirm Password:</span>
+            <input id="registrationPassword2" type="password" /><br />
+            <span>Major:</span>
+            <input id="registrationMajor" type="text" /><br />
+            <input id="registrationSubmit" type="button" onclick="SubmitRegistrationInformation()" value="Register" />
+            <input id="registrationCancel" type="button" onclick="CancelRegistration()" value="Cancel" />
+        </div>
+        <div id="singletonClassAddDialogRoot">
+            <span>Department:</span>
+            <input id="singletonDepartment" type="text" /><br />
+            <span>Course Number:</span>
+            <input id="singletonCourseNumber" type="text" /><br />
+            <span>Semester Code (i.e. F14):</span>
+            <input id="singletonSemesterCode" type="text" /><br />
+            <span>Pass No Credit:</span>
+            <input id="singletonPassNoCredit" type="checkbox" /><br />
+            <span>Grade (i.e. 4.0):</span>
+            <input id="singletonGrade" type="text" /><br />
+            <span>Credits</span>
+            <input id="singletonCredits" type="number" /><br />
+            <input id="singletonSumbit" type="button" onclick="SubmitSingletonClassAddInformation()" value="Add" />
+            <input id="singletonCancel" type="button" onclick="CancelSingletonClassAdd()" value="Cancel" />
+        </div>
         <div id="headerBarRoot">
             <div id="headerBarWrapper">
                 <div id="userHeader" style="position:relative;display:none;width:100%;">
@@ -33,6 +61,9 @@
         <div id="mainScreen">
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
+                    <div id="addClassButton" style="width:100%" onclick="ShowSingletonClassAddDialog()">
+                        <span>Add Class</span>
+                    </div>
                 </div>
                 <div id="openCloseSidebarDiv" onclick="ToggleSidebar()">
                     <span id="arrowSpan">></span>
