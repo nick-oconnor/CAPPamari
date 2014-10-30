@@ -12,16 +12,15 @@ namespace CAPPamari.Web.Helpers
     {
         public static IEnumerable<CourseModel> parse(string file)
         {
-            using (var sr = new StringReader(file))
-            {
-                var reader = new CsvReader(sr);
-                //somehow we have to make it delimit the header by newline instead of whatever it's doing
+            var sr = new StringReader(file);
+            
+            var reader = new CsvReader(sr);
+            //somehow we have to make it delimit the header by newline instead of whatever it's doing
                
+            IEnumerable<CourseModel> courses = reader.GetRecords<CourseModel>();
 
-                IEnumerable<CourseModel> courses = reader.GetRecords<CourseModel>();
-
-                return courses;
-            }
+            return courses;
+            
         }
     }
 }

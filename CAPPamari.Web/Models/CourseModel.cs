@@ -8,11 +8,11 @@ namespace CAPPamari.Web.Models
 {
     public class CourseModel
     {
-        public string DepartmentCode { get; private set; }
-        public string CourseNumber { get; private set; }
-        public double Grade { get; private set; }
-        public int Credits { get; private set; }
-        public string Semester { get; private set; }
+        public string DepartmentCode { get; set; }
+        public string CourseNumber { get; set; }
+        public double Grade { get; set; }
+        public int Credits { get; set; }
+        public string Semester { get; set; }
 
         [JsonConstructor]
         public CourseModel(string DepartmentCode, string CourseNumber, double Grade, int Credits, string Semester)
@@ -22,6 +22,15 @@ namespace CAPPamari.Web.Models
             this.Grade = Grade;
             this.Credits = Credits;
             this.Semester = Semester;
+        }
+
+        public CourseModel()
+        {
+            this.DepartmentCode = "NULL";
+            this.CourseNumber = "NULL";
+            this.Grade = 0.0;
+            this.Credits = 0;
+            this.Semester = "N00";
         }
     }
 }

@@ -19,10 +19,17 @@ namespace CAPPamari.Test
             string input = "";
             while (!reader.EndOfStream)
             {
-                input = input + reader.ReadLine();
+                input = input + reader.ReadLine() + "\n";
             }
+            reader.Close();
+                
             //parse it
             IEnumerable<CourseModel> courses = CSVParserHelper.parse(input);
+
+            if (courses == null)
+            {
+                Debug.Print("courses was null");
+            }
 
             // and spit out the info
             foreach (CourseModel course in courses)
