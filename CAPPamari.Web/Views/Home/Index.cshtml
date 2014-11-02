@@ -7,43 +7,72 @@
 }
 @section scripts {
     <script>
-        $(".requirementBox").accordion({collapsible: true });
-        $(".requirementBox").droppable({
-            drop: function (event, ui) {
-                ui.draggable.css({ background: "green" });
-            }
-
+        $(".requirementBox").accordion({
+            collapsible: true,
         });
-        $(".course").draggable();
+        $(".requirementBox .courses").droppable({
+            drop: function(event, ui) {
+                ui.draggable.appendTo($(this));
+                $(".requirementBox").accordion("resize");
+                ui.helper.remove();
+                $(".requirementBox .courses li").draggable({
+                    appendTo: "body",
+                    helper: "clone",
+                    revert: true,
+                    containment: "document",
+                });
+            }
+        });
+        $("#sidebarWrapper #courses").droppable({
+            drop: function(event, ui) {
+                ui.draggable.appendTo($(this));
+                $(".requirementBox").accordion("resize");
+                ui.helper.remove();
+            }
+        });
+        $("#sidebarWrapper #courses li").draggable({
+            appendTo: "body",
+            helper: "clone",
+            revert: true,
+            containment: "document",
+        });
     </script>
 }
 <div class="requirementBox">
     <h3><a href="#">Communication Intensive</a></h3>
     <div>
+        <ul class="courses">
+            <li>Test</li>
+        </ul>
     </div>
 </div>
 <div class="requirementBox">
     <h3><a href="#">Math</a></h3>
     <div>
+        <ul class="courses"></ul>
     </div>
 </div>
 <div class="requirementBox">
     <h3><a href="#">Science</a></h3>
     <div>
+        <ul class="courses"></ul>
     </div>
 </div>
 <div class="requirementBox">
     <h3><a href="#">Computer Science</a></h3>
     <div>
+        <ul class="courses"></ul>
     </div>
 </div>
 <div class="requirementBox">
     <h3><a href="#">Computer Science Options</a></h3>
     <div>
+        <ul class="courses"></ul>
     </div>
 </div>
 <div class="requirementBox">
     <h3><a href="#">HASS</a></h3>
     <div>
+        <ul class="courses"></ul>
     </div>
 </div>

@@ -3,6 +3,12 @@
     margin: 0px;
     overflow: hidden;
 }
+ul
+{
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
 /* HEADER BAR */
 #headerBarRoot
 {
@@ -95,9 +101,4 @@
 {
     margin: 25px !important;
     width: auto !important;
-}
-/* COURSES */
-.course
-{
-    z-index: 999;
 }
