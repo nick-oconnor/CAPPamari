@@ -13,6 +13,9 @@
         @RenderSection("header", required: false)
     </head>
     <body>
+        <div id="blockingDiv">
+            <span id="blockingDivSpan"></span>
+        </div>
         <div id="registrationDialogRoot">
             <span>Desired User Name:</span>
             <input id="registrationUserName" type="text" /><br />
@@ -44,10 +47,14 @@
         <div id="headerBarRoot">
             <div id="headerBarWrapper">
                 <div id="userHeader" style="position:relative;display:none;width:100%;">
-                    <span id="userHeaderStudentName" style="position:relative;float:left">Student Name</span>
+                    <span id="userHeaderStudentName" style="position:relative;float:left" data-bind="text: user() === null ? 'NO USER' : user().userName"></span>
                     <span style="position:relative;float:right;cursor:pointer;" onclick="user.signOut()">Logout</span><br />
-                    <span id="userHeaderMajor" style="position:relative;float:left">Major</span><br />
-                    <!-- advisors -->
+                    <span id="userHeaderMajor" style="position:relative;float:left" data-bind="text: user() === null ? 'NO MAJOR' : user().major"></span><br />
+                    <div data-bind="if: user">
+                        <div data-bind="foreach: user().advisors">
+                            <a data-bind="text: name, attr: { href: 'mailto:' + emailAddress() }"></a>
+                        </div>
+                    </div>
                 </div>
                 <div id="loginHeader" style="position:relative;display:inline-block;width:100%;">
                     <input id="loginHeaderSignInButton" style="position:relative;float:right;" type="button" onclick="SignInButtonClick()" value="Log In"/>
@@ -63,7 +70,16 @@
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
                     <div id="addClassButton" style="width:100%" onclick="ShowSingletonClassAddDialog()">
-                        <span>Add Class</span>
+                        <span>Add Course</span>
+                    </div>
+                    <div data-bind="foreach: unassignedCourses">
+                        <!-- when we decide what the course boxes are going to look like we will add that population here -->
+                        <span data-bind="text: department"></span>
+                        <span>-</span>
+                        <span data-bind="text: number"></span>
+                        <span>(</span>
+                        <span data-bind="text: semester"></span>
+                        <span>)</span><br />
                     </div>
                 </div>
                 <div id="openCloseSidebarDiv" onclick="ToggleSidebar()">

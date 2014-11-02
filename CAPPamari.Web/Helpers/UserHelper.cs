@@ -9,6 +9,13 @@ namespace CAPPamari.Web.Helpers
 {
     public static class UserHelper
     {
+        /// <summary>
+        /// Create a new user
+        /// </summary>
+        /// <param name="UserName">UserName of new user.</param>
+        /// <param name="Password">Password for new user.</param>
+        /// <param name="Major">Major for new user.</param>
+        /// <returns>ApplicationUserModel of new user.</returns>
         public static ApplicationUserModel CreateNewUser(string UserName, string Password, string Major)
         {
             EntitiesHelper.CreateNewUser(UserName, Password, Major);
@@ -49,6 +56,46 @@ namespace CAPPamari.Web.Helpers
         {
             var sessionID = EntitiesHelper.GetSessionID(UserName); 
             EntitiesHelper.RemoveSession(sessionID, UserName);
+        }
+
+        /// <summary>
+        /// Change major for a user
+        /// </summary>
+        /// <param name="UserName">UserName of user to change major of.</param>
+        /// <param name="NewMajor">Major to change to.</param>
+        /// <returns>Success status of change.</returns>
+        public static bool ChangeMajor(string UserName, string NewMajor)
+        {
+            return EntitiesHelper.ChangeMajor(UserName, NewMajor);
+        }
+
+        /// <summary>
+        /// Add an advisor to a user
+        /// </summary>
+        /// <param name="UserName">UserName of user to add an advisor to</param>
+        /// <param name="NewAdvisor">AdvisorModel of advisor to add to the user</param>
+        /// <returns>Success status of advisor add</returns>
+        public static bool AddAdvisor(string UserName, AdvisorModel NewAdvisor)
+        {
+            var advisorID = EntitiesHelper.GetAdvisorID(NewAdvisor.Name, NewAdvisor.EMail);
+            if (advisorID == -1)
+            {
+                advisorID = EntitiesHelper.AddAdvisor(NewAdvisor.Name, NewAdvisor.EMail);
+            }
+            return EntitiesHelper.AssociateAdvisorAndUser(UserName, advisorID);
+        }
+
+        /// <summary>
+        /// Remove an advisor from the user
+        /// </summary>
+        /// <param name="UserName">UserName of the user to remove the advisor from</param>
+        /// <param name="OldAdvisor">AdvisorModel of advisor to remove from the user</param>
+        /// <returns>Success status of the addvisor remove</returns>
+        public static bool RemoveAdvisor(string UserName, AdvisorModel OldAdvisor)
+        {
+            var advisorID = EntitiesHelper.GetAdvisorID(OldAdvisor.Name, OldAdvisor.EMail);
+            if (advisorID == -1) return false;
+            return EntitiesHelper.DisassociateAdvisorAndUser(UserName, advisorID);
         }
     }
 }

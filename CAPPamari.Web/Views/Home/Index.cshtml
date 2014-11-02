@@ -5,45 +5,9 @@
     <script type="text/javascript" src="~/Scripts/Main.js"></script>
     <script type="text/javascript" src="~/Scripts/knockout-2.2.0.js"></script>
 }
-@section scripts {
-    <script>
-        $(".requirementBox").accordion({collapsible: true });
-        $(".requirementBox").droppable({
-            drop: function (event, ui) {
-                ui.draggable.css({ background: "green" });
-            }
-
-        });
-        $(".course").draggable();
-    </script>
-}
-<div class="requirementBox">
-    <h3><a href="#">Communication Intensive</a></h3>
-    <div>
-    </div>
-</div>
-<div class="requirementBox">
-    <h3><a href="#">Math</a></h3>
-    <div>
-    </div>
-</div>
-<div class="requirementBox">
-    <h3><a href="#">Science</a></h3>
-    <div>
-    </div>
-</div>
-<div class="requirementBox">
-    <h3><a href="#">Computer Science</a></h3>
-    <div>
-    </div>
-</div>
-<div class="requirementBox">
-    <h3><a href="#">Computer Science Options</a></h3>
-    <div>
-    </div>
-</div>
-<div class="requirementBox">
-    <h3><a href="#">HASS</a></h3>
-    <div>
+<div data-bind="foreach: requirementSets">
+    <div class="requirementBox">
+        <h3><a href="#" data-bind="text: name"></a></h3>
+        <div></div>
     </div>
 </div>

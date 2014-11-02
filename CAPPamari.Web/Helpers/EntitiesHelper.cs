@@ -160,6 +160,107 @@ namespace CAPPamari.Web.Helpers
                 entities.SaveChanges();
             }
         }
+        /// <summary>
+        /// Change a major for a specific user.
+        /// </summary>
+        /// <param name="UserName">UserName of user to change major</param>
+        /// <param name="Major">Major to change to.</param>
+        /// <returns>Success status of change.</returns>
+        public static bool ChangeMajor(string UserName, string Major)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+                if (user == null) return false;
+
+                user.Major = Major;
+                entities.SaveChanges();
+                return true;
+            }
+        }
+        /// <summary>
+        /// Add an advisor to the database
+        /// </summary>
+        /// <param name="Name">Name of the new advisor to add</param>
+        /// <param name="Email">Email address of the new advisor to add</param>
+        /// <returns>The AdvisorID of the new advisor or -1 if the advisor already exists in the database</returns>
+        public static int AddAdvisor(string Name, string Email)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var existingAdvisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.Name == Name && dbadvisor.EMailAddress == Email);
+                if (existingAdvisor != null) return -1;
+
+                var newAdvisor = new Advisor()
+                {
+                    EMailAddress = Email,
+                    Name = Name
+                };
+                entities.Advisors.Add(newAdvisor);
+                entities.SaveChanges();
+
+                return newAdvisor.AdvisorID;
+            }
+        }
+        /// <summary>
+        /// Gets the AdvisorID of an advisor
+        /// </summary>
+        /// <param name="Name">Name of the advisor to get the AdvisorID of</param>
+        /// <param name="Email">EMailAddress of the advisor to get the AdvisorID of</param>
+        /// <returns>AdvisorID corresponding to the right advisor or -1 if no such advisor exists</returns>
+        public static int GetAdvisorID(string Name, string Email)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.Name == Name && dbadvisor.EMailAddress == Email);
+                if (advisor == null) return -1;
+
+                return advisor.AdvisorID;
+            }
+        }
+        /// <summary>
+        /// Add an association between a user and an advisor
+        /// </summary>
+        /// <param name="UserName">UserName of user to create the association with</param>
+        /// <param name="AdvisorID">AdvisorID of the advisor to create the association with</param>
+        /// <returns>Success state of the association creation</returns>
+        public static bool AssociateAdvisorAndUser(string UserName, int AdvisorID)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return false;
+
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == AdvisorID);
+                if (advisor == null) return false;
+
+                user.Advisors.Add(advisor);
+                entities.SaveChanges();
+
+                return true;
+            }
+        }
+        /// <summary>
+        /// Remove an association between a user and an advisor 
+        /// </summary>
+        /// <param name="UserName">UserName of user to remove the association with</param>
+        /// <param name="AdvisorID">AdvisorID of the advisor to remove the association with</param>
+        /// <returns>Success state of the association deletion</returns>
+        public static bool DisassociateAdvisorAndUser(string UserName, int AdvisorID)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return false;
+
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == AdvisorID);
+                if (advisor == null) return false;
+
+                var success = user.Advisors.Remove(advisor);
+                if (success) entities.SaveChanges();
+                return success;
+            }
+        }
 
         /// <summary>
         /// Returns new entities object.

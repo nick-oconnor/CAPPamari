@@ -8,8 +8,21 @@ $(window).load(function () {
     viewModel = new ViewModel();
     // try to load user from cookie
 
-    // UNCOMMENT WHEN WE HAVE UI ELEMENTS ACTUALLY SHOWING STUFF
-    // ko.applyBindings(viewModel);
+    // insertion of dummy data
+    viewModel.addNewRequirementSet(new RequirementSet('Communication Intensive'));
+    viewModel.addNewRequirementSet(new RequirementSet('Math'));
+    viewModel.addNewRequirementSet(new RequirementSet('Science'));
+    viewModel.addNewRequirementSet(new RequirementSet('Computer Science'));
+    viewModel.addNewRequirementSet(new RequirementSet('Computer Science Option'));
+    viewModel.addNewRequirementSet(new RequirementSet('HASS'));
+    ko.applyBindings(viewModel);
+    $(".requirementBox").accordion({ collapsible: true });
+    $(".requirementBox").droppable({
+        drop: function (event, ui) {
+            ui.draggable.css({ background: "green" });
+        }
+    });
+    $(".course").draggable();
 
     ResizeDisplay();
 });
@@ -107,7 +120,7 @@ SubmitRegistrationInformation = function () {
                     }
 
                     var appUser = data.Payload;
-                    user = new User(appUser.SessionID, appUser.UserName, appUser.Major);
+                    viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
                     ko.utils.arrayForEach(appUser.Advisors, function (advisor) {
                         user.advisors.push(new Advisor(advisor.Name, advisor.EMail));
                     });
@@ -171,14 +184,12 @@ ToggleSidebar = function () {
 RedisplayHeader = function () {
     var userHeader = $('#userHeader');
     var loginHeader = $('#loginHeader');
-    if (user === null) {
+    if (viewModel.user() === null) {
         userHeader.hide();
         loginHeader.show();
     } else {
         loginHeader.hide();
         userHeader.show();
-        $('#userHeaderStudentName').text(user.userName);
-        $('#userHeaderMajor').text(user.major);
     }
     ResizeDisplay();
 }
@@ -214,8 +225,8 @@ SignInUser = function (userName, password) {
 User = function (sessionID, userName, major) {
     /* Properties */
     var self = this;
-    self.userName = userName;
-    self.major = major;
+    self.userName = ko.observable(userName);
+    self.major = ko.observable(major);
     self.sessionID = sessionID;
     self.advisors = ko.observableArray([]);
 
@@ -236,8 +247,8 @@ User = function (sessionID, userName, major) {
 Advisor = function (name, emailAddress) {
     /* Properties */
     var self = this;
-    self.name = name;
-    self.emailAddress = emailAddress;
+    self.name = ko.observable(name);
+    self.emailAddress = ko.observable(emailAddress);
 }
 Course = function (department, number, semester, passNoCredit, grade, credits) {
     /* Properties */
@@ -249,14 +260,33 @@ Course = function (department, number, semester, passNoCredit, grade, credits) {
     self.grade = ko.observable(grade);
     self.credits = ko.observable(credits);
 }
+RequirementSet = function (name) {
+    /* Properties */
+    var self = this;
+    self.name = ko.observable(name);
+    self.appliedCourses = ko.observableArray([]);
+
+    /* Functions */
+    self.addCourse = function (course) {
+        self.appliedCourses.push(course);
+    }
+    self.removeCourse = function (course) {
+        self.appliedCourses.pop(course);
+    }
+}
 ViewModel = function () {
     /* Properties */
     var self = this;
     self.unassignedCourses = ko.observableArray([]);
+    self.requirementSets = ko.observableArray([]);
+    self.user = ko.observable(null);
 
     /* Functions */
     self.addNewCouse = function (course) {
         // add logic to detect where it should go and prompt user if correct
         self.unassignedCourses.push(course);
+    }
+    self.addNewRequirementSet = function (requirementSet) {
+        self.requirementSets.push(requirementSet);
     }
 }
