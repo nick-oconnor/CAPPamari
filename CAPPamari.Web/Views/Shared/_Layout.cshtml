@@ -72,21 +72,17 @@
                     <div id="addClassButton" style="width:100%" onclick="ShowSingletonClassAddDialog()">
                         <span>Add Course</span>
                     </div>
-                    <div data-bind="foreach: unassignedCourses">
-                        <!-- when we decide what the course boxes are going to look like we will add that population here -->
-                        <span data-bind="text: department"></span>
-                        <span>-</span>
-                        <span data-bind="text: number"></span>
-                        <span>(</span>
-                        <span data-bind="text: semester"></span>
-                        <span>)</span><br />
+                    <div id="courses" data-bind="foreach: unassignedCourses">
+                        <div class="course">
+                            <!-- when we decide what the course boxes are going to look like we will add that population here -->
+                            <span data-bind="text: department"></span>
+                            <span>-</span>
+                            <span data-bind="text: number"></span>
+                            <span>(</span>
+                            <span data-bind="text: semester"></span>
+                            <span>)</span><br />
+                        </div>
                     </div>
-                    <ul id="courses">
-                        <!-- Test code, remove during merge -->
-                        <li>Spaceholder</li>
-                        <li>CSCI - 2300 Data Structures</li>
-                        <!-- Test code, remove during merge -->
-                    </ul>
                 </div>
                 <div id="openCloseSidebarDiv" onclick="ToggleSidebar()">
                     <span id="arrowSpan">></span>
@@ -97,6 +93,5 @@
             </div>
         </div>
 
-        @RenderSection("scripts", required: false)
     </body>
 </html>

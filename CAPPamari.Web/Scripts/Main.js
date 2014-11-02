@@ -15,17 +15,48 @@ $(window).load(function () {
     viewModel.addNewRequirementSet(new RequirementSet('Computer Science'));
     viewModel.addNewRequirementSet(new RequirementSet('Computer Science Option'));
     viewModel.addNewRequirementSet(new RequirementSet('HASS'));
+    viewModel.addNewCouse(new Course("CSCI", 4000, "F14", true, null, 1));
     ko.applyBindings(viewModel);
-    $(".requirementBox").accordion({ collapsible: true });
-    $(".requirementBox").droppable({
-        drop: function (event, ui) {
-            ui.draggable.css({ background: "green" });
-        }
-    });
-    $(".course").draggable();
+
+    // drag'n drop code
+    SetupDragAndDrop();
 
     ResizeDisplay();
 });
+
+MakeCoursesDraggable = function () {
+    $(".course").draggable({
+        appendTo: "body",
+        helper: "clone",
+        revert: true,
+        containment: "#mainScreen",
+    });
+}
+
+SetupDragAndDrop = function () {
+    $(".requirementBox").accordion({
+        collapsible: true,
+    });
+    $(".requirementBox").droppable({
+        drop: function (event, ui) {
+            ui.draggable.appendTo($(this).find(".courses"));
+            ui.helper.remove();
+            $(this).accordion("resize");
+            if ($(this).accordion("option", "active") === false)
+            {
+                $(this).accordion("option", "active", 0);
+            }
+        }
+    });
+    $("#sidebarWrapper #courses").droppable({
+        drop: function (event, ui) {
+            ui.draggable.appendTo($(this));
+            ui.helper.remove();
+            $(".requirementBox").accordion("resize");
+        }
+    });
+    MakeCoursesDraggable();
+}
 
 SubmitSingletonClassAddInformation = function () {
     var deptCode = $('#singletonDepartment').val();
@@ -167,6 +198,7 @@ ResizeDisplay = function () {
     mainBody.outerWidth(mainScreen.innerWidth() - sideBarRootWidth);
     openCloseSidebarDiv.css('padding-top', mainBody.innerHeight() / 2);
     openCloseSidebarDiv.height(mainBody.innerHeight() / 2);
+    $('#courses').height(mainScreen.innerHeight() - $('#addClassButton').outerHeight());
 }
 ToggleSidebar = function () {
     var sidebarWrapper = $('#sidebarWrapper');
@@ -285,6 +317,7 @@ ViewModel = function () {
     self.addNewCouse = function (course) {
         // add logic to detect where it should go and prompt user if correct
         self.unassignedCourses.push(course);
+        MakeCoursesDraggable();
     }
     self.addNewRequirementSet = function (requirementSet) {
         self.requirementSets.push(requirementSet);
