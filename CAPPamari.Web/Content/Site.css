@@ -2,6 +2,8 @@
 {
     margin: 0px;
     overflow: hidden;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 1em;
 }
 /* HEADER BAR */
 #headerBarRoot
@@ -108,8 +110,7 @@
     margin: 25px !important;
     width: auto !important;
 }
-/* COURSES */
 .course
 {
-    z-index: 20;
+    cursor: move;
 }
