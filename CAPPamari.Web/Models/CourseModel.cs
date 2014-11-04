@@ -14,5 +14,15 @@ namespace CAPPamari.Web.Models
         public int Credits { get; set; }
         public string Semester { get; set; }
         public bool PassNoCredit { get; set; }
+
+        public CourseModel()
+        {
+            DepartmentCode = string.Empty;
+            CourseNumber = string.Empty;
+            Grade = -1;
+            Credits = -1;
+            Semester = string.Empty;
+            PassNoCredit = false;
+        }
     }
 }
