@@ -16,10 +16,11 @@ namespace CAPPamari.Web.Models.Requirements
         public string DepartmentCode { get; private set; }
         public string CourseNumber { get; private set; }
 
-        public SingleRequirement(string DepartmentCode, string CourseNumber)
+        public SingleRequirement(string DepartmentCode, string CourseNumber, int CreditsNeeded)
         {
             this.DepartmentCode = DepartmentCode;
             this.CourseNumber = CourseNumber;
+            this.CreditsNeeded = CreditsNeeded;
         }
 
         public override bool Fulfills(CourseModel CourseTaken)

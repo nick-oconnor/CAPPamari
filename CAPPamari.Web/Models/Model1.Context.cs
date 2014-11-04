@@ -28,8 +28,15 @@ namespace CAPPamari.Web.Models
         public DbSet<Advisor> Advisors { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<CAPPReport> CAPPReports { get; set; }
-        public DbSet<Course> Courses { get; set; }
         public DbSet<RequirementSet> RequirementSets { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
+        public DbSet<CommRequirementDepartment> CommRequirementDepartments { get; set; }
+        public DbSet<DepartmentRSR> DepartmentRSRs { get; set; }
+        public DbSet<ExclusionRequirement> ExclusionRequirements { get; set; }
+        public DbSet<LevelLimitRSR> LevelLimitRSRs { get; set; }
+        public DbSet<LevelRequirement> LevelRequirements { get; set; }
+        public DbSet<LevelRequirementDepartment> LevelRequirementDepartments { get; set; }
+        public DbSet<SingleRequirement> SingleRequirements { get; set; }
+        public DbSet<Course> Courses { get; set; }
     }
 }

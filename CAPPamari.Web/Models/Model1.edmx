@@ -15,9 +15,69 @@
           <EntitySet Name="Advisor" EntityType="JustinModel.Store.Advisor" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ApplicationUser" EntityType="JustinModel.Store.ApplicationUser" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CAPPReport" EntityType="JustinModel.Store.CAPPReport" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CommRequirementDepartment" EntityType="JustinModel.Store.CommRequirementDepartment" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Course" EntityType="JustinModel.Store.Course" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DepartmentRSR" EntityType="JustinModel.Store.DepartmentRSR" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ExclusionRequirement" EntityType="JustinModel.Store.ExclusionRequirement" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LevelLimitRSR" EntityType="JustinModel.Store.LevelLimitRSR" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LevelRequirement" EntityType="JustinModel.Store.LevelRequirement" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LevelRequirementDepartment" EntityType="JustinModel.Store.LevelRequirementDepartment" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RequirementSet" EntityType="JustinModel.Store.RequirementSet" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RequirementSet_DepartmentRSR" EntityType="JustinModel.Store.RequirementSet_DepartmentRSR" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RequirementSet_ExclusionRequiremnt" EntityType="JustinModel.Store.RequirementSet_ExclusionRequiremnt" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RequirementSet_LevelLimitRSR" EntityType="JustinModel.Store.RequirementSet_LevelLimitRSR" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RequirementSet_LevelRequirement" EntityType="JustinModel.Store.RequirementSet_LevelRequirement" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RequirementSet_SingleRequirement" EntityType="JustinModel.Store.RequirementSet_SingleRequirement" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SingleRequirement" EntityType="JustinModel.Store.SingleRequirement" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserSession" EntityType="JustinModel.Store.UserSession" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK__CommRequi__Requi__619B8048" Association="JustinModel.Store.FK__CommRequi__Requi__619B8048">
+            <End Role="RequirementSet" EntitySet="RequirementSet" />
+            <End Role="CommRequirementDepartment" EntitySet="CommRequirementDepartment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LevelRequ__Level__628FA481" Association="JustinModel.Store.FK__LevelRequ__Level__628FA481">
+            <End Role="LevelRequirement" EntitySet="LevelRequirement" />
+            <End Role="LevelRequirementDepartment" EntitySet="LevelRequirementDepartment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Depar__6383C8BA" Association="JustinModel.Store.FK__Requireme__Depar__6383C8BA">
+            <End Role="DepartmentRSR" EntitySet="DepartmentRSR" />
+            <End Role="RequirementSet_DepartmentRSR" EntitySet="RequirementSet_DepartmentRSR" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Exclu__656C112C" Association="JustinModel.Store.FK__Requireme__Exclu__656C112C">
+            <End Role="ExclusionRequirement" EntitySet="ExclusionRequirement" />
+            <End Role="RequirementSet_ExclusionRequiremnt" EntitySet="RequirementSet_ExclusionRequiremnt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Level__6754599E" Association="JustinModel.Store.FK__Requireme__Level__6754599E">
+            <End Role="LevelLimitRSR" EntitySet="LevelLimitRSR" />
+            <End Role="RequirementSet_LevelLimitRSR" EntitySet="RequirementSet_LevelLimitRSR" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Level__693CA210" Association="JustinModel.Store.FK__Requireme__Level__693CA210">
+            <End Role="LevelRequirement" EntitySet="LevelRequirement" />
+            <End Role="RequirementSet_LevelRequirement" EntitySet="RequirementSet_LevelRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Requi__6477ECF3" Association="JustinModel.Store.FK__Requireme__Requi__6477ECF3">
+            <End Role="RequirementSet" EntitySet="RequirementSet" />
+            <End Role="RequirementSet_DepartmentRSR" EntitySet="RequirementSet_DepartmentRSR" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Requi__66603565" Association="JustinModel.Store.FK__Requireme__Requi__66603565">
+            <End Role="RequirementSet" EntitySet="RequirementSet" />
+            <End Role="RequirementSet_ExclusionRequiremnt" EntitySet="RequirementSet_ExclusionRequiremnt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Requi__68487DD7" Association="JustinModel.Store.FK__Requireme__Requi__68487DD7">
+            <End Role="RequirementSet" EntitySet="RequirementSet" />
+            <End Role="RequirementSet_LevelLimitRSR" EntitySet="RequirementSet_LevelLimitRSR" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Requi__6A30C649" Association="JustinModel.Store.FK__Requireme__Requi__6A30C649">
+            <End Role="RequirementSet" EntitySet="RequirementSet" />
+            <End Role="RequirementSet_LevelRequirement" EntitySet="RequirementSet_LevelRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Requi__6C190EBB" Association="JustinModel.Store.FK__Requireme__Requi__6C190EBB">
+            <End Role="RequirementSet" EntitySet="RequirementSet" />
+            <End Role="RequirementSet_SingleRequirement" EntitySet="RequirementSet_SingleRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requireme__Singl__6B24EA82" Association="JustinModel.Store.FK__Requireme__Singl__6B24EA82">
+            <End Role="SingleRequirement" EntitySet="SingleRequirement" />
+            <End Role="RequirementSet_SingleRequirement" EntitySet="RequirementSet_SingleRequirement" />
+          </AssociationSet>
           <AssociationSet Name="FK_AdvisorID" Association="JustinModel.Store.FK_AdvisorID">
             <End Role="Advisor" EntitySet="Advisor" />
             <End Role="Advises" EntitySet="Advises" />
@@ -78,6 +138,14 @@
           <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="25" />
         </EntityType>
+        <EntityType Name="CommRequirementDepartment">
+          <Key>
+            <PropertyRef Name="RequirementSetID" />
+            <PropertyRef Name="DepartmentCode" />
+          </Key>
+          <Property Name="RequirementSetID" Type="int" Nullable="false" />
+          <Property Name="DepartmentCode" Type="varchar" Nullable="false" MaxLength="4" />
+        </EntityType>
         <EntityType Name="Course">
           <Key>
             <PropertyRef Name="CourseID" />
@@ -86,10 +154,51 @@
           <Property Name="Department" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Number" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Semester" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="PassNC" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Grade" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Credits" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PassNC" Type="bit" Nullable="false" />
+          <Property Name="Grade" Type="float" Nullable="false" />
+          <Property Name="Credits" Type="int" Nullable="false" />
           <Property Name="RequirementSetID" Type="int" Nullable="false" />
+          <Property Name="CommunicationIntensive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DepartmentRSR">
+          <Key>
+            <PropertyRef Name="DepartmentRSRID" />
+          </Key>
+          <Property Name="DepartmentRSRID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentCode" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="NumberOfCourses" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExclusionRequirement">
+          <Key>
+            <PropertyRef Name="ExclusionRequirementID" />
+          </Key>
+          <Property Name="ExclusionRequirementID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentCode" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="CourseNumber" Type="varchar" Nullable="false" MaxLength="4" />
+        </EntityType>
+        <EntityType Name="LevelLimitRSR">
+          <Key>
+            <PropertyRef Name="LevelLimitRSRID" />
+          </Key>
+          <Property Name="LevelLimitRSRID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CourseLevel" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="UpperLimit" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LevelRequirement">
+          <Key>
+            <PropertyRef Name="LevelRequirementID" />
+          </Key>
+          <Property Name="LevelRequirementID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MinimumLevel" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="CreditsNeeded" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LevelRequirementDepartment">
+          <Key>
+            <PropertyRef Name="LevelRequirementID" />
+            <PropertyRef Name="DepartmentCode" />
+          </Key>
+          <Property Name="LevelRequirementID" Type="int" Nullable="false" />
+          <Property Name="DepartmentCode" Type="varchar" Nullable="false" MaxLength="4" />
         </EntityType>
         <EntityType Name="RequirementSet">
           <Key>
@@ -100,6 +209,57 @@
           <Property Name="PassNCCredits" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="CAPPReportID" Type="int" Nullable="false" />
+          <Property Name="DepthRSR" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="RequirementSet_DepartmentRSR">
+          <Key>
+            <PropertyRef Name="DepartmentRSRID" />
+            <PropertyRef Name="RequirementSetID" />
+          </Key>
+          <Property Name="DepartmentRSRID" Type="int" Nullable="false" />
+          <Property Name="RequirementSetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RequirementSet_ExclusionRequiremnt">
+          <Key>
+            <PropertyRef Name="ExclusionRequirementID" />
+            <PropertyRef Name="RequirementSetID" />
+          </Key>
+          <Property Name="ExclusionRequirementID" Type="int" Nullable="false" />
+          <Property Name="RequirementSetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RequirementSet_LevelLimitRSR">
+          <Key>
+            <PropertyRef Name="LevelLimitRSRID" />
+            <PropertyRef Name="RequirementSetID" />
+          </Key>
+          <Property Name="LevelLimitRSRID" Type="int" Nullable="false" />
+          <Property Name="RequirementSetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RequirementSet_LevelRequirement">
+          <Key>
+            <PropertyRef Name="LevelRequirementID" />
+            <PropertyRef Name="RequirementSetID" />
+          </Key>
+          <Property Name="LevelRequirementID" Type="int" Nullable="false" />
+          <Property Name="RequirementSetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RequirementSet_SingleRequirement">
+          <Key>
+            <PropertyRef Name="SingleRequirementID" />
+            <PropertyRef Name="RequirementSetID" />
+          </Key>
+          <Property Name="SingleRequirementID" Type="int" Nullable="false" />
+          <Property Name="RequirementSetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SingleRequirement">
+          <Key>
+            <PropertyRef Name="SingleRequirementID" />
+          </Key>
+          <Property Name="SingleRequirementID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentCode" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="CourseNumber" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="CreditsNeeded" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserSession">
           <Key>
@@ -109,6 +269,150 @@
           <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
           <Property Name="Expiration" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK__CommRequi__Requi__619B8048">
+          <End Role="RequirementSet" Type="JustinModel.Store.RequirementSet" Multiplicity="1" />
+          <End Role="CommRequirementDepartment" Type="JustinModel.Store.CommRequirementDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequirementSet">
+              <PropertyRef Name="RequirementSetID" />
+            </Principal>
+            <Dependent Role="CommRequirementDepartment">
+              <PropertyRef Name="RequirementSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LevelRequ__Level__628FA481">
+          <End Role="LevelRequirement" Type="JustinModel.Store.LevelRequirement" Multiplicity="1" />
+          <End Role="LevelRequirementDepartment" Type="JustinModel.Store.LevelRequirementDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LevelRequirement">
+              <PropertyRef Name="LevelRequirementID" />
+            </Principal>
+            <Dependent Role="LevelRequirementDepartment">
+              <PropertyRef Name="LevelRequirementID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Depar__6383C8BA">
+          <End Role="DepartmentRSR" Type="JustinModel.Store.DepartmentRSR" Multiplicity="1" />
+          <End Role="RequirementSet_DepartmentRSR" Type="JustinModel.Store.RequirementSet_DepartmentRSR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepartmentRSR">
+              <PropertyRef Name="DepartmentRSRID" />
+            </Principal>
+            <Dependent Role="RequirementSet_DepartmentRSR">
+              <PropertyRef Name="DepartmentRSRID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Exclu__656C112C">
+          <End Role="ExclusionRequirement" Type="JustinModel.Store.ExclusionRequirement" Multiplicity="1" />
+          <End Role="RequirementSet_ExclusionRequiremnt" Type="JustinModel.Store.RequirementSet_ExclusionRequiremnt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExclusionRequirement">
+              <PropertyRef Name="ExclusionRequirementID" />
+            </Principal>
+            <Dependent Role="RequirementSet_ExclusionRequiremnt">
+              <PropertyRef Name="ExclusionRequirementID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Level__6754599E">
+          <End Role="LevelLimitRSR" Type="JustinModel.Store.LevelLimitRSR" Multiplicity="1" />
+          <End Role="RequirementSet_LevelLimitRSR" Type="JustinModel.Store.RequirementSet_LevelLimitRSR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LevelLimitRSR">
+              <PropertyRef Name="LevelLimitRSRID" />
+            </Principal>
+            <Dependent Role="RequirementSet_LevelLimitRSR">
+              <PropertyRef Name="LevelLimitRSRID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Level__693CA210">
+          <End Role="LevelRequirement" Type="JustinModel.Store.LevelRequirement" Multiplicity="1" />
+          <End Role="RequirementSet_LevelRequirement" Type="JustinModel.Store.RequirementSet_LevelRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LevelRequirement">
+              <PropertyRef Name="LevelRequirementID" />
+            </Principal>
+            <Dependent Role="RequirementSet_LevelRequirement">
+              <PropertyRef Name="LevelRequirementID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Requi__6477ECF3">
+          <End Role="RequirementSet" Type="JustinModel.Store.RequirementSet" Multiplicity="1" />
+          <End Role="RequirementSet_DepartmentRSR" Type="JustinModel.Store.RequirementSet_DepartmentRSR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequirementSet">
+              <PropertyRef Name="RequirementSetID" />
+            </Principal>
+            <Dependent Role="RequirementSet_DepartmentRSR">
+              <PropertyRef Name="RequirementSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Requi__66603565">
+          <End Role="RequirementSet" Type="JustinModel.Store.RequirementSet" Multiplicity="1" />
+          <End Role="RequirementSet_ExclusionRequiremnt" Type="JustinModel.Store.RequirementSet_ExclusionRequiremnt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequirementSet">
+              <PropertyRef Name="RequirementSetID" />
+            </Principal>
+            <Dependent Role="RequirementSet_ExclusionRequiremnt">
+              <PropertyRef Name="RequirementSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Requi__68487DD7">
+          <End Role="RequirementSet" Type="JustinModel.Store.RequirementSet" Multiplicity="1" />
+          <End Role="RequirementSet_LevelLimitRSR" Type="JustinModel.Store.RequirementSet_LevelLimitRSR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequirementSet">
+              <PropertyRef Name="RequirementSetID" />
+            </Principal>
+            <Dependent Role="RequirementSet_LevelLimitRSR">
+              <PropertyRef Name="RequirementSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Requi__6A30C649">
+          <End Role="RequirementSet" Type="JustinModel.Store.RequirementSet" Multiplicity="1" />
+          <End Role="RequirementSet_LevelRequirement" Type="JustinModel.Store.RequirementSet_LevelRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequirementSet">
+              <PropertyRef Name="RequirementSetID" />
+            </Principal>
+            <Dependent Role="RequirementSet_LevelRequirement">
+              <PropertyRef Name="RequirementSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Requi__6C190EBB">
+          <End Role="RequirementSet" Type="JustinModel.Store.RequirementSet" Multiplicity="1" />
+          <End Role="RequirementSet_SingleRequirement" Type="JustinModel.Store.RequirementSet_SingleRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequirementSet">
+              <PropertyRef Name="RequirementSetID" />
+            </Principal>
+            <Dependent Role="RequirementSet_SingleRequirement">
+              <PropertyRef Name="RequirementSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requireme__Singl__6B24EA82">
+          <End Role="SingleRequirement" Type="JustinModel.Store.SingleRequirement" Multiplicity="1" />
+          <End Role="RequirementSet_SingleRequirement" Type="JustinModel.Store.RequirementSet_SingleRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SingleRequirement">
+              <PropertyRef Name="SingleRequirementID" />
+            </Principal>
+            <Dependent Role="RequirementSet_SingleRequirement">
+              <PropertyRef Name="SingleRequirementID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AdvisorID">
           <End Role="Advisor" Type="JustinModel.Store.Advisor" Multiplicity="1" />
           <End Role="Advises" Type="JustinModel.Store.Advises" Multiplicity="*" />
@@ -189,7 +493,6 @@
           <EntitySet Name="Advisors" EntityType="JustinModel.Advisor" />
           <EntitySet Name="ApplicationUsers" EntityType="JustinModel.ApplicationUser" />
           <EntitySet Name="CAPPReports" EntityType="JustinModel.CAPPReport" />
-          <EntitySet Name="Courses" EntityType="JustinModel.Course" />
           <EntitySet Name="RequirementSets" EntityType="JustinModel.RequirementSet" />
           <EntitySet Name="UserSessions" EntityType="JustinModel.UserSession" />
           <AssociationSet Name="FK_CAPPReport_ApplicationUser" Association="JustinModel.FK_CAPPReport_ApplicationUser">
@@ -200,10 +503,6 @@
             <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
             <End Role="UserSession" EntitySet="UserSessions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Course_RequirementSet" Association="JustinModel.FK_Course_RequirementSet">
-            <End Role="RequirementSet" EntitySet="RequirementSets" />
-            <End Role="Course" EntitySet="Courses" />
-          </AssociationSet>
           <AssociationSet Name="Advises" Association="JustinModel.Advises">
             <End Role="Advisor" EntitySet="Advisors" />
             <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
@@ -211,6 +510,46 @@
           <AssociationSet Name="FK_RequirementSet_CAPPRerport" Association="JustinModel.FK_RequirementSet_CAPPRerport">
             <End Role="CAPPReport" EntitySet="CAPPReports" />
             <End Role="RequirementSet" EntitySet="RequirementSets" />
+          </AssociationSet>
+          <EntitySet Name="CommRequirementDepartments" EntityType="JustinModel.CommRequirementDepartment" />
+          <EntitySet Name="DepartmentRSRs" EntityType="JustinModel.DepartmentRSR" />
+          <EntitySet Name="ExclusionRequirements" EntityType="JustinModel.ExclusionRequirement" />
+          <EntitySet Name="LevelLimitRSRs" EntityType="JustinModel.LevelLimitRSR" />
+          <EntitySet Name="LevelRequirements" EntityType="JustinModel.LevelRequirement" />
+          <EntitySet Name="LevelRequirementDepartments" EntityType="JustinModel.LevelRequirementDepartment" />
+          <EntitySet Name="SingleRequirements" EntityType="JustinModel.SingleRequirement" />
+          <AssociationSet Name="FK__CommRequi__Requi__619B8048" Association="JustinModel.FK__CommRequi__Requi__619B8048">
+            <End Role="RequirementSet" EntitySet="RequirementSets" />
+            <End Role="CommRequirementDepartment" EntitySet="CommRequirementDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LevelRequ__Level__628FA481" Association="JustinModel.FK__LevelRequ__Level__628FA481">
+            <End Role="LevelRequirement" EntitySet="LevelRequirements" />
+            <End Role="LevelRequirementDepartment" EntitySet="LevelRequirementDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="RequirementSet_DepartmentRSR" Association="JustinModel.RequirementSet_DepartmentRSR">
+            <End Role="DepartmentRSR" EntitySet="DepartmentRSRs" />
+            <End Role="RequirementSet" EntitySet="RequirementSets" />
+          </AssociationSet>
+          <AssociationSet Name="RequirementSet_ExclusionRequiremnt" Association="JustinModel.RequirementSet_ExclusionRequiremnt">
+            <End Role="ExclusionRequirement" EntitySet="ExclusionRequirements" />
+            <End Role="RequirementSet" EntitySet="RequirementSets" />
+          </AssociationSet>
+          <AssociationSet Name="RequirementSet_LevelLimitRSR" Association="JustinModel.RequirementSet_LevelLimitRSR">
+            <End Role="LevelLimitRSR" EntitySet="LevelLimitRSRs" />
+            <End Role="RequirementSet" EntitySet="RequirementSets" />
+          </AssociationSet>
+          <AssociationSet Name="RequirementSet_LevelRequirement" Association="JustinModel.RequirementSet_LevelRequirement">
+            <End Role="LevelRequirement" EntitySet="LevelRequirements" />
+            <End Role="RequirementSet" EntitySet="RequirementSets" />
+          </AssociationSet>
+          <AssociationSet Name="RequirementSet_SingleRequirement" Association="JustinModel.RequirementSet_SingleRequirement">
+            <End Role="RequirementSet" EntitySet="RequirementSets" />
+            <End Role="SingleRequirement" EntitySet="SingleRequirements" />
+          </AssociationSet>
+          <EntitySet Name="Courses" EntityType="JustinModel.Course" />
+          <AssociationSet Name="FK_Course_RequirementSet" Association="JustinModel.FK_Course_RequirementSet">
+            <End Role="RequirementSet" EntitySet="RequirementSets" />
+            <End Role="Course" EntitySet="Courses" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Advisor">
@@ -243,20 +582,6 @@
           <NavigationProperty Name="ApplicationUser" Relationship="JustinModel.FK_CAPPReport_ApplicationUser" FromRole="CAPPReport" ToRole="ApplicationUser" />
           <NavigationProperty Name="RequirementSets" Relationship="JustinModel.FK_RequirementSet_CAPPRerport" FromRole="CAPPReport" ToRole="RequirementSet" />
         </EntityType>
-        <EntityType Name="Course">
-          <Key>
-            <PropertyRef Name="CourseID" />
-          </Key>
-          <Property Name="CourseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Department" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Number" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Semester" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PassNC" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Grade" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Credits" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="RequirementSetID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="RequirementSet" Relationship="JustinModel.FK_Course_RequirementSet" FromRole="Course" ToRole="RequirementSet" />
-        </EntityType>
         <EntityType Name="RequirementSet">
           <Key>
             <PropertyRef Name="RequirementSetID" />
@@ -264,10 +589,18 @@
           <Property Name="RequirementSetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Credits" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PassNCCredits" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Courses" Relationship="JustinModel.FK_Course_RequirementSet" FromRole="RequirementSet" ToRole="Course" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="CAPPReportID" Nullable="false" />
           <NavigationProperty Name="CAPPReport" Relationship="JustinModel.FK_RequirementSet_CAPPRerport" FromRole="RequirementSet" ToRole="CAPPReport" />
+          <Property Type="Boolean" Name="DepthRSR" Nullable="false" />
+          <NavigationProperty Name="CommRequirementDepartments" Relationship="JustinModel.FK__CommRequi__Requi__619B8048" FromRole="RequirementSet" ToRole="CommRequirementDepartment" />
+          <NavigationProperty Name="DepartmentRSRs" Relationship="JustinModel.RequirementSet_DepartmentRSR" FromRole="RequirementSet" ToRole="DepartmentRSR" />
+          <NavigationProperty Name="ExclusionRequirements" Relationship="JustinModel.RequirementSet_ExclusionRequiremnt" FromRole="RequirementSet" ToRole="ExclusionRequirement" />
+          <NavigationProperty Name="LevelLimitRSRs" Relationship="JustinModel.RequirementSet_LevelLimitRSR" FromRole="RequirementSet" ToRole="LevelLimitRSR" />
+          <NavigationProperty Name="LevelRequirements" Relationship="JustinModel.RequirementSet_LevelRequirement" FromRole="RequirementSet" ToRole="LevelRequirement" />
+          <NavigationProperty Name="SingleRequirements" Relationship="JustinModel.RequirementSet_SingleRequirement" FromRole="RequirementSet" ToRole="SingleRequirement" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Courses" Relationship="JustinModel.FK_Course_RequirementSet" FromRole="RequirementSet" ToRole="Course" />
         </EntityType>
         <EntityType Name="UserSession">
           <Key>
@@ -302,18 +635,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Course_RequirementSet">
-          <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="1" />
-          <End Type="JustinModel.Course" Role="Course" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RequirementSet">
-              <PropertyRef Name="RequirementSetID" />
-            </Principal>
-            <Dependent Role="Course">
-              <PropertyRef Name="RequirementSetID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Advises">
           <End Type="JustinModel.Advisor" Role="Advisor" Multiplicity="*" />
           <End Type="JustinModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
@@ -327,6 +648,142 @@
             </Principal>
             <Dependent Role="RequirementSet">
               <PropertyRef Name="CAPPReportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CommRequirementDepartment">
+          <Key>
+            <PropertyRef Name="RequirementSetID" />
+            <PropertyRef Name="DepartmentCode" />
+          </Key>
+          <Property Type="Int32" Name="RequirementSetID" Nullable="false" />
+          <Property Type="String" Name="DepartmentCode" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RequirementSet" Relationship="JustinModel.FK__CommRequi__Requi__619B8048" FromRole="CommRequirementDepartment" ToRole="RequirementSet" />
+        </EntityType>
+        <EntityType Name="DepartmentRSR">
+          <Key>
+            <PropertyRef Name="DepartmentRSRID" />
+          </Key>
+          <Property Type="Int32" Name="DepartmentRSRID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DepartmentCode" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="NumberOfCourses" Nullable="false" />
+          <NavigationProperty Name="RequirementSets" Relationship="JustinModel.RequirementSet_DepartmentRSR" FromRole="DepartmentRSR" ToRole="RequirementSet" />
+        </EntityType>
+        <EntityType Name="ExclusionRequirement">
+          <Key>
+            <PropertyRef Name="ExclusionRequirementID" />
+          </Key>
+          <Property Type="Int32" Name="ExclusionRequirementID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DepartmentCode" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CourseNumber" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RequirementSets" Relationship="JustinModel.RequirementSet_ExclusionRequiremnt" FromRole="ExclusionRequirement" ToRole="RequirementSet" />
+        </EntityType>
+        <EntityType Name="LevelLimitRSR">
+          <Key>
+            <PropertyRef Name="LevelLimitRSRID" />
+          </Key>
+          <Property Type="Int32" Name="LevelLimitRSRID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CourseLevel" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="UpperLimit" Nullable="false" />
+          <NavigationProperty Name="RequirementSets" Relationship="JustinModel.RequirementSet_LevelLimitRSR" FromRole="LevelLimitRSR" ToRole="RequirementSet" />
+        </EntityType>
+        <EntityType Name="LevelRequirement">
+          <Key>
+            <PropertyRef Name="LevelRequirementID" />
+          </Key>
+          <Property Type="Int32" Name="LevelRequirementID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="MinimumLevel" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LevelRequirementDepartments" Relationship="JustinModel.FK__LevelRequ__Level__628FA481" FromRole="LevelRequirement" ToRole="LevelRequirementDepartment" />
+          <NavigationProperty Name="RequirementSets" Relationship="JustinModel.RequirementSet_LevelRequirement" FromRole="LevelRequirement" ToRole="RequirementSet" />
+          <Property Type="Int32" Name="CreditsNeeded" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LevelRequirementDepartment">
+          <Key>
+            <PropertyRef Name="LevelRequirementID" />
+            <PropertyRef Name="DepartmentCode" />
+          </Key>
+          <Property Type="Int32" Name="LevelRequirementID" Nullable="false" />
+          <Property Type="String" Name="DepartmentCode" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LevelRequirement" Relationship="JustinModel.FK__LevelRequ__Level__628FA481" FromRole="LevelRequirementDepartment" ToRole="LevelRequirement" />
+        </EntityType>
+        <EntityType Name="SingleRequirement">
+          <Key>
+            <PropertyRef Name="SingleRequirementID" />
+          </Key>
+          <Property Type="Int32" Name="SingleRequirementID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DepartmentCode" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CourseNumber" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RequirementSets" Relationship="JustinModel.RequirementSet_SingleRequirement" FromRole="SingleRequirement" ToRole="RequirementSet" />
+          <Property Type="Int32" Name="CreditsNeeded" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__CommRequi__Requi__619B8048">
+          <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="1" />
+          <End Type="JustinModel.CommRequirementDepartment" Role="CommRequirementDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequirementSet">
+              <PropertyRef Name="RequirementSetID" />
+            </Principal>
+            <Dependent Role="CommRequirementDepartment">
+              <PropertyRef Name="RequirementSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LevelRequ__Level__628FA481">
+          <End Type="JustinModel.LevelRequirement" Role="LevelRequirement" Multiplicity="1" />
+          <End Type="JustinModel.LevelRequirementDepartment" Role="LevelRequirementDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LevelRequirement">
+              <PropertyRef Name="LevelRequirementID" />
+            </Principal>
+            <Dependent Role="LevelRequirementDepartment">
+              <PropertyRef Name="LevelRequirementID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RequirementSet_DepartmentRSR">
+          <End Type="JustinModel.DepartmentRSR" Role="DepartmentRSR" Multiplicity="*" />
+          <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="*" />
+        </Association>
+        <Association Name="RequirementSet_ExclusionRequiremnt">
+          <End Type="JustinModel.ExclusionRequirement" Role="ExclusionRequirement" Multiplicity="*" />
+          <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="*" />
+        </Association>
+        <Association Name="RequirementSet_LevelLimitRSR">
+          <End Type="JustinModel.LevelLimitRSR" Role="LevelLimitRSR" Multiplicity="*" />
+          <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="*" />
+        </Association>
+        <Association Name="RequirementSet_LevelRequirement">
+          <End Type="JustinModel.LevelRequirement" Role="LevelRequirement" Multiplicity="*" />
+          <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="*" />
+        </Association>
+        <Association Name="RequirementSet_SingleRequirement">
+          <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="*" />
+          <End Type="JustinModel.SingleRequirement" Role="SingleRequirement" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseID" />
+          </Key>
+          <Property Type="Int32" Name="CourseID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Number" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Semester" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="PassNC" Nullable="false" />
+          <Property Type="Double" Name="Grade" Nullable="false" />
+          <Property Type="Int32" Name="Credits" Nullable="false" />
+          <Property Type="Int32" Name="RequirementSetID" Nullable="false" />
+          <Property Type="Boolean" Name="CommunicationIntensive" Nullable="false" />
+          <NavigationProperty Name="RequirementSet" Relationship="JustinModel.FK_Course_RequirementSet" FromRole="Course" ToRole="RequirementSet" />
+        </EntityType>
+        <Association Name="FK_Course_RequirementSet">
+          <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="1" />
+          <End Type="JustinModel.Course" Role="Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequirementSet">
+              <PropertyRef Name="RequirementSetID" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="RequirementSetID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -363,23 +820,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Courses">
-            <EntityTypeMapping TypeName="JustinModel.Course">
-              <MappingFragment StoreEntitySet="Course">
-                <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
-                <ScalarProperty Name="Credits" ColumnName="Credits" />
-                <ScalarProperty Name="Grade" ColumnName="Grade" />
-                <ScalarProperty Name="PassNC" ColumnName="PassNC" />
-                <ScalarProperty Name="Semester" ColumnName="Semester" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
-                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RequirementSets">
             <EntityTypeMapping TypeName="JustinModel.RequirementSet">
               <MappingFragment StoreEntitySet="RequirementSet">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DepthRSR" ColumnName="DepthRSR" />
                 <ScalarProperty Name="CAPPReportID" ColumnName="CAPPReportID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="PassNCCredits" ColumnName="PassNCCredits" />
@@ -405,6 +850,123 @@
               <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="CommRequirementDepartments">
+            <EntityTypeMapping TypeName="JustinModel.CommRequirementDepartment">
+              <MappingFragment StoreEntitySet="CommRequirementDepartment">
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DepartmentRSRs">
+            <EntityTypeMapping TypeName="JustinModel.DepartmentRSR">
+              <MappingFragment StoreEntitySet="DepartmentRSR">
+                <ScalarProperty Name="NumberOfCourses" ColumnName="NumberOfCourses" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="DepartmentRSRID" ColumnName="DepartmentRSRID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExclusionRequirements">
+            <EntityTypeMapping TypeName="JustinModel.ExclusionRequirement">
+              <MappingFragment StoreEntitySet="ExclusionRequirement">
+                <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="ExclusionRequirementID" ColumnName="ExclusionRequirementID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LevelLimitRSRs">
+            <EntityTypeMapping TypeName="JustinModel.LevelLimitRSR">
+              <MappingFragment StoreEntitySet="LevelLimitRSR">
+                <ScalarProperty Name="UpperLimit" ColumnName="UpperLimit" />
+                <ScalarProperty Name="CourseLevel" ColumnName="CourseLevel" />
+                <ScalarProperty Name="LevelLimitRSRID" ColumnName="LevelLimitRSRID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LevelRequirements">
+            <EntityTypeMapping TypeName="JustinModel.LevelRequirement">
+              <MappingFragment StoreEntitySet="LevelRequirement">
+                <ScalarProperty Name="CreditsNeeded" ColumnName="CreditsNeeded" />
+                <ScalarProperty Name="MinimumLevel" ColumnName="MinimumLevel" />
+                <ScalarProperty Name="LevelRequirementID" ColumnName="LevelRequirementID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LevelRequirementDepartments">
+            <EntityTypeMapping TypeName="JustinModel.LevelRequirementDepartment">
+              <MappingFragment StoreEntitySet="LevelRequirementDepartment">
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="LevelRequirementID" ColumnName="LevelRequirementID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SingleRequirements">
+            <EntityTypeMapping TypeName="JustinModel.SingleRequirement">
+              <MappingFragment StoreEntitySet="SingleRequirement">
+                <ScalarProperty Name="CreditsNeeded" ColumnName="CreditsNeeded" />
+                <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="SingleRequirementID" ColumnName="SingleRequirementID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RequirementSet_DepartmentRSR" TypeName="JustinModel.RequirementSet_DepartmentRSR" StoreEntitySet="RequirementSet_DepartmentRSR">
+            <EndProperty Name="RequirementSet">
+              <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+            </EndProperty>
+            <EndProperty Name="DepartmentRSR">
+              <ScalarProperty Name="DepartmentRSRID" ColumnName="DepartmentRSRID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RequirementSet_ExclusionRequiremnt" TypeName="JustinModel.RequirementSet_ExclusionRequiremnt" StoreEntitySet="RequirementSet_ExclusionRequiremnt">
+            <EndProperty Name="RequirementSet">
+              <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+            </EndProperty>
+            <EndProperty Name="ExclusionRequirement">
+              <ScalarProperty Name="ExclusionRequirementID" ColumnName="ExclusionRequirementID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RequirementSet_LevelLimitRSR" TypeName="JustinModel.RequirementSet_LevelLimitRSR" StoreEntitySet="RequirementSet_LevelLimitRSR">
+            <EndProperty Name="RequirementSet">
+              <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+            </EndProperty>
+            <EndProperty Name="LevelLimitRSR">
+              <ScalarProperty Name="LevelLimitRSRID" ColumnName="LevelLimitRSRID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RequirementSet_LevelRequirement" TypeName="JustinModel.RequirementSet_LevelRequirement" StoreEntitySet="RequirementSet_LevelRequirement">
+            <EndProperty Name="RequirementSet">
+              <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+            </EndProperty>
+            <EndProperty Name="LevelRequirement">
+              <ScalarProperty Name="LevelRequirementID" ColumnName="LevelRequirementID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RequirementSet_SingleRequirement" TypeName="JustinModel.RequirementSet_SingleRequirement" StoreEntitySet="RequirementSet_SingleRequirement">
+            <EndProperty Name="SingleRequirement">
+              <ScalarProperty Name="SingleRequirementID" ColumnName="SingleRequirementID" />
+            </EndProperty>
+            <EndProperty Name="RequirementSet">
+              <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="JustinModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="CommunicationIntensive" ColumnName="CommunicationIntensive" />
+                <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+                <ScalarProperty Name="Credits" ColumnName="Credits" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="PassNC" ColumnName="PassNC" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

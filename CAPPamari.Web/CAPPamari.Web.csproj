@@ -198,6 +198,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CourseHelper.cs" />
     <Compile Include="Helpers\CSVParserHelper.cs" />
     <Compile Include="Helpers\EntitiesHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
@@ -215,10 +216,28 @@
     <Compile Include="Models\CAPPReport.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CommRequirementDepartment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Course.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CourseModel.cs" />
+    <Compile Include="Models\DepartmentRSR.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ExclusionRequirement.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LevelLimitRSR.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LevelRequirement.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LevelRequirementDepartment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Requests\ChangeAdvisorRequest.cs" />
     <Compile Include="Models\Requests\ChangeMajorRequest.cs" />
     <Compile Include="Models\Requests\LoginRequest.cs" />
@@ -254,6 +273,9 @@
     <Compile Include="Models\Requirements\RequirementSet.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\RequirementSetRequirement.cs" />
     <Compile Include="Models\Requirements\SingleRequirement.cs" />
+    <Compile Include="Models\SingleRequirement.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UserSession.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

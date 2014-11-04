@@ -14,10 +14,11 @@ namespace CAPPamari.Web.Models.Requirements
         public List<string> DepartmentCodes { get; private set; }
         public string MinLevel { get; private set; }
 
-        public LevelRequirement(List<string> DepartmentCodes, string MinLevel)
+        public LevelRequirement(List<string> DepartmentCodes, string MinLevel, int CreditsNeeded)
         {
             this.DepartmentCodes = DepartmentCodes;
             this.MinLevel = MinLevel;
+            this.CreditsNeeded = CreditsNeeded;
         }
 
         public override bool Fulfills(CourseModel CourseTaken)
@@ -32,9 +33,9 @@ namespace CAPPamari.Web.Models.Requirements
             {
                 return false;
             }
-            for (int i = 0; i < DepartmentCodes.Count(); i++)
+            foreach(var deptCode in DepartmentCodes)
             {
-                if (CourseTaken.DepartmentCode == DepartmentCodes[i])
+                if (CourseTaken.DepartmentCode == deptCode)
                 {
                     return true;
                 }

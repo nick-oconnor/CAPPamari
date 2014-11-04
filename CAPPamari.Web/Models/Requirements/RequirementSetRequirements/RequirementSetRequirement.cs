@@ -10,8 +10,6 @@ namespace CAPPamari.Web.Models.Requirements.RequirementSetRequirements
     /// </summary>
     public abstract class RequirementSetRequirement
     {
-        public int TotalCreditsNeeded { get; private set; }
-        public bool PNCAllowed { get; private set; }
         public abstract bool Fulfills(List<CourseModel> CoursesTaken); 
     }
 }

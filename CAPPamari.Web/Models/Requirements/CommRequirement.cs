@@ -24,9 +24,9 @@ namespace CAPPamari.Web.Models.Requirements
             {
                 return false;
             }
-            for (int i = 0; i < DepartmentCodes.Count(); i++)
+            foreach(var deptCode in DepartmentCodes)
             {
-                if (CourseTaken.DepartmentCode == DepartmentCodes[i])
+                if (CourseTaken.DepartmentCode == deptCode)
                 {
                     return true;
                 }

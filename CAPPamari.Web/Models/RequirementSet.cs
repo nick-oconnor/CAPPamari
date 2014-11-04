@@ -16,6 +16,12 @@ namespace CAPPamari.Web.Models
     {
         public RequirementSet()
         {
+            this.CommRequirementDepartments = new HashSet<CommRequirementDepartment>();
+            this.DepartmentRSRs = new HashSet<DepartmentRSR>();
+            this.ExclusionRequirements = new HashSet<ExclusionRequirement>();
+            this.LevelLimitRSRs = new HashSet<LevelLimitRSR>();
+            this.LevelRequirements = new HashSet<LevelRequirement>();
+            this.SingleRequirements = new HashSet<SingleRequirement>();
             this.Courses = new HashSet<Course>();
         }
     
@@ -24,8 +30,16 @@ namespace CAPPamari.Web.Models
         public string PassNCCredits { get; set; }
         public string Name { get; set; }
         public int CAPPReportID { get; set; }
+        public bool DepthRSR { get; set; }
+        public string Description { get; set; }
     
-        public virtual ICollection<Course> Courses { get; set; }
         public virtual CAPPReport CAPPReport { get; set; }
+        public virtual ICollection<CommRequirementDepartment> CommRequirementDepartments { get; set; }
+        public virtual ICollection<DepartmentRSR> DepartmentRSRs { get; set; }
+        public virtual ICollection<ExclusionRequirement> ExclusionRequirements { get; set; }
+        public virtual ICollection<LevelLimitRSR> LevelLimitRSRs { get; set; }
+        public virtual ICollection<LevelRequirement> LevelRequirements { get; set; }
+        public virtual ICollection<SingleRequirement> SingleRequirements { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

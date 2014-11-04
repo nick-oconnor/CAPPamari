@@ -11,11 +11,9 @@ namespace CAPPamari.Web.Models.Requirements.RequirementSetRequirements
     /// </summary>
     public class DepthRSR : RequirementSetRequirement
     {
-        //no member variables i think
 
         public DepthRSR()
         {
-            
         }
 
         public override bool Fulfills(List<CourseModel> CoursesTaken)
