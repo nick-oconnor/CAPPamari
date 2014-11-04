@@ -14,6 +14,7 @@ namespace CAPPamari.Web.Models
         public int Credits { get; set; }
         public string Semester { get; set; }
         public bool PassNoCredit { get; set; }
+        public bool CommIntensive { get; set; }
 
         public CourseModel()
         {
@@ -24,5 +25,6 @@ namespace CAPPamari.Web.Models
             Semester = string.Empty;
             PassNoCredit = false;
         }
+
     }
 }
