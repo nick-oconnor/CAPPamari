@@ -28,5 +28,16 @@ namespace CAPPamari.Web.Models
             this.Communication = Communication;
 
         }
+
+        public CourseModel()
+        {
+            this.DepartmentCode = "NULL";
+            this.CourseNumber = "NULL";
+            this.Grade = 0.0;
+            this.Credits = 0;
+            this.Semester = "N00";
+	this.PNC = false;
+this.Communication = false;
+        }
     }
 }

@@ -17,32 +17,49 @@ namespace CAPPamari.Web.Controllers
     public class AccountController : Controller
     {
         [HttpPost]
-        public ApiResponse<ApplicationUserModel> Login([System.Web.Http.FromBody]LoginRequest Request)
+        public JsonResult Login([System.Web.Http.FromBody]LoginRequest Request)
         {
-            if (ValidationHelper.Validate(Request.UserName, Request.Password))
+            var validationStatus = ValidationHelper.Validate(Request.UserName, Request.Password);
+            var badUser = ApplicationUserModel.InvalidUser();
+            switch (validationStatus)
             {
-                var user = UserHelper.GetApplicationUser(Request.UserName);
-                return ApiResponse<ApplicationUserModel>.SuccessResponse("Logged in successfully", user);
+                case ValidationStatus.BadInput:
+                    return Json(ApiResponse<ApplicationUserModel>.FailureResponse("Bad input", badUser));
+                case ValidationStatus.IncorrectPassword:
+                    return Json(ApiResponse<ApplicationUserModel>.FailureResponse("Incorrect password", badUser));
+                case ValidationStatus.InvalidSession:
+                    return Json(ApiResponse<ApplicationUserModel>.FailureResponse("Invalid session", badUser));
+                case ValidationStatus.NoSuchUserName:
+                    return Json(ApiResponse<ApplicationUserModel>.FailureResponse("No such user name exists", badUser));
+                case ValidationStatus.Validated:
+                    UserHelper.CreateUserSession(Request.UserName);
+                    var user = UserHelper.GetApplicationUser(Request.UserName);
+                    return Json(ApiResponse<ApplicationUserModel>.SuccessResponse("Logged in successfully", user));
             }
-            else
-            {
-                var badUser = ApplicationUserModel.InvalidUser();
-                return ApiResponse<ApplicationUserModel>.FailureResponse("Sign in failure", badUser);
-            }
+
+            return Json(ApiResponse<ApplicationUserModel>.FailureResponse("Unknown sing in failure", badUser));
         }
 
         [HttpPost]
         public void Logout([System.Web.Http.FromBody]string UserName)
         {
-            var sessionID = EntitiesHelper.GetSessionID(UserName);
-            EntitiesHelper.RemoveSession(sessionID, UserName);
+            UserHelper.DestroySession(UserName);
         }
 
         [HttpPost]
-        public ApplicationUserModel Register(RegistrationRequest Request)
+        public JsonResult Register(RegistrationRequest Request)
         {
-            // do stuff to add this new user to the database
-            return ApplicationUserModel.InvalidUser();
+            UserHelper.CreateNewUser(Request.UserName, Request.Password, Request.Major);
+            UserHelper.CreateUserSession(Request.UserName);
+            var user = UserHelper.GetApplicationUser(Request.UserName);
+            return Json(ApiResponse<ApplicationUserModel>.SuccessResponse("Registered successfully", user)); 
+        }
+
+        [HttpPost]
+        public JsonResult CheckUserName(string UserName)
+        {
+            var userNameExists = EntitiesHelper.UserNameExists(UserName);
+            return Json(ApiResponse<bool>.SuccessResponse("Checked successfully",!userNameExists)); 
         }
     }
 }

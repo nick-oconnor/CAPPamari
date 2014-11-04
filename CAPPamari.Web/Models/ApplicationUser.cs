@@ -16,15 +16,17 @@ namespace CAPPamari.Web.Models
     {
         public ApplicationUser()
         {
-            this.Advisors = new HashSet<Advisor>();
+            this.CAPPReports = new HashSet<CAPPReport>();
             this.UserSessions = new HashSet<UserSession>();
+            this.Advisors = new HashSet<Advisor>();
         }
     
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Major { get; set; }
     
-        public virtual ICollection<Advisor> Advisors { get; set; }
+        public virtual ICollection<CAPPReport> CAPPReports { get; set; }
         public virtual ICollection<UserSession> UserSessions { get; set; }
+        public virtual ICollection<Advisor> Advisors { get; set; }
     }
 }

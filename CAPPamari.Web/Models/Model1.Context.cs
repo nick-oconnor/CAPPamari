@@ -25,8 +25,11 @@ namespace CAPPamari.Web.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Advisor> Advisors { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<CAPPReport> CAPPReports { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<RequirementSet> RequirementSets { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
     }
 }

@@ -39,7 +39,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.8.2\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -75,9 +82,6 @@
     <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -188,10 +192,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CSVParserHelper.cs" />
     <Compile Include="Helpers\EntitiesHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
@@ -205,6 +211,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ApplicationUserModel.cs" />
+    <Compile Include="Models\CAPPReport.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Course.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CourseModel.cs" />
     <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Models\Model1.Context.cs">
@@ -226,6 +238,10 @@
     <Compile Include="Models\Requirements\CommRequirement.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\DepthRSR.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\DepartmentRSR.cs" />
+    <Compile Include="Models\RequirementSet.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Requirements\DepthRequirement.cs" />
     <Compile Include="Models\Requirements\ExclusionRequirement.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\LevelLimitRSR.cs" />
     <Compile Include="Models\Requirements\LevelRequirement.cs" />
@@ -307,11 +323,13 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Models\Model1.edmx.sql" />
     <Content Include="Models\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <None Include="Properties\PublishProfiles\Justin.pubxml" />
     <None Include="Properties\PublishProfiles\SDD.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -329,12 +347,15 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\Main.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
