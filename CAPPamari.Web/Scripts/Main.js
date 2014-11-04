@@ -41,7 +41,7 @@ SetupDragAndDrop = function () {
         drop: function (event, ui) {
             ui.draggable.appendTo($(this).find(".courses"));
             ui.helper.remove();
-            $(this).accordion("resize");
+            $(".requirementBox").accordion("resize");
             if ($(this).accordion("option", "active") === false)
             {
                 $(this).accordion("option", "active", 0);
@@ -239,9 +239,9 @@ SignInUser = function (userName, password) {
             }
 
             var appUser = data.Payload;
-            user = new User(appUser.SessionID, appUser.UserName, appUser.Major);
+            viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
             ko.utils.arrayForEach(appUser.Advisors, function (advisor) {
-                user.advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
             });
 
             // set cookie
@@ -271,7 +271,7 @@ User = function (sessionID, userName, major) {
             type: 'POST',
             contentType: 'application/json'
         });
-        user = null;
+        viewModel.user(null);
 
         RedisplayHeader();
     }

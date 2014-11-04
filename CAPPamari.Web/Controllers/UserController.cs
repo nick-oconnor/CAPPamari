@@ -21,15 +21,7 @@ namespace CAPPamari.Web.Controllers
         public ApiResponse<bool> ChangeMajor([FromBody]ChangeMajorRequest Request)
         {
             var success = UserHelper.ChangeMajor(Request.UserName, Request.NewMajor);
-            var message = string.Empty;
-            if (success)
-            {
-                message = "Major changed successfully";
-            }
-            else
-            {
-                message = "Could not change major";
-            }
+            var message = success ? "Major changed successfully" : "Could not change major"; 
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
@@ -42,15 +34,7 @@ namespace CAPPamari.Web.Controllers
         public ApiResponse<bool> AddAdvisor([FromBody]ChangeAdvisorRequest Request)
         {
             var success = UserHelper.AddAdvisor(Request.UserName, Request.NewAdvisor);
-            var message = string.Empty;
-            if (success)
-            {
-                message = "Advisor added successfully";
-            }
-            else
-            {
-                message = "Could not add advisor";
-            }
+            var message = success ? "Advisor added successfully" : "Could not add advisor"; 
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
@@ -63,15 +47,7 @@ namespace CAPPamari.Web.Controllers
         public ApiResponse<bool> RemoveAdvisor([FromBody]ChangeAdvisorRequest Request)
         {
             var success = UserHelper.RemoveAdvisor(Request.UserName, Request.NewAdvisor);
-            var message = string.Empty;
-            if (success)
-            {
-                message = "Advisor removed successfully";
-            }
-            else
-            {
-                message = "Advisor could not be removed";
-            }
+            var message = success ? "Advisor removed successfully" : "Advisor could not be removed"; 
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
     }

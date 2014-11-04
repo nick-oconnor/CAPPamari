@@ -14,8 +14,8 @@
         <AssociationConnector Association="JustinModel.FK_CAPPReport_ApplicationUser" />
         <AssociationConnector Association="JustinModel.FK_UserSession_ApplicationUser" />
         <AssociationConnector Association="JustinModel.FK_Course_RequirementSet" />
-        <AssociationConnector Association="JustinModel.Contains" />
         <AssociationConnector Association="JustinModel.Advises" />
+        <AssociationConnector Association="JustinModel.FK_RequirementSet_CAPPRerport" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

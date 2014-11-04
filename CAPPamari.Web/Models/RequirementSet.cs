@@ -17,14 +17,15 @@ namespace CAPPamari.Web.Models
         public RequirementSet()
         {
             this.Courses = new HashSet<Course>();
-            this.CAPPReports = new HashSet<CAPPReport>();
         }
     
         public int RequirementSetID { get; set; }
         public string Credits { get; set; }
         public string PassNCCredits { get; set; }
+        public string Name { get; set; }
+        public int CAPPReportID { get; set; }
     
         public virtual ICollection<Course> Courses { get; set; }
-        public virtual ICollection<CAPPReport> CAPPReports { get; set; }
+        public virtual CAPPReport CAPPReport { get; set; }
     }
 }

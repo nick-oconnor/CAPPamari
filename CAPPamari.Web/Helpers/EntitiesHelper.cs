@@ -261,6 +261,90 @@ namespace CAPPamari.Web.Helpers
                 return success;
             }
         }
+        /// <summary>
+        /// Adds a new course to the Unapplied Courses RequirementSet for a specified user
+        /// </summary>
+        /// <param name="UserName">UserName for user to add new course for</param>
+        /// <param name="NewCourse">CourseModel containing information about the new course</param>
+        /// <returns>Success state of the course addition</returns>
+        public static bool AddNewCourse(string UserName, CourseModel NewCourse)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return false;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return false;
+
+                var unassignedCourses = report.RequirementSets.FirstOrDefault(set => set.Name == "Unapplied Courses");
+                if (unassignedCourses == null) return false;
+
+                unassignedCourses.Courses.Add(new Course()
+                {
+                    Credits = NewCourse.Credits.ToString(),
+                    Department = NewCourse.DepartmentCode,
+                    Grade = NewCourse.Grade.ToString(),
+                    Number = NewCourse.CourseNumber,
+                    PassNC = NewCourse.PassNoCredit.ToString(),
+                    Semester = NewCourse.Semester
+                });
+                entities.SaveChanges();
+                return true;
+            }
+        }
+        /// <summary>
+        /// Remove a course for a specified user
+        /// </summary>
+        /// <param name="UserName">UserName of user to remove course for</param>
+        /// <param name="OldCourse">CourseModel containing information about course to remove</param>
+        /// <returns>Success state of course removal</returns>
+        public static bool RemoveCourse(string UserName, CourseModel OldCourse)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return false;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return false;
+
+                foreach (var reqSet in report.RequirementSets)
+                {
+                    var remover = reqSet.Courses.FirstOrDefault(course => course.Department == OldCourse.DepartmentCode && course.Number == OldCourse.CourseNumber);
+                    if (remover != null)
+                    {
+                        reqSet.Courses.Remove(remover);
+                        entities.SaveChanges();
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+        /// <summary>
+        /// Gets a RequirementSet for a user
+        /// </summary>
+        /// <param name="UserName">UserName of user to get RequirementSet for</param>
+        /// <param name="RequirementSetName">Name of the requirement set to retrieve</param>
+        /// <returns>RequirementSet desired or null if no such RequirementSet exists</returns>
+        public static CAPPamari.Web.Models.Requirements.RequirementSet GetRequirementSet(string UserName, string RequirementSetName)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return null;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return null;
+
+                var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSetName);
+                if (dbset == null) return null;
+
+                // return after wiring up the database correctly
+            }
+        }
 
         /// <summary>
         /// Returns new entities object.
