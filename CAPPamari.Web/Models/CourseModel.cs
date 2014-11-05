@@ -36,8 +36,8 @@ namespace CAPPamari.Web.Models
             this.Grade = 0.0;
             this.Credits = 0;
             this.Semester = "N00";
-	this.PNC = false;
-this.Communication = false;
+            this.PNC = false;
+            this.Communication = false;
         }
     }
 }

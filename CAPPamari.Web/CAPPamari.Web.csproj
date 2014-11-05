@@ -243,6 +243,7 @@
     </Compile>
     <Compile Include="Models\Requirements\DepthRequirement.cs" />
     <Compile Include="Models\Requirements\ExclusionRequirement.cs" />
+    <Compile Include="Models\Requirements\RequirementSetRequirements\ExclusionRSR.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\LevelLimitRSR.cs" />
     <Compile Include="Models\Requirements\LevelRequirement.cs" />
     <Compile Include="Models\Requirements\Requirement.cs" />
