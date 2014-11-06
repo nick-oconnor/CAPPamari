@@ -16,16 +16,30 @@ namespace CAPPamari.Web.Models.Requirements
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
+        public int TotalCredits { get; private set; }
         public List<Requirement> Requirements { get; private set; }
         public List<RequirementSetRequirement> RSRs { get; private set; }
         public List<CourseModel> AppliedCourses { get; private set; }
 
-        public RequirementSet(string Name, string Description, List<Requirement> Requirements, List<RequirementSetRequirement> RSRs, List<CourseModel> AppliedCourses)
+        public RequirementSet(string Name, string Description, int TotalCredits, List<Requirement> Requirements, List<RequirementSetRequirement> RSRs, List<CourseModel> AppliedCourses)
         {
             this.Name = Name;
+            this.Description = Description;
+            this.TotalCredits = TotalCredits;
             this.Requirements = Requirements;
             this.RSRs = RSRs;
             this.AppliedCourses = AppliedCourses;
+        }
+
+        public bool Full()
+        {
+            //go through all applied courses, sum credits, and check against TotalCredits
+            int sumCredits = 0;
+            for (int i = 0; i < AppliedCourses.Count(); i++)
+            {
+                sumCredits += AppliedCourses[i].Credits;
+            }
+            return sumCredits >= this.TotalCredits;
         }
 
         public bool Fulfilled()
