@@ -331,6 +331,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\Justin.pubxml" />
     <None Include="Properties\PublishProfiles\SDD.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
