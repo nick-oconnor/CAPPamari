@@ -21,6 +21,7 @@ namespace CAPPamari.Web.Helpers
                             if (req.Fulfills(course))
                             {
                                 reqset.AppliedCourses.Add(course);
+                                courses.Remove(course);
                                 break;
                             }
                         }
@@ -40,6 +41,7 @@ namespace CAPPamari.Web.Helpers
                             if (req.Fulfills(course))
                             {
                                 reqset.AppliedCourses.Add(course);
+                                courses.Remove(course);
                                 break;
                             }
                         }
