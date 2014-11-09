@@ -34,8 +34,8 @@ namespace CAPPamari.Test
             // and spit out the info
             foreach (CourseModel course in courses)
             {
-                Debug.Print("{0} {1}, {2} credits, {3}, {4}", course.DepartmentCode, course.CourseNumber, course.Credits,
-                   course.Semester, course.Grade);
+                Debug.Print("{0} {1}, {2} credits, {3}, {4}, PNC {5}, Comm {6}", course.DepartmentCode, course.CourseNumber, course.Credits,
+                   course.Semester, course.Grade, course.PNC, course.Communication);
             }
         }
     }

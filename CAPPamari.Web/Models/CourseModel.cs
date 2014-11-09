@@ -8,13 +8,13 @@ namespace CAPPamari.Web.Models
 {
     public class CourseModel
     {
-        public string DepartmentCode { get; private set; }
-        public string CourseNumber { get; private set; }
-        public double Grade { get; private set; }
-        public int Credits { get; private set; }
-        public string Semester { get; private set; }
-        public bool PNC { get; private set; }
-        public bool Communication { get; private set; }
+        public string DepartmentCode { get; set; }
+        public string CourseNumber { get; set; }
+        public double Grade { get; set; }
+        public int Credits { get; set; }
+        public string Semester { get; set; }
+        public bool PNC { get; set; }
+        public bool Communication { get; set; }
 
         [JsonConstructor]
         public CourseModel(string DepartmentCode, string CourseNumber, double Grade, int Credits, string Semester, bool PNC, bool Communication)
