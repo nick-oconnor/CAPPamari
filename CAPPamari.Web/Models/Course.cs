@@ -18,10 +18,11 @@ namespace CAPPamari.Web.Models
         public string Department { get; set; }
         public string Number { get; set; }
         public string Semester { get; set; }
-        public string PassNC { get; set; }
-        public string Grade { get; set; }
-        public string Credits { get; set; }
+        public bool PassNC { get; set; }
+        public double Grade { get; set; }
+        public int Credits { get; set; }
         public int RequirementSetID { get; set; }
+        public bool CommunicationIntensive { get; set; }
     
         public virtual RequirementSet RequirementSet { get; set; }
     }

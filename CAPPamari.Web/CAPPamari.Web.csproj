@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.8.2\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -195,6 +198,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CourseHelper.cs" />
+    <Compile Include="Helpers\CSVParserHelper.cs" />
     <Compile Include="Helpers\EntitiesHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
@@ -211,10 +216,28 @@
     <Compile Include="Models\CAPPReport.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CommRequirementDepartment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Course.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CourseModel.cs" />
+    <Compile Include="Models\DepartmentRSR.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ExclusionRequirement.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LevelLimitRSR.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LevelRequirement.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LevelRequirementDepartment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Requests\ChangeAdvisorRequest.cs" />
     <Compile Include="Models\Requests\ChangeMajorRequest.cs" />
     <Compile Include="Models\Requests\LoginRequest.cs" />
@@ -240,12 +263,19 @@
     <Compile Include="Models\RequirementSet.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Requirements\DepthRequirement.cs" />
+    <Compile Include="Models\Requirements\CommRequirement.cs" />
+    <Compile Include="Models\Requirements\RequirementSetRequirements\DepthRSR.cs" />
+    <Compile Include="Models\Requirements\RequirementSetRequirements\DepartmentRSR.cs" />
     <Compile Include="Models\Requirements\ExclusionRequirement.cs" />
+    <Compile Include="Models\Requirements\RequirementSetRequirements\LevelLimitRSR.cs" />
     <Compile Include="Models\Requirements\LevelRequirement.cs" />
     <Compile Include="Models\Requirements\Requirement.cs" />
     <Compile Include="Models\Requirements\RequirementSet.cs" />
+    <Compile Include="Models\Requirements\RequirementSetRequirements\RequirementSetRequirement.cs" />
     <Compile Include="Models\Requirements\SingleRequirement.cs" />
+    <Compile Include="Models\SingleRequirement.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UserSession.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

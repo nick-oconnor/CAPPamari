@@ -261,6 +261,126 @@ namespace CAPPamari.Web.Helpers
                 return success;
             }
         }
+        /// <summary>
+        /// Adds a new course to the Unapplied Courses RequirementSet for a specified user
+        /// </summary>
+        /// <param name="UserName">UserName for user to add new course for</param>
+        /// <param name="NewCourse">CourseModel containing information about the new course</param>
+        /// <returns>Success state of the course addition</returns>
+        public static bool AddNewCourse(string UserName, CourseModel NewCourse)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return false;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return false;
+
+                var unassignedCourses = report.RequirementSets.FirstOrDefault(set => set.Name == "Unapplied Courses");
+                if (unassignedCourses == null) return false;
+
+                unassignedCourses.Courses.Add(new Course()
+                {
+                    Credits = NewCourse.Credits.ToString(),
+                    Department = NewCourse.DepartmentCode,
+                    Grade = NewCourse.Grade.ToString(),
+                    Number = NewCourse.CourseNumber,
+                    PassNC = NewCourse.PassNoCredit.ToString(),
+                    Semester = NewCourse.Semester
+                });
+                entities.SaveChanges();
+                return true;
+            }
+        }
+        /// <summary>
+        /// Remove a course for a specified user
+        /// </summary>
+        /// <param name="UserName">UserName of user to remove course for</param>
+        /// <param name="OldCourse">CourseModel containing information about course to remove</param>
+        /// <returns>Success state of course removal</returns>
+        public static bool RemoveCourse(string UserName, CourseModel OldCourse)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return false;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return false;
+
+                foreach (var reqSet in report.RequirementSets)
+                {
+                    var remover = reqSet.Courses.FirstOrDefault(course => course.Department == OldCourse.DepartmentCode && course.Number == OldCourse.CourseNumber);
+                    if (remover != null)
+                    {
+                        reqSet.Courses.Remove(remover);
+                        entities.SaveChanges();
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+        /// <summary>
+        /// Gets a RequirementSet for a user
+        /// </summary>
+        /// <param name="UserName">UserName of user to get RequirementSet for</param>
+        /// <param name="RequirementSetName">Name of the requirement set to retrieve</param>
+        /// <returns>RequirementSet desired or null if no such RequirementSet exists</returns>
+        public static CAPPamari.Web.Models.Requirements.RequirementSet GetRequirementSet(string UserName, string RequirementSetName)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return null;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return null;
+
+                var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSetName);
+                if (dbset == null) return null;
+
+                var reqSetReqs = new List<CAPPamari.Web.Models.Requirements.RequirementSetRequirements.RequirementSetRequirement>();
+                // add department RSRs
+                reqSetReqs.AddRange(dbset.DepartmentRSRs.Select(dbreq => new CAPPamari.Web.Models.Requirements.RequirementSetRequirements.DepartmentRSR(dbreq.DepartmentCode, dbreq.NumberOfCourses)));
+                // add level limit RSRs
+                reqSetReqs.AddRange(dbset.LevelLimitRSRs.Select(dbreq => new CAPPamari.Web.Models.Requirements.RequirementSetRequirements.LevelLimitRSR(dbreq.CourseLevel, dbreq.UpperLimit)));
+                // add depth RSR
+                if (dbset.DepthRSR) reqSetReqs.Add(new CAPPamari.Web.Models.Requirements.RequirementSetRequirements.DepthRSR());
+
+                var reqs = new List<CAPPamari.Web.Models.Requirements.Requirement>();
+                // add comm requirements
+                var commDepts = dbset.CommRequirementDepartments.Select(comm => comm.DepartmentCode).ToList();
+                reqs.Add(new CAPPamari.Web.Models.Requirements.CommRequirement(commDepts));
+                // add exclustion requirements
+                reqs.AddRange(dbset.ExclusionRequirements.Select(dbreq => new CAPPamari.Web.Models.Requirements.ExclusionRequirement(dbreq.DepartmentCode, dbreq.CourseNumber)));
+                // add level requirements
+                reqs.AddRange(dbset.LevelRequirements.Select(dbreq => new CAPPamari.Web.Models.Requirements.LevelRequirement(dbreq.LevelRequirementDepartments.Select(levelreq => levelreq.DepartmentCode).ToList(), dbreq.MinimumLevel, dbreq.CreditsNeeded))); 
+                // add single requirements
+                reqs.AddRange(dbset.SingleRequirements.Select(dbreq => new CAPPamari.Web.Models.Requirements.SingleRequirement(dbreq.DepartmentCode, dbreq.CourseNumber, dbreq.CreditsNeeded)));
+
+                var courses = dbset.Courses.Select(course => new CAPPamari.Web.Models.CourseModel()
+                {
+                    CommIntensive = course.CommunicationIntensive,
+                    CourseNumber = course.Number,
+                    Credits = course.Credits,
+                    DepartmentCode = course.Department,
+                    Grade = course.Grade,
+                    PassNoCredit = course.PassNC,
+                    Semester = course.Semester
+                }).ToList();
+                return new CAPPamari.Web.Models.Requirements.RequirementSet()
+                {
+                    Name = dbset.Name,
+                    Description = dbset.Description,
+                    RSRs = reqSetReqs,
+                    Requirements = reqs,
+                    AppliedCourses = courses
+                };
+            }
+        }
 
         /// <summary>
         /// Returns new entities object.

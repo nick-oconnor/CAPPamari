@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using CAPPamari.Web.Helpers;
 using CAPPamari.Web.Models;
 using CAPPamari.Web.Models.Requests;
 
@@ -19,9 +20,9 @@ namespace CAPPamari.Web.Controllers
         [HttpPost]
         public ApiResponse<bool> AddNewCourse([FromBody]NewCourseRequest Request)
         {
-            // add course to the database
-            // return success state
-            return ApiResponse<bool>.FailureResponse("Not yet configured");
+            var success = CourseHelper.AddNewCourse(Request.UserName, Request.NewCourse);
+            var message = success ? "Course added successfully" : "Could not add course"; 
+            return ApiResponse<bool>.SuccessResponse(message,success);
         }
 
         /// <summary>
@@ -32,10 +33,14 @@ namespace CAPPamari.Web.Controllers
         [HttpPost]
         public ApiResponse<bool> MoveCourse([FromBody]MoveCourseRequest Request)
         {
-            // find course for user,
-            // find move course to new requirement set
-            // return success state
-            return ApiResponse<bool>.FailureResponse("Not yet configured");
+            var reqSet = CourseHelper.GetRequirementSet(Request.UserName, Request.RequirementSetName);
+            var success = reqSet.CanApplyCourse(Request.CourseToMove);
+            var message = success ? "Moved course successfully" : "Could not move course"; 
+            if (success)
+            {
+                // save changes in the database
+            }
+            return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
@@ -46,9 +51,9 @@ namespace CAPPamari.Web.Controllers
         [HttpPost]
         public ApiResponse<bool> RemoveCourse([FromBody]RemoveCourseRequest Request)
         {
-            // remove course from database
-            // return success state
-            return ApiResponse<bool>.FailureResponse("Not yet configured");
+            var success = CourseHelper.RemoveCourse(Request.UserName, Request.CourseToRemove);
+            var message = success ? "Course removed successfully" : "Could not remove course";
+            return ApiResponse<bool>.SuccessResponse(message, success);
         }
     }
 }
