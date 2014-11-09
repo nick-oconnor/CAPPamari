@@ -327,6 +327,7 @@
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <None Include="Properties\PublishProfiles\Justin.pubxml" />
+    <None Include="Properties\PublishProfiles\Nicholas.pubxml" />
     <None Include="Properties\PublishProfiles\SDD.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />

@@ -41,7 +41,7 @@ SetupDragAndDrop = function () {
         drop: function (event, ui) {
             ui.draggable.appendTo($(this).find(".courses"));
             ui.helper.remove();
-            $(this).accordion("resize");
+            $(".requirementBox").accordion("resize");
             if ($(this).accordion("option", "active") === false)
             {
                 $(this).accordion("option", "active", 0);

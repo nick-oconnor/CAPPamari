@@ -4,84 +4,40 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="JustinModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="JustinModelStoreContainer">
-          <EntitySet Name="Advises" EntityType="JustinModel.Store.Advises" store:Type="Tables" store:Schema="dbo" store:Name="Advises">
-            <DefiningQuery>SELECT 
-      [Advises].[AdvisorID] AS [AdvisorID], 
-      [Advises].[UserName] AS [UserName]
-      FROM [dbo].[Advises] AS [Advises]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Advisor" EntityType="JustinModel.Store.Advisor" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ApplicationUser" EntityType="JustinModel.Store.ApplicationUser" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="CAPPReport" EntityType="JustinModel.Store.CAPPReport" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Contains" EntityType="JustinModel.Store.Contains" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Course" EntityType="JustinModel.Store.Course" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RequirementSet" EntityType="JustinModel.Store.RequirementSet" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserSession" EntityType="JustinModel.Store.UserSession" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_AdvisorID" Association="JustinModel.Store.FK_AdvisorID">
-            <End Role="Advisor" EntitySet="Advisor" />
-            <End Role="Advises" EntitySet="Advises" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ApplicationUser" Association="JustinModel.Store.FK_ApplicationUser">
-            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
-            <End Role="Advises" EntitySet="Advises" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CAPPReport_ApplicationUser" Association="JustinModel.Store.FK_CAPPReport_ApplicationUser">
-            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
-            <End Role="CAPPReport" EntitySet="CAPPReport" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Course_RequirementSet" Association="JustinModel.Store.FK_Course_RequirementSet">
-            <End Role="RequirementSet" EntitySet="RequirementSet" />
-            <End Role="Course" EntitySet="Course" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HasA_CAPPReport" Association="JustinModel.Store.FK_HasA_CAPPReport">
-            <End Role="CAPPReport" EntitySet="CAPPReport" />
-            <End Role="Contains" EntitySet="Contains" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HasA_RequirementSet" Association="JustinModel.Store.FK_HasA_RequirementSet">
-            <End Role="RequirementSet" EntitySet="RequirementSet" />
-            <End Role="Contains" EntitySet="Contains" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserSession_ApplicationUser" Association="JustinModel.Store.FK_UserSession_ApplicationUser">
-            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
-            <End Role="UserSession" EntitySet="UserSession" />
-          </AssociationSet>
-        </EntityContainer>
+    <Schema Namespace="JustinModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'Justin.dbo.Advises' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'Justin.dbo.Advises' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Advises">
           <Key>
             <PropertyRef Name="AdvisorID" />
             <PropertyRef Name="UserName" />
           </Key>
           <Property Name="AdvisorID" Type="int" Nullable="false" />
-          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="Advisor">
           <Key>
             <PropertyRef Name="AdvisorID" />
           </Key>
-          <Property Name="AdvisorID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="EMailAddress" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="AdvisorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EMailAddress" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="ApplicationUser">
           <Key>
             <PropertyRef Name="UserName" />
           </Key>
-          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
-          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="25" />
-          <Property Name="Major" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Major" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="CAPPReport">
           <Key>
             <PropertyRef Name="ReportID" />
           </Key>
-          <Property Name="ReportID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
-          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="ReportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="Contains">
           <Key>
@@ -95,7 +51,7 @@
           <Key>
             <PropertyRef Name="CourseID" />
           </Key>
-          <Property Name="CourseID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Department" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Number" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Semester" Type="nvarchar(max)" Nullable="false" />
@@ -108,21 +64,22 @@
           <Key>
             <PropertyRef Name="RequirementSetID" />
           </Key>
-          <Property Name="RequirementSetID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RequirementSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Credits" Type="nvarchar(max)" Nullable="false" />
           <Property Name="PassNCCredits" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="UserSession">
           <Key>
             <PropertyRef Name="SessionID" />
           </Key>
-          <Property Name="SessionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="SessionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Expiration" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_AdvisorID">
-          <End Role="Advisor" Type="JustinModel.Store.Advisor" Multiplicity="1" />
-          <End Role="Advises" Type="JustinModel.Store.Advises" Multiplicity="*" />
+          <End Role="Advisor" Type="Self.Advisor" Multiplicity="1" />
+          <End Role="Advises" Type="Self.Advises" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Advisor">
               <PropertyRef Name="AdvisorID" />
@@ -133,8 +90,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ApplicationUser">
-          <End Role="ApplicationUser" Type="JustinModel.Store.ApplicationUser" Multiplicity="1" />
-          <End Role="Advises" Type="JustinModel.Store.Advises" Multiplicity="*" />
+          <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
+          <End Role="Advises" Type="Self.Advises" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationUser">
               <PropertyRef Name="UserName" />
@@ -145,8 +102,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CAPPReport_ApplicationUser">
-          <End Role="ApplicationUser" Type="JustinModel.Store.ApplicationUser" Multiplicity="1" />
-          <End Role="CAPPReport" Type="JustinModel.Store.CAPPReport" Multiplicity="*" />
+          <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
+          <End Role="CAPPReport" Type="Self.CAPPReport" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationUser">
               <PropertyRef Name="UserName" />
@@ -157,8 +114,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Course_RequirementSet">
-          <End Role="RequirementSet" Type="JustinModel.Store.RequirementSet" Multiplicity="1" />
-          <End Role="Course" Type="JustinModel.Store.Course" Multiplicity="*" />
+          <End Role="RequirementSet" Type="Self.RequirementSet" Multiplicity="1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RequirementSet">
               <PropertyRef Name="RequirementSetID" />
@@ -169,8 +126,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_HasA_CAPPReport">
-          <End Role="CAPPReport" Type="JustinModel.Store.CAPPReport" Multiplicity="1" />
-          <End Role="Contains" Type="JustinModel.Store.Contains" Multiplicity="*" />
+          <End Role="CAPPReport" Type="Self.CAPPReport" Multiplicity="1" />
+          <End Role="Contains" Type="Self.Contains" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CAPPReport">
               <PropertyRef Name="ReportID" />
@@ -181,8 +138,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_HasA_RequirementSet">
-          <End Role="RequirementSet" Type="JustinModel.Store.RequirementSet" Multiplicity="1" />
-          <End Role="Contains" Type="JustinModel.Store.Contains" Multiplicity="*" />
+          <End Role="RequirementSet" Type="Self.RequirementSet" Multiplicity="1" />
+          <End Role="Contains" Type="Self.Contains" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RequirementSet">
               <PropertyRef Name="RequirementSetID" />
@@ -193,8 +150,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserSession_ApplicationUser">
-          <End Role="ApplicationUser" Type="JustinModel.Store.ApplicationUser" Multiplicity="1" />
-          <End Role="UserSession" Type="JustinModel.Store.UserSession" Multiplicity="*" />
+          <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
+          <End Role="UserSession" Type="Self.UserSession" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationUser">
               <PropertyRef Name="UserName" />
@@ -204,6 +161,49 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="JustinModelStoreContainer">
+          <EntitySet Name="Advisor" EntityType="Self.Advisor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicationUser" EntityType="Self.ApplicationUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CAPPReport" EntityType="Self.CAPPReport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contains" EntityType="Self.Contains" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequirementSet" EntityType="Self.RequirementSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserSession" EntityType="Self.UserSession" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Advises" EntityType="Self.Advises" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Advises].[AdvisorID] AS [AdvisorID], 
+[Advises].[UserName] AS [UserName]
+FROM [dbo].[Advises] AS [Advises]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_AdvisorID" Association="Self.FK_AdvisorID">
+            <End Role="Advisor" EntitySet="Advisor" />
+            <End Role="Advises" EntitySet="Advises" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationUser" Association="Self.FK_ApplicationUser">
+            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
+            <End Role="Advises" EntitySet="Advises" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CAPPReport_ApplicationUser" Association="Self.FK_CAPPReport_ApplicationUser">
+            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
+            <End Role="CAPPReport" EntitySet="CAPPReport" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_RequirementSet" Association="Self.FK_Course_RequirementSet">
+            <End Role="RequirementSet" EntitySet="RequirementSet" />
+            <End Role="Course" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HasA_CAPPReport" Association="Self.FK_HasA_CAPPReport">
+            <End Role="CAPPReport" EntitySet="CAPPReport" />
+            <End Role="Contains" EntitySet="Contains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HasA_RequirementSet" Association="Self.FK_HasA_RequirementSet">
+            <End Role="RequirementSet" EntitySet="RequirementSet" />
+            <End Role="Contains" EntitySet="Contains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSession_ApplicationUser" Association="Self.FK_UserSession_ApplicationUser">
+            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
+            <End Role="UserSession" EntitySet="UserSession" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -289,6 +289,7 @@
           <Property Name="PassNCCredits" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Courses" Relationship="JustinModel.FK_Course_RequirementSet" FromRole="RequirementSet" ToRole="Course" />
           <NavigationProperty Name="CAPPReports" Relationship="JustinModel.Contains" FromRole="RequirementSet" ToRole="CAPPReport" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UserSession">
           <Key>
@@ -393,6 +394,7 @@
           <EntitySetMapping Name="RequirementSets">
             <EntityTypeMapping TypeName="JustinModel.RequirementSet">
               <MappingFragment StoreEntitySet="RequirementSet">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="PassNCCredits" ColumnName="PassNCCredits" />
                 <ScalarProperty Name="Credits" ColumnName="Credits" />
                 <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />

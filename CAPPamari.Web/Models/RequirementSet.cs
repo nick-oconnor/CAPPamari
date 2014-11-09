@@ -23,6 +23,7 @@ namespace CAPPamari.Web.Models
         public int RequirementSetID { get; set; }
         public string Credits { get; set; }
         public string PassNCCredits { get; set; }
+        public string Name { get; set; }
     
         public virtual ICollection<Course> Courses { get; set; }
         public virtual ICollection<CAPPReport> CAPPReports { get; set; }
