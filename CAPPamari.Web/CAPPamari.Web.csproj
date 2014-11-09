@@ -237,7 +237,6 @@
     </Compile>
     <Compile Include="Models\RegistrationRequest.cs" />
     <Compile Include="Models\Requirements\CommRequirement.cs" />
-    <Compile Include="Models\Requirements\DepthRequirement.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\DepthRSR.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\DepartmentRSR.cs" />
     <Compile Include="Models\RequirementSet.cs">

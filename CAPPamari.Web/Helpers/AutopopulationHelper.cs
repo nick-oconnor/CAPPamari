@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CAPPamari.Web.Models.CourseModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -31,8 +32,8 @@ namespace CAPPamari.Web.Helpers
 
             //create sorted lists of humanities and ssci courses
             //sorted with highest code first
-            SortedList<int, List<CourseModel>> HumCourses;
-            SortedList<int, List<CourseModel>> SsciCourses;
+            SortedDictionary<int, List<CourseModel>> HumCourses;
+            SortedDictionary<int, List<CourseModel>> SsciCourses;
 
             for (int i = 0; i < CoursesTaken.Count; i++)
             {
@@ -72,11 +73,11 @@ namespace CAPPamari.Web.Helpers
                 if (HumCourses.Count > 0)
                 {
                     //NOTE does this return the value for the max key???
-                    List<CourseModel> maxCourseList = HumCourses[HumCourses.Count-1];
+                    List<CourseModel> maxCourseList = HumCourses.max();
                     if(maxCourseList.Count == 1){
                         HASSreqset.ApplyCourse(maxCourseList[0]);
                         //remove the key from the list of remaining courses
-                        HumCourses.RemoveAt(HumCourses.Count-1);
+                        HumCourses.Remove(HumCourses.Max());
                     }
                     else{
                         //apply the first course in the list
@@ -89,12 +90,12 @@ namespace CAPPamari.Web.Helpers
                 if (SsciCourses.Count > 0)
                 {
                     //NOTE does this return the value for the max key???
-                    List<CourseModel> maxCourseList = SsciCourses[HumCourses.Count - 1];
+                    List<CourseModel> maxCourseList = SsciCourses.Max();
                     if (maxCourseList.Count == 1)
                     {
                         HASSreqset.ApplyCourse(maxCourseList[0]);
                         //remove the key from the list of remaining courses
-                        SsciCourses.RemoveAt(HumCourses.Count - 1);
+                        SsciCourses.Remove(SsciCourses.max());
                     }
                     else
                     {
