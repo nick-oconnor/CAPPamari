@@ -8,7 +8,7 @@ namespace CAPPamari.Web.Models.Requirements.RequirementSetRequirements
     /// <summary>
     /// Requires that a specific course is not applied to a requirement set
     /// </summary>
-    public class ExclusionRSR
+    public class ExclusionRSR : RequirementSetRequirement
     {
         public string DepartmentCode { get; private set; }
         public string CourseNumber { get; private set; }

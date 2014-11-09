@@ -1,4 +1,4 @@
-﻿using CAPPamari.Web.Models.CourseModel;
+﻿using CAPPamari.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace CAPPamari.Web.Helpers
     {
 
         //function to autopopulate the HASS requirement set
-        public void FillHASS(List<CourseModel> CoursesTaken)
+        public void FillHASS(RequirementSet HASSreqset, List<CourseModel> CoursesTaken)
         {
             List<string> humDepts = new List<string>(){
                 "IHSS",
@@ -39,26 +39,25 @@ namespace CAPPamari.Web.Helpers
             {
                 if (humDepts.Contains(CoursesTaken[i].DepartmentCode))
                 {
-                    //NOTE what do i include to get ToInt32 to work?
-                    int courseNum = ToInt32(CoursesTaken[i].CourseNumber);
+]                    int courseNum = Convert.ToInt32(CoursesTaken[i].CourseNumber);
                     if(HumCourses.ContainsKey(courseNum)){
                         HumCourses[courseNum].Add(CoursesTaken[i]);
                     }
                     else{
-                        List<string> tempCourse = new List<CourseModel>(){
+                        List<CourseModel> tempCourse = new List<CourseModel>(){
                             CoursesTaken[i],
                         };
                         HumCourses[courseNum] = tempCourse;
                     }
                 }
-                if (ssciDepts.Contains(CoursesTaken[i].Department))
+                else if (ssciDepts.Contains(CoursesTaken[i].DepartmentCode))
                 {
-                    int courseNum = ToInt32(CoursesTaken[i].CourseNumber);
+                    int courseNum = Convert.ToInt32(CoursesTaken[i].CourseNumber);
                     if(SsciCourses.ContainsKey(courseNum)){
                         SsciCourses[courseNum].Add(CoursesTaken[i]);
                     }
                     else{
-                        List<string> tempCourse = new List<CourseModel>(){
+                        List<CourseModel> tempCourse = new List<CourseModel>(){
                             CoursesTaken[i],
                         };
                         SsciCourses[courseNum] = tempCourse;
@@ -66,18 +65,18 @@ namespace CAPPamari.Web.Helpers
                 }
             }
 
-            //alternate between adding hum and ssci to HASS until run out or full
-            //I'm calling the HASS req set HASSreqset, not sure how to address it
+            //alternate between adding hum and ssci to HASS 
+            //until full (or run out of courses, caught below)
             while (!HASSreqset.Full())
             {
                 if (HumCourses.Count > 0)
                 {
-                    //NOTE does this return the value for the max key???
-                    List<CourseModel> maxCourseList = HumCourses.max();
+                    //find the largest course number (last b/c ascending order)
+                    List<CourseModel> maxCourseList = HumCourses.Last().Value;
                     if(maxCourseList.Count == 1){
                         HASSreqset.ApplyCourse(maxCourseList[0]);
                         //remove the key from the list of remaining courses
-                        HumCourses.Remove(HumCourses.Max());
+                        HumCourses.Remove(HumCourses.Last().Key);
                     }
                     else{
                         //apply the first course in the list
@@ -89,13 +88,13 @@ namespace CAPPamari.Web.Helpers
                 }
                 if (SsciCourses.Count > 0)
                 {
-                    //NOTE does this return the value for the max key???
-                    List<CourseModel> maxCourseList = SsciCourses.Max();
+                    //find the largest course number (last b/c ascending order)
+                    List<CourseModel> maxCourseList = SsciCourses.Last().Value;
                     if (maxCourseList.Count == 1)
                     {
                         HASSreqset.ApplyCourse(maxCourseList[0]);
                         //remove the key from the list of remaining courses
-                        SsciCourses.Remove(SsciCourses.max());
+                        SsciCourses.Remove(SsciCourses.Last().Key);
                     }
                     else
                     {
