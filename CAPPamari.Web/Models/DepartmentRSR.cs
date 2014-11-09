@@ -15,30 +15,26 @@ namespace CAPPamari.Web.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Course
+public partial class DepartmentRSR
 {
 
-    public int CourseID { get; set; }
+    public DepartmentRSR()
+    {
 
-    public string Department { get; set; }
+        this.RequirementSets = new HashSet<RequirementSet>();
 
-    public string Number { get; set; }
+    }
 
-    public string Semester { get; set; }
 
-    public bool PassNC { get; set; }
+    public int DepartmentRSRID { get; set; }
 
-    public double Grade { get; set; }
+    public string DepartmentCode { get; set; }
 
-    public int Credits { get; set; }
-
-    public int RequirementSetID { get; set; }
-
-    public bool CommunicationIntensive { get; set; }
+    public int NumberOfCourses { get; set; }
 
 
 
-    public virtual RequirementSet RequirementSet { get; set; }
+    public virtual ICollection<RequirementSet> RequirementSets { get; set; }
 
 }
 

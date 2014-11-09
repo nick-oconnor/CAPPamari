@@ -15,26 +15,28 @@ namespace CAPPamari.Web.Models
 using System;
     using System.Collections.Generic;
     
-public partial class CAPPReport
+public partial class LevelRequirement
 {
 
-    public CAPPReport()
+    public LevelRequirement()
     {
+
+        this.LevelRequirementDepartments = new HashSet<LevelRequirementDepartment>();
 
         this.RequirementSets = new HashSet<RequirementSet>();
 
     }
 
 
-    public int ReportID { get; set; }
+    public int LevelRequirementID { get; set; }
 
-    public string UserName { get; set; }
+    public string MinimumLevel { get; set; }
 
-    public string Name { get; set; }
+    public int CreditsNeeded { get; set; }
 
 
 
-    public virtual ApplicationUser ApplicationUser { get; set; }
+    public virtual ICollection<LevelRequirementDepartment> LevelRequirementDepartments { get; set; }
 
     public virtual ICollection<RequirementSet> RequirementSets { get; set; }
 

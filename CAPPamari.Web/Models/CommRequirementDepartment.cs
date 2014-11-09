@@ -15,26 +15,12 @@ namespace CAPPamari.Web.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Course
+public partial class CommRequirementDepartment
 {
-
-    public int CourseID { get; set; }
-
-    public string Department { get; set; }
-
-    public string Number { get; set; }
-
-    public string Semester { get; set; }
-
-    public bool PassNC { get; set; }
-
-    public double Grade { get; set; }
-
-    public int Credits { get; set; }
 
     public int RequirementSetID { get; set; }
 
-    public bool CommunicationIntensive { get; set; }
+    public string DepartmentCode { get; set; }
 
 
 
