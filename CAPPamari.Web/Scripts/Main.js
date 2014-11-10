@@ -322,4 +322,8 @@ ViewModel = function () {
     self.addNewRequirementSet = function (requirementSet) {
         self.requirementSets.push(requirementSet);
     }
+    self.print = function () {
+        var url = window.location.origin + '/Home/Print?UserName=' + self.user().userName();
+        window.open(url, '_blank');
+    }
 }

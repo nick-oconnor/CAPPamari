@@ -282,11 +282,11 @@ namespace CAPPamari.Web.Helpers
 
                 unassignedCourses.Courses.Add(new Course()
                 {
-                    Credits = NewCourse.Credits.ToString(),
+                    Credits = NewCourse.Credits,
                     Department = NewCourse.DepartmentCode,
-                    Grade = NewCourse.Grade.ToString(),
+                    Grade = NewCourse.Grade,
                     Number = NewCourse.CourseNumber,
-                    PassNC = NewCourse.PassNoCredit.ToString(),
+                    PassNC = NewCourse.PassNoCredit,
                     Semester = NewCourse.Semester
                 });
                 entities.SaveChanges();
@@ -380,6 +380,33 @@ namespace CAPPamari.Web.Helpers
                     AppliedCourses = courses
                 };
             }
+        }
+        /// <summary>
+        /// Gets all the RequirementSets for a user
+        /// </summary>
+        /// <param name="UserName">UserName for user to get all the RequirementSets for</param>
+        /// <returns>List<RequirementSet> of all RequirementSets</returns>
+        public static List<CAPPamari.Web.Models.Requirements.RequirementSet> GetAllRequirementSets(string UserName)
+        {
+            List<string> requirementSetNames;
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return null;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return null;
+
+                requirementSetNames = report.RequirementSets.Select(set => set.Name).ToList();
+            }
+
+            var reqSets = new List<CAPPamari.Web.Models.Requirements.RequirementSet>();
+            foreach (var name in requirementSetNames)
+            {
+                reqSets.Add(GetRequirementSet(UserName, name));
+            }
+
+            return reqSets;
         }
 
         /// <summary>
