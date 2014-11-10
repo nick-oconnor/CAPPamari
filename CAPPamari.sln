@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAPPamari.Web", "CAPPamari.Web\CAPPamari.Web.csproj", "{C66E2148-15FA-4AE8-BFB4-82F43706C68D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAPPamari.Test", "CAPPamari.Test\CAPPamari.Test.csproj", "{23A812C2-23E2-474A-89CD-1F6BE2EB8049}"
