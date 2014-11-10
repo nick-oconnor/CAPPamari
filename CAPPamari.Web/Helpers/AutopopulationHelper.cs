@@ -1,14 +1,13 @@
-﻿using CAPPamari.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CAPPamari.Web.Models;
 
 namespace CAPPamari.Web.Helpers
 {
     public class AutopopulationHelper
     {
-
         //function to autopopulate the HASS requirement set
         public void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSet HASSreqset, List<CourseModel> CoursesTaken)
         {
@@ -115,8 +114,52 @@ namespace CAPPamari.Web.Helpers
             return;
         }
 
+        public void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
+        {
 
+            foreach (var reqset in allSets){
+                foreach (var req in reqset.Requirements)
+                {
+                    if (req is SingleRequirement)
+                    {
+                        foreach (CAPPamari.Web.Models.CourseModel course in courses)
+                        {
+                            if (req.Fulfills(course))
+                            {
+                                reqset.AppliedCourses.Add(course);
+                                courses.Remove(course);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
+        public void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses){
+            foreach (var reqset in allSets){
+                foreach (var req in reqset.Requirements)
+                {
+                    if (req is LevelRequirement)
+                    {
+                        foreach (CAPPamari.Web.Models.CourseModel course in courses)
+                        {
+                            if (req.Fulfills(course))
+                            {
+                                reqset.AppliedCourses.Add(course);
+                                courses.Remove(course);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
+        public void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSet> requirements, List<CAPPamari.Web.Models.CourseModel> courses)
+        {
+            fillNamedRequirements(requirements, courses);
+            fillLevelRequirements(requirements, courses);
+        }
     }
 }
