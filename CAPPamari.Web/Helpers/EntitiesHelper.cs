@@ -282,11 +282,11 @@ namespace CAPPamari.Web.Helpers
 
                 unassignedCourses.Courses.Add(new Course()
                 {
-                    Credits = NewCourse.Credits.ToString(),
+                    Credits = NewCourse.Credits,
                     Department = NewCourse.DepartmentCode,
-                    Grade = NewCourse.Grade.ToString(),
+                    Grade = NewCourse.Grade,
                     Number = NewCourse.CourseNumber,
-                    PassNC = NewCourse.PassNoCredit.ToString(),
+                    PassNC = NewCourse.PassNoCredit,
                     Semester = NewCourse.Semester
                 });
                 entities.SaveChanges();

@@ -199,6 +199,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CourseHelper.cs" />
+    <Compile Include="Helpers\AutopopulationHelper.cs" />
     <Compile Include="Helpers\CSVParserHelper.cs" />
     <Compile Include="Helpers\EntitiesHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
@@ -267,6 +268,7 @@
     <Compile Include="Models\Requirements\RequirementSetRequirements\DepthRSR.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\DepartmentRSR.cs" />
     <Compile Include="Models\Requirements\ExclusionRequirement.cs" />
+    <Compile Include="Models\Requirements\RequirementSetRequirements\ExclusionRSR.cs" />
     <Compile Include="Models\Requirements\RequirementSetRequirements\LevelLimitRSR.cs" />
     <Compile Include="Models\Requirements\LevelRequirement.cs" />
     <Compile Include="Models\Requirements\Requirement.cs" />
@@ -356,6 +358,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\Justin.pubxml" />
     <None Include="Properties\PublishProfiles\SDD.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
