@@ -5,14 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c3ab7cbf3fa04a71b5d9940bdfeb29e8" Name="Diagram1">
-        <EntityTypeShape EntityType="JustinModel.Advisor" Width="1.5" PointX="0.75" PointY="2.875" />
-        <EntityTypeShape EntityType="JustinModel.ApplicationUser" Width="1.5" PointX="3" PointY="2.625" />
-        <EntityTypeShape EntityType="JustinModel.CAPPReport" Width="1.5" PointX="5.25" PointY="4" />
-        <EntityTypeShape EntityType="JustinModel.RequirementSet" Width="1.5" PointX="7.5" PointY="4" />
-        <EntityTypeShape EntityType="JustinModel.UserSession" Width="1.5" PointX="5.25" PointY="1.125" />
-        <AssociationConnector Association="JustinModel.FK_CAPPReport_ApplicationUser" />
-        <AssociationConnector Association="JustinModel.FK_UserSession_ApplicationUser" />
-        <AssociationConnector Association="JustinModel.Advises" />
         <AssociationConnector Association="JustinModel.FK_RequirementSet_CAPPRerport" />
         <EntityTypeShape EntityType="JustinModel.CommRequirementDepartment" Width="1.5" PointX="2.53850751115871" PointY="15.714907832310958" />
         <EntityTypeShape EntityType="JustinModel.DepartmentRSR" Width="1.5" PointX="10.965503783414841" PointY="1.5891549594649836" />
@@ -28,8 +20,24 @@
         <AssociationConnector Association="JustinModel.RequirementSet_LevelLimitRSR" />
         <AssociationConnector Association="JustinModel.RequirementSet_LevelRequirement" />
         <AssociationConnector Association="JustinModel.RequirementSet_SingleRequirement" />
-        <EntityTypeShape EntityType="JustinModel.Course" Width="1.5" PointX="10.515196859145163" PointY="18.949663290264859" />
+        <EntityTypeShape EntityType="JustinModel.Advisor" Width="1.5" PointX="0.75" PointY="3.5" />
+        <EntityTypeShape EntityType="JustinModel.ApplicationUser" Width="1.5" PointX="3" PointY="3.25" />
+        <EntityTypeShape EntityType="JustinModel.CAPPReport" Width="1.5" PointX="5.25" PointY="4.625" />
+        <EntityTypeShape EntityType="JustinModel.Course" Width="1.5" PointX="9.75" PointY="4.125" />
+        <EntityTypeShape EntityType="JustinModel.RequirementSet" Width="1.5" PointX="7.5" PointY="3.625" />
+        <EntityTypeShape EntityType="JustinModel.UserSession" Width="1.5" PointX="5.25" PointY="1.125" />
+        <AssociationConnector Association="JustinModel.FK_CAPPReport_ApplicationUser" />
+        <AssociationConnector Association="JustinModel.FK_UserSession_ApplicationUser" />
+        <AssociationConnector Association="JustinModel.FK_RequirementSet_CAPPRerport" />
+        <AssociationConnector Association="JustinModel.FK__CommRequi__Requi__619B8048" />
         <AssociationConnector Association="JustinModel.FK_Course_RequirementSet" />
+        <AssociationConnector Association="JustinModel.FK__LevelRequ__Level__628FA481" />
+        <AssociationConnector Association="JustinModel.RequirementSet_DepartmentRSR" />
+        <AssociationConnector Association="JustinModel.RequirementSet_ExclusionRequiremnt" />
+        <AssociationConnector Association="JustinModel.RequirementSet_LevelLimitRSR" />
+        <AssociationConnector Association="JustinModel.RequirementSet_LevelRequirement" />
+        <AssociationConnector Association="JustinModel.RequirementSet_SingleRequirement" />
+        <AssociationConnector Association="JustinModel.Advises" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
