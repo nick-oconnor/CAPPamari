@@ -38,5 +38,14 @@ namespace CAPPamari.Web.Helpers
         {
             return EntitiesHelper.GetRequirementSet(UserName, RequirementSetName);
         }
+        /// <summary>
+        /// Gets all RequirementSets for the user
+        /// </summary>
+        /// <param name="UserName">UserName for user to get all RequirementSets for</param>
+        /// <returns>List<RequirementSet> of all RequrementSets</returns>
+        public static List<CAPPamari.Web.Models.Requirements.RequirementSet> GetAllRequirementSets(string UserName)
+        {
+            return EntitiesHelper.GetAllRequirementSets(UserName);
+        }
     }
 }
