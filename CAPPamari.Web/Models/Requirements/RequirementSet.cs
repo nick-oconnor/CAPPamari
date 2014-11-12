@@ -32,6 +32,12 @@ namespace CAPPamari.Web.Models.Requirements
         }
         public RequirementSet()
         {
+            this.Name = "You forgot to name this";
+            this.Description = "You forgot to describe this";
+            this.TotalCredits = 0;
+            this.Requirements = new List<Requirement>();
+            this.RSRs = new List<RequirementSetRequirement>();
+            this.AppliedCourses = new List<CourseModel>();
         }
 
         public bool Full()

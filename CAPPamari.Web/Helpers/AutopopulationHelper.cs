@@ -9,7 +9,7 @@ namespace CAPPamari.Web.Helpers
     public class AutopopulationHelper
     {
         //function to autopopulate the HASS requirement set
-        public void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSet HASSreqset, List<CourseModel> CoursesTaken)
+        public static void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSet HASSreqset, List<CourseModel> CoursesTaken)
         {
             List<string> humDepts = new List<string>(){
                 "IHSS",
@@ -114,13 +114,13 @@ namespace CAPPamari.Web.Helpers
             return;
         }
 
-        public void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
+        public static void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
         {
 
             foreach (var reqset in allSets){
                 foreach (var req in reqset.Requirements)
                 {
-                    if (req is SingleRequirement)
+                    if (req.GetType() == typeof(CAPPamari.Web.Models.Requirements.SingleRequirement))
                     {
                         foreach (CAPPamari.Web.Models.CourseModel course in courses)
                         {
@@ -136,11 +136,11 @@ namespace CAPPamari.Web.Helpers
             }
         }
 
-        public void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses){
+        public static void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses){
             foreach (var reqset in allSets){
                 foreach (var req in reqset.Requirements)
                 {
-                    if (req is LevelRequirement)
+                    if (req.GetType() == typeof(CAPPamari.Web.Models.Requirements.LevelRequirement))
                     {
                         foreach (CAPPamari.Web.Models.CourseModel course in courses)
                         {
@@ -156,10 +156,17 @@ namespace CAPPamari.Web.Helpers
             }
         }
 
-        public void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSet> requirements, List<CAPPamari.Web.Models.CourseModel> courses)
+        public static void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSet> requirementSets, List<CAPPamari.Web.Models.CourseModel> courses)
         {
-            fillNamedRequirements(requirements, courses);
-            fillLevelRequirements(requirements, courses);
+            fillNamedRequirements(requirementSets, courses);
+            fillLevelRequirements(requirementSets, courses);
+
+            //find and check HASS
+            foreach (CAPPamari.Web.Models.Requirements.RequirementSet reqset in requirementSets){
+                if (reqset.Name == "HASS"){
+                    FillHASS(reqset, courses);
+                }
+            }
         }
     }
 }

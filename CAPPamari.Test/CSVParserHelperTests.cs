@@ -12,7 +12,7 @@ namespace CAPPamari.Test
     public class CSVParserHelperTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void csvTest1()
         {
             //take a sample csv file and convert it to a string- this part works
             var reader = new StreamReader(File.OpenRead(@"testParser.csv"));
@@ -35,7 +35,7 @@ namespace CAPPamari.Test
             foreach (CourseModel course in courses)
             {
                 Debug.Print("{0} {1}, {2} credits, {3}, {4}, PNC {5}, Comm {6}", course.DepartmentCode, course.CourseNumber, course.Credits,
-                   course.Semester, course.Grade, course.PNC, course.Communication);
+                   course.Semester, course.Grade, course.PassNoCredit, course.CommIntensive);
             }
         }
     }
