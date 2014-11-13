@@ -32,6 +32,12 @@ namespace CAPPamari.Web.Models.Requirements
         }
         public RequirementSet()
         {
+            this.Name = "You forgot to name this";
+            this.Description = "You forgot to describe this";
+            this.TotalCredits = 0;
+            this.Requirements = new List<Requirement>();
+            this.RSRs = new List<RequirementSetRequirement>();
+            this.AppliedCourses = new List<CourseModel>();
         }
 
         public bool Full()
@@ -52,17 +58,20 @@ namespace CAPPamari.Web.Models.Requirements
             // by some course 
             for (int i = 0; i < Requirements.Count(); i++)
             {
-               bool foundCourse = false;
-               for(int j=0; j<AppliedCourses.Count(); j++){
-                   if(Requirements[i].Fulfills(AppliedCourses[j])){
-                       foundCourse = true;
-                       break;
-                   }
-               }
-                if(foundCourse == false){
+                bool foundCourse = false;
+                for (int j = 0; j < AppliedCourses.Count(); j++)
+                {
+                    if (Requirements[i].Fulfills(AppliedCourses[j]))
+                    {
+                        foundCourse = true;
+                        break;
+                    }
+                }
+                if (foundCourse == false)
+                {
                     return false;
                 }
-                    
+
             }
             // go through each requirement set requirement and make sure 
             // they are all met by the set of courses

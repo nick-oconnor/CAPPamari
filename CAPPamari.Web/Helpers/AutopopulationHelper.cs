@@ -9,7 +9,7 @@ namespace CAPPamari.Web.Helpers
     public class AutopopulationHelper
     {
         //function to autopopulate the HASS requirement set
-        public void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSet HASSreqset, List<CourseModel> CoursesTaken)
+        public static void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSet HASSreqset, List<CourseModel> CoursesTaken)
         {
             List<string> humDepts = new List<string>(){
                 "IHSS",
@@ -31,18 +31,20 @@ namespace CAPPamari.Web.Helpers
 
             //create sorted lists of humanities and ssci courses
             //sorted with highest code first
-            SortedDictionary<int, List<CourseModel>> HumCourses = new SortedDictionary<int,List<CourseModel>>();
-            SortedDictionary<int, List<CourseModel>> SsciCourses = new SortedDictionary<int,List<CourseModel>>();
+            SortedDictionary<int, List<CourseModel>> HumCourses = new SortedDictionary<int, List<CourseModel>>();
+            SortedDictionary<int, List<CourseModel>> SsciCourses = new SortedDictionary<int, List<CourseModel>>();
 
             for (int i = 0; i < CoursesTaken.Count; i++)
             {
                 if (humDepts.Contains(CoursesTaken[i].DepartmentCode))
                 {
                     int courseNum = Convert.ToInt32(CoursesTaken[i].CourseNumber);
-                    if(HumCourses.ContainsKey(courseNum)){
+                    if (HumCourses.ContainsKey(courseNum))
+                    {
                         HumCourses[courseNum].Add(CoursesTaken[i]);
                     }
-                    else{
+                    else
+                    {
                         List<CourseModel> tempCourse = new List<CourseModel>(){
                             CoursesTaken[i],
                         };
@@ -52,10 +54,12 @@ namespace CAPPamari.Web.Helpers
                 else if (ssciDepts.Contains(CoursesTaken[i].DepartmentCode))
                 {
                     int courseNum = Convert.ToInt32(CoursesTaken[i].CourseNumber);
-                    if(SsciCourses.ContainsKey(courseNum)){
+                    if (SsciCourses.ContainsKey(courseNum))
+                    {
                         SsciCourses[courseNum].Add(CoursesTaken[i]);
                     }
-                    else{
+                    else
+                    {
                         List<CourseModel> tempCourse = new List<CourseModel>(){
                             CoursesTaken[i],
                         };
@@ -72,17 +76,19 @@ namespace CAPPamari.Web.Helpers
                 {
                     //find the largest course number (last b/c ascending order)
                     List<CourseModel> maxCourseList = HumCourses.Last().Value;
-                    if(maxCourseList.Count == 1){
+                    if (maxCourseList.Count == 1)
+                    {
                         HASSreqset.CanApplyCourse(maxCourseList[0]);
                         //remove the key from the list of remaining courses
                         HumCourses.Remove(HumCourses.Last().Key);
                     }
-                    else{
+                    else
+                    {
                         //apply the first course in the list
                         HASSreqset.CanApplyCourse(maxCourseList[0]);
                         //remove the course from list of remaining courses
                         maxCourseList.RemoveAt(0);
-                        HumCourses[HumCourses.Count-1] = maxCourseList;
+                        HumCourses[HumCourses.Count - 1] = maxCourseList;
                     }
                 }
                 if (SsciCourses.Count > 0)
@@ -114,13 +120,14 @@ namespace CAPPamari.Web.Helpers
             return;
         }
 
-        public void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
+        public static void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
         {
 
-            foreach (var reqset in allSets){
+            foreach (var reqset in allSets)
+            {
                 foreach (var req in reqset.Requirements)
                 {
-                    if (req is SingleRequirement)
+                    if (req.GetType() == typeof(CAPPamari.Web.Models.Requirements.SingleRequirement))
                     {
                         foreach (CAPPamari.Web.Models.CourseModel course in courses)
                         {
@@ -136,11 +143,13 @@ namespace CAPPamari.Web.Helpers
             }
         }
 
-        public void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses){
-            foreach (var reqset in allSets){
+        public static void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
+        {
+            foreach (var reqset in allSets)
+            {
                 foreach (var req in reqset.Requirements)
                 {
-                    if (req is LevelRequirement)
+                    if (req.GetType() == typeof(CAPPamari.Web.Models.Requirements.LevelRequirement))
                     {
                         foreach (CAPPamari.Web.Models.CourseModel course in courses)
                         {
@@ -156,10 +165,19 @@ namespace CAPPamari.Web.Helpers
             }
         }
 
-        public void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSet> requirements, List<CAPPamari.Web.Models.CourseModel> courses)
+        public static void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSet> requirementSets, List<CAPPamari.Web.Models.CourseModel> courses)
         {
-            fillNamedRequirements(requirements, courses);
-            fillLevelRequirements(requirements, courses);
+            fillNamedRequirements(requirementSets, courses);
+            fillLevelRequirements(requirementSets, courses);
+
+            //find and check HASS
+            foreach (CAPPamari.Web.Models.Requirements.RequirementSet reqset in requirementSets)
+            {
+                if (reqset.Name == "HASS")
+                {
+                    FillHASS(reqset, courses);
+                }
+            }
         }
     }
 }
