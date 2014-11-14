@@ -39,13 +39,13 @@ namespace CAPPamari.Web.Helpers
             return EntitiesHelper.GetRequirementSet(UserName, RequirementSetName);
         }
         /// <summary>
-        /// Gets all RequirementSets for the user
+        /// Gets CAPPReport for the user
         /// </summary>
-        /// <param name="UserName">UserName for user to get all RequirementSets for</param>
-        /// <returns>List<RequirementSet> of all RequrementSets</returns>
-        public static List<CAPPamari.Web.Models.Requirements.RequirementSetModel> GetAllRequirementSets(string UserName)
+        /// <param name="UserName">UserName for user to get CAPP Report for</param>
+        /// <returns>CAPPReportModel or null if no CAPP Report exists</returns>
+        public static CAPPReportModel GetCAPPReport(string UserName)
         {
-            return EntitiesHelper.GetAllRequirementSets(UserName);
+            return EntitiesHelper.GetCAPPReport(UserName);
         }
     }
 }

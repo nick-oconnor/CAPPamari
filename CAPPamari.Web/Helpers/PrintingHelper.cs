@@ -13,7 +13,7 @@ namespace CAPPamari.Web.Helpers
         public static PdfDocument PrintCAPPReport(string UserName)
         {
             var userData = UserHelper.GetApplicationUser(UserName);
-            var courseData = CourseHelper.GetAllRequirementSets(UserName);
+            var courseData = CourseHelper.GetCAPPReport(UserName);
             var pdf = new PdfDocument();
             var cappSection = pdf.Sections.Add();
             var page = cappSection.Pages.Add();
@@ -27,7 +27,7 @@ namespace CAPPamari.Web.Helpers
                 stringData += adivsor.Name + ": " + adivsor.EMail + "\n";
             }
             stringData += "\n\n";
-            foreach (var reqSet in courseData)
+            foreach (var reqSet in courseData.RequirementSets)
             {
                 stringData += reqSet.Name + "\n";
                 foreach (var course in reqSet.AppliedCourses)

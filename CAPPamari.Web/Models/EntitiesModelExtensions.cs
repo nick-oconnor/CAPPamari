@@ -27,7 +27,8 @@ namespace CAPPamari.Web.Models
                 MaxPassNoCreditCredits = EntityRequirementSet.PassNCCredits,
                 Name = EntityRequirementSet.Name,
                 Requirements = EntityRequirementSet.Requirements.Select(req => req.ToRequirementModel()).ToList(),
-                RequirementSetRequirements = EntityRequirementSet.RequirementSetRequirements.Select(req => req.ToRequirementModel()).ToList()
+                RequirementSetRequirements = EntityRequirementSet.RequirementSetRequirements.Select(req => req.ToRequirementModel()).ToList(),
+                AppliedCourses = EntityRequirementSet.Courses.Select(course => course.ToCourseModel()).ToList() 
             };
         }
         public static RequirementModel ToRequirementModel(this Requirement EntityRequirement)
@@ -47,6 +48,19 @@ namespace CAPPamari.Web.Models
             {
                 CourseNumber = EntityCourseFulfillment.CourseNumber,
                 DepartmentCode = EntityCourseFulfillment.DepartmentCode
+            };
+        }
+        public static CourseModel ToCourseModel(this Course EntityCourse)
+        {
+            return new CourseModel()
+            {
+                CommIntensive = EntityCourse.CommunicationIntensive,
+                CourseNumber = EntityCourse.Number,
+                Credits = EntityCourse.Credits,
+                DepartmentCode = EntityCourse.Department,
+                Grade = EntityCourse.Grade,
+                PassNoCredit = EntityCourse.PassNC,
+                Semester = EntityCourse.Semester
             };
         }
     }

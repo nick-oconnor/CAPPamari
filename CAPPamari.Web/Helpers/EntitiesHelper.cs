@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using CAPPamari.Web.Models;
+using CAPPamari.Web.Models.Requirements;
 
 namespace CAPPamari.Web.Helpers
 {
@@ -329,7 +330,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="UserName">UserName of user to get RequirementSet for</param>
         /// <param name="RequirementSetName">Name of the requirement set to retrieve</param>
         /// <returns>RequirementSet desired or null if no such RequirementSet exists</returns>
-        public static CAPPamari.Web.Models.Requirements.RequirementSetModel GetRequirementSet(string UserName, string RequirementSetName)
+        public static RequirementSetModel GetRequirementSet(string UserName, string RequirementSetName)
         {
             using (var entities = GetEntityModel())
             {
@@ -350,9 +351,8 @@ namespace CAPPamari.Web.Helpers
         /// </summary>
         /// <param name="UserName">UserName for user to get all the RequirementSets for</param>
         /// <returns>List<RequirementSet> of all RequirementSets</returns>
-        public static List<CAPPamari.Web.Models.Requirements.RequirementSetModel> GetAllRequirementSets(string UserName)
+        public static CAPPReportModel GetCAPPReport(string UserName)
         {
-            List<string> requirementSetNames;
             using (var entities = GetEntityModel())
             {
                 var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
@@ -361,16 +361,8 @@ namespace CAPPamari.Web.Helpers
                 var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return null;
 
-                requirementSetNames = report.RequirementSets.Select(set => set.Name).ToList();
+                return report.ToCAPPReportModel();
             }
-
-            var reqSets = new List<CAPPamari.Web.Models.Requirements.RequirementSetModel>();
-            foreach (var name in requirementSetNames)
-            {
-                reqSets.Add(GetRequirementSet(UserName, name));
-            }
-
-            return reqSets;
         }
 
         /// <summary>

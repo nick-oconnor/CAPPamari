@@ -8,14 +8,6 @@ $(window).load(function () {
     viewModel = new ViewModel();
     // try to load user from cookie
 
-    // insertion of dummy data
-    viewModel.addNewRequirementSet(new RequirementSet('Communication Intensive'));
-    viewModel.addNewRequirementSet(new RequirementSet('Math'));
-    viewModel.addNewRequirementSet(new RequirementSet('Science'));
-    viewModel.addNewRequirementSet(new RequirementSet('Computer Science'));
-    viewModel.addNewRequirementSet(new RequirementSet('Computer Science Option'));
-    viewModel.addNewRequirementSet(new RequirementSet('HASS'));
-    viewModel.addNewCouse(new Course("CSCI", 4000, "F14", true, null, 1));
     ko.applyBindings(viewModel);
 
     // drag'n drop code
@@ -285,10 +277,11 @@ SignInUser = function (userName, password) {
             });
 
             // set cookie
-            // load user courses and requirement sets
 
             $('#blockingDiv').hide();
             RedisplayHeader();
+
+            viewModel.loadCAPPReport();
         },
         error: function () {
             alert('There is an issue with the server, please try again later');
@@ -360,15 +353,53 @@ ViewModel = function () {
 
     /* Functions */
     self.addNewCouse = function (course) {
-        // add logic to detect where it should go and prompt user if correct
         self.unassignedCourses.push(course);
         MakeCoursesDraggable();
-    }
-    self.addNewRequirementSet = function (requirementSet) {
-        self.requirementSets.push(requirementSet);
     }
     self.print = function () {
         var url = window.location.origin + '/Home/Print?UserName=' + self.user().userName();
         window.open(url, '_blank');
+    }
+    self.reloadCAPPReport = function () {
+        self.unassignedCourses([]);
+        self.requirementSets([]);
+    }
+    self.loadCAPPReport = function () {
+        $.ajax({
+            url: window.location.origin + '/api/User/GetCAPPReport',
+            data: JSON.stringify(self.user().userName()), 
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (data, textStatus, jqXHR) {
+                if (!data.Success) {
+                    alert(data.Message);
+                    $('#blockingDiv').hide();
+                    return;
+                }
+                var cappReport = data.Payload;
+                self.requirementSets.push(new RequirementSet('CAPP Report Requirements'));
+                ko.utils.arrayForEach(cappReport.RequirementSets, function (RequirementSetModel) {
+                    if (RequirementSetModel.Name === 'Unapplied Courses') {
+                        ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function (CourseModel) {
+                            self.unassignedCourses.push(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits));
+                        });
+                    } else {
+                        var newRequirementSet = new RequirementSet(RequirementSetModel.Name);
+                        ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function (CourseModel) {
+                            newRequirementSet.addCourse(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits));
+                        });
+                        self.requirementSets.push(newRequirementSet);
+                    }
+                });
+                SetupDragAndDrop();
+                $('#blockingDiv').hide();
+            },
+            error: function () {
+                alert('There is an issue with the server, please try again later');
+                $('#blockingDiv').hide();
+            }
+        });
+        $('#blockingDivSpan').text('Loading your CAPP Report...');
+        $('#blockingDiv').show();
     }
 }
