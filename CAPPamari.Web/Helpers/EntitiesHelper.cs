@@ -329,7 +329,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="UserName">UserName of user to get RequirementSet for</param>
         /// <param name="RequirementSetName">Name of the requirement set to retrieve</param>
         /// <returns>RequirementSet desired or null if no such RequirementSet exists</returns>
-        public static CAPPamari.Web.Models.Requirements.RequirementSet GetRequirementSet(string UserName, string RequirementSetName)
+        public static CAPPamari.Web.Models.Requirements.RequirementSetModel GetRequirementSet(string UserName, string RequirementSetName)
         {
             using (var entities = GetEntityModel())
             {
@@ -342,43 +342,7 @@ namespace CAPPamari.Web.Helpers
                 var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSetName);
                 if (dbset == null) return null;
 
-                var reqSetReqs = new List<CAPPamari.Web.Models.Requirements.RequirementSetRequirements.RequirementSetRequirement>();
-                // add department RSRs
-                reqSetReqs.AddRange(dbset.DepartmentRSRs.Select(dbreq => new CAPPamari.Web.Models.Requirements.RequirementSetRequirements.DepartmentRSR(dbreq.DepartmentCode, dbreq.NumberOfCourses)));
-                // add level limit RSRs
-                reqSetReqs.AddRange(dbset.LevelLimitRSRs.Select(dbreq => new CAPPamari.Web.Models.Requirements.RequirementSetRequirements.LevelLimitRSR(dbreq.CourseLevel, dbreq.UpperLimit)));
-                // add depth RSR
-                if (dbset.DepthRSR) reqSetReqs.Add(new CAPPamari.Web.Models.Requirements.RequirementSetRequirements.DepthRSR());
-
-                var reqs = new List<CAPPamari.Web.Models.Requirements.Requirement>();
-                // add comm requirements
-                var commDepts = dbset.CommRequirementDepartments.Select(comm => comm.DepartmentCode).ToList();
-                reqs.Add(new CAPPamari.Web.Models.Requirements.CommRequirement(commDepts));
-                // add exclustion requirements
-                reqs.AddRange(dbset.ExclusionRequirements.Select(dbreq => new CAPPamari.Web.Models.Requirements.ExclusionRequirement(dbreq.DepartmentCode, dbreq.CourseNumber)));
-                // add level requirements
-                reqs.AddRange(dbset.LevelRequirements.Select(dbreq => new CAPPamari.Web.Models.Requirements.LevelRequirement(dbreq.LevelRequirementDepartments.Select(levelreq => levelreq.DepartmentCode).ToList(), dbreq.MinimumLevel, dbreq.CreditsNeeded))); 
-                // add single requirements
-                reqs.AddRange(dbset.SingleRequirements.Select(dbreq => new CAPPamari.Web.Models.Requirements.SingleRequirement(dbreq.DepartmentCode, dbreq.CourseNumber, dbreq.CreditsNeeded)));
-
-                var courses = dbset.Courses.Select(course => new CAPPamari.Web.Models.CourseModel()
-                {
-                    CommIntensive = course.CommunicationIntensive,
-                    CourseNumber = course.Number,
-                    Credits = course.Credits,
-                    DepartmentCode = course.Department,
-                    Grade = course.Grade,
-                    PassNoCredit = course.PassNC,
-                    Semester = course.Semester
-                }).ToList();
-                return new CAPPamari.Web.Models.Requirements.RequirementSet()
-                {
-                    Name = dbset.Name,
-                    Description = dbset.Description,
-                    RSRs = reqSetReqs,
-                    Requirements = reqs,
-                    AppliedCourses = courses
-                };
+                return dbset.ToRequirementSetModel();
             }
         }
         /// <summary>
@@ -386,7 +350,7 @@ namespace CAPPamari.Web.Helpers
         /// </summary>
         /// <param name="UserName">UserName for user to get all the RequirementSets for</param>
         /// <returns>List<RequirementSet> of all RequirementSets</returns>
-        public static List<CAPPamari.Web.Models.Requirements.RequirementSet> GetAllRequirementSets(string UserName)
+        public static List<CAPPamari.Web.Models.Requirements.RequirementSetModel> GetAllRequirementSets(string UserName)
         {
             List<string> requirementSetNames;
             using (var entities = GetEntityModel())
@@ -400,7 +364,7 @@ namespace CAPPamari.Web.Helpers
                 requirementSetNames = report.RequirementSets.Select(set => set.Name).ToList();
             }
 
-            var reqSets = new List<CAPPamari.Web.Models.Requirements.RequirementSet>();
+            var reqSets = new List<CAPPamari.Web.Models.Requirements.RequirementSetModel>();
             foreach (var name in requirementSetNames)
             {
                 reqSets.Add(GetRequirementSet(UserName, name));

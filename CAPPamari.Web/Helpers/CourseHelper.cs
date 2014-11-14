@@ -34,7 +34,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="UserName">UserName of user to get the RequirementSet for</param>
         /// <param name="RequirementSetName">Name of the requirement set to get</param>
         /// <returns>RequirementSet or null if no such RequirementSet exists for user</returns>
-        public static CAPPamari.Web.Models.Requirements.RequirementSet GetRequirementSet(string UserName, string RequirementSetName)
+        public static CAPPamari.Web.Models.Requirements.RequirementSetModel GetRequirementSet(string UserName, string RequirementSetName)
         {
             return EntitiesHelper.GetRequirementSet(UserName, RequirementSetName);
         }
@@ -43,7 +43,7 @@ namespace CAPPamari.Web.Helpers
         /// </summary>
         /// <param name="UserName">UserName for user to get all RequirementSets for</param>
         /// <returns>List<RequirementSet> of all RequrementSets</returns>
-        public static List<CAPPamari.Web.Models.Requirements.RequirementSet> GetAllRequirementSets(string UserName)
+        public static List<CAPPamari.Web.Models.Requirements.RequirementSetModel> GetAllRequirementSets(string UserName)
         {
             return EntitiesHelper.GetAllRequirementSets(UserName);
         }

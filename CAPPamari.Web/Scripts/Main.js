@@ -274,6 +274,7 @@ SignInUser = function (userName, password) {
         success: function (data, textStatus, jqXHR) {
             if (!data.Success) {
                 alert(data.Message);
+                $('#blockingDiv').hide();
                 return;
             }
 
@@ -284,6 +285,7 @@ SignInUser = function (userName, password) {
             });
 
             // set cookie
+            // load user courses and requirement sets
 
             $('#blockingDiv').hide();
             RedisplayHeader();
