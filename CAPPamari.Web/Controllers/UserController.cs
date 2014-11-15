@@ -63,5 +63,18 @@ namespace CAPPamari.Web.Controllers
             var message = success ? "Email sent successfully" : "Email could not be sent";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
+
+        /// <summary>
+        /// Load a CAPP Report for a user
+        /// </summary>
+        /// <param name="UserName">UserName of user to load CAPP Report for</param>
+        /// <returns>ApiResponse<CAPPReportModel> containing user's CAPP Report</returns>
+        [HttpPost]
+        public ApiResponse<CAPPReportModel> GetCAPPReport([FromBody]string UserName)
+        {
+            var cappReport = CourseHelper.GetCAPPReport(UserName);
+            var message = cappReport == null ? "CAPP Report not found for user " + UserName : "CAPP Report loaded successfully";
+            return ApiResponse<CAPPReportModel>.From(cappReport != null, message, cappReport);
+        }
     }
 }
