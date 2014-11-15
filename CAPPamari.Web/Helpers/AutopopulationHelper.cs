@@ -165,6 +165,12 @@ namespace CAPPamari.Web.Helpers
             }
         }
 
+        /// <summary>
+        /// Fills in classes automatically.
+        /// Note that the HASS RequirementSet must be named "HASS"
+        /// </summary>
+        /// <param name="requirementSets"></param>
+        /// <param name="courses"></param>
         public static void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSet> requirementSets, List<CAPPamari.Web.Models.CourseModel> courses)
         {
             fillNamedRequirements(requirementSets, courses);
