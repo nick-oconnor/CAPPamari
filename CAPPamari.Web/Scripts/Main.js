@@ -283,9 +283,36 @@ LoadUserFromCookie = function () {
     var cookies = document.cookie.split(';');
     var userCookie = '';
     for (var i = 0; i < cookies.length; i++) {
-
+        var cookie = cookies[i];
+        while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
+        if (cookie.indexOf('CAPPamariCredentials=') !== -1) userCookie = cookie.substring(21, cookie.length);
     }
     if (userCookie === '') return false;
+    $.ajax({
+        url: window.location.origin + '/api/User/LoadFromUserSessionCookie',
+        data: JSON.stringify(userCookie),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function (data, textStatus, jqXHR) {
+            if (data.Success) {
+                var appUser = data.Payload;
+                viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
+                ko.utils.arrayForEach(appUser.Advisors, function (advisor) {
+                    viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                });
+                RedisplayHeader();
+
+                viewModel.loadCAPPReport();
+            } else {
+                $('#blockingDiv').hide();
+            }
+        },
+        error: function () {
+            $('#blockingDiv').hide();
+        }
+    });
+    $('#blockingDivSpan').text('Signing you in...');
+    $('#blockingDiv').show();
 }
 SignInUser = function (userName, password) {
     var jsonData = { UserName: userName, Password: password };
@@ -309,7 +336,6 @@ SignInUser = function (userName, password) {
 
             document.cookie = 'CAPPamariCredentials=' + appUser.SessionID + '#' + appUser.UserName + ';';
 
-            $('#blockingDiv').hide();
             RedisplayHeader();
 
             viewModel.loadCAPPReport();
@@ -333,13 +359,21 @@ User = function (sessionID, userName, major) {
 
     /* Functions */
     self.signOut = function () {
-        var jsonData = { UserName: self.userName };
+        var jsonData = { UserName: self.userName() };
         $.ajax({
             url: window.location.origin + '/Account/Logout',
             data: JSON.stringify(jsonData),
             type: 'POST',
-            contentType: 'application/json'
+            contentType: 'application/json',
+            success: function (data, textStatus, jqXHR) {
+                $('#blockingDiv').hide();
+            },
+            error: function () {
+                $('#blockingDiv').hide();
+            }
         });
+        $('#blockingDivSpan').text('Logging you out...');
+        $('#blockingDiv').show();
         viewModel.user(null);
         viewModel.clearCAPPReport();
 
