@@ -76,5 +76,18 @@ namespace CAPPamari.Web.Controllers
             var message = cappReport == null ? "CAPP Report not found for user " + UserName : "CAPP Report loaded successfully";
             return ApiResponse<CAPPReportModel>.From(cappReport != null, message, cappReport);
         }
+
+        /// <summary>
+        /// Loads a user from the session cookie set on the client
+        /// </summary>
+        /// <param name="UserSessionCookie">string stored in Javascript to save user's session</param>
+        /// <returns>ApiResponse<ApplicationUserModel> for user or null if the cookie is bad</returns>
+        public ApiResponse<ApplicationUserModel> LoadFromUserSessionCookie([FromBody]string UserSessionCookie)
+        {
+            var user = UserHelper.GetUserFromCookie(UserSessionCookie);
+            var success = user != null;
+            var message = success ? "User loaded successfully from the session cookie" : "User could not be loaded from the session cookie";
+            return ApiResponse<ApplicationUserModel>.From(success, message, user);
+        }
     }
 }

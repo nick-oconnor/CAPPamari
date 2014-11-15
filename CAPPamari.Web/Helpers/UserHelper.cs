@@ -100,5 +100,22 @@ namespace CAPPamari.Web.Helpers
             if (advisorID == -1) return false;
             return EntitiesHelper.DisassociateAdvisorAndUser(UserName, advisorID);
         }
+
+        /// <summary>
+        /// Gets user from session cookie
+        /// </summary>
+        /// <param name="UserCookie">string stored in Javascript to store the user's state</param>
+        /// <returns>ApplicationUserModel extracted from the cookie or null if the session is old or nonexistent</returns>
+        public static ApplicationUserModel GetUserFromCookie(string UserCookie)
+        {
+            var fields = UserCookie.Split('#');
+            if (fields.Length != 2) return null;
+
+            int sessionID;
+            if (!int.TryParse(fields[0], out sessionID)) return null;
+            if (EntitiesHelper.GetSessionID(fields[1]) != sessionID) return null;
+
+            return GetApplicationUser(fields[1]);
+        }
     }
 }

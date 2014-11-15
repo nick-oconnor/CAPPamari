@@ -104,7 +104,7 @@ namespace CAPPamari.Web.Helpers
 
                 var session = user.UserSessions.FirstOrDefault();
                 if (session == null) return -1;
-                return session.SessionID;
+                return session.Expiration < DateTime.Now ? -1 : session.SessionID;
             }
         }
         /// <summary>
