@@ -15,13 +15,15 @@ namespace CAPPamari.Test
         public void autopopTest1()
         {
             //make a mock requirement set
-            List<RequirementSet> reqSets = new List<RequirementSet>();
-            RequirementSet csciSet = new RequirementSet();
+            List<RequirementSetModel> reqSets = new List<RequirementSetModel>();
+            RequirementSetModel csciSet = new RequirementSetModel();
             List<String> departmentCodes = new List<String>();
             departmentCodes.Add("CSCI");
 
-            Requirement CSCI4440 = new SingleRequirement("CSCI", "4440", 4);
-            Requirement CSCI1XXX = new LevelRequirement(departmentCodes, "1000", 4);
+            RequirementModel CSCI4440 = new RequirementModel();
+            CSCI4440.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "4440"));
+            RequirementModel CSCI1XXX = new RequirementModel();
+            CSCI1XXX.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "1xxx"));
 
             csciSet.Requirements.Add(CSCI4440);
             csciSet.Requirements.Add(CSCI1XXX);
