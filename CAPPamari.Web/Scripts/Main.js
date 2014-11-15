@@ -331,6 +331,7 @@ User = function (sessionID, userName, major) {
             contentType: 'application/json'
         });
         viewModel.user(null);
+        viewModel.clearCAPPReport();
 
         RedisplayHeader();
     }
@@ -384,9 +385,13 @@ ViewModel = function () {
     self.emailToAdvisor = function () {
         EmailToAdvisor(self.advisor());
     }
-    self.reloadCAPPReport = function () {
+    self.clearCAPPReport = function () {
         self.unassignedCourses([]);
         self.requirementSets([]);
+    }
+    self.reloadCAPPReport = function () {
+        self.clearCAPPReport();
+        self.loadCAPPReport();
     }
     self.loadCAPPReport = function () {
         $.ajax({
