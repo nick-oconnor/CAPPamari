@@ -8,14 +8,12 @@ namespace CAPPamari.Web.Models
 {
     public class AdvisorModel
     {
-        public string Name { get; private set; }
-        public string EMail { get; private set; }
+        public string Name { get; set; }
+        public string EMail { get; set; }
 
-        [JsonConstructor]
-        public AdvisorModel(string Name, string EMail)
+        public AdvisorModel()
         {
-            this.Name = Name;
-            this.EMail = EMail;
+
         }
     }
 }

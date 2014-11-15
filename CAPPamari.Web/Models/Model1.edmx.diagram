@@ -28,15 +28,7 @@
         <EntityTypeShape EntityType="JustinModel.UserSession" Width="1.5" PointX="5.25" PointY="1.125" />
         <AssociationConnector Association="JustinModel.FK_CAPPReport_ApplicationUser" />
         <AssociationConnector Association="JustinModel.FK_UserSession_ApplicationUser" />
-        <AssociationConnector Association="JustinModel.FK_RequirementSet_CAPPRerport" />
-        <AssociationConnector Association="JustinModel.FK__CommRequi__Requi__619B8048" />
         <AssociationConnector Association="JustinModel.FK_Course_RequirementSet" />
-        <AssociationConnector Association="JustinModel.FK__LevelRequ__Level__628FA481" />
-        <AssociationConnector Association="JustinModel.RequirementSet_DepartmentRSR" />
-        <AssociationConnector Association="JustinModel.RequirementSet_ExclusionRequiremnt" />
-        <AssociationConnector Association="JustinModel.RequirementSet_LevelLimitRSR" />
-        <AssociationConnector Association="JustinModel.RequirementSet_LevelRequirement" />
-        <AssociationConnector Association="JustinModel.RequirementSet_SingleRequirement" />
         <AssociationConnector Association="JustinModel.Advises" />
       </Diagram>
     </edmx:Diagrams>

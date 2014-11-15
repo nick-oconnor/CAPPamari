@@ -208,6 +208,7 @@
     <Compile Include="Helpers\AutopopulationHelper.cs" />
     <Compile Include="Helpers\CSVParserHelper.cs" />
     <Compile Include="Helpers\EntitiesHelper.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PrintingHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
@@ -248,6 +249,7 @@
     </Compile>
     <Compile Include="Models\Requests\ChangeAdvisorRequest.cs" />
     <Compile Include="Models\Requests\ChangeMajorRequest.cs" />
+    <Compile Include="Models\Requests\EmailToAdvisorRequest.cs" />
     <Compile Include="Models\Requests\LoginRequest.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>

@@ -24,6 +24,27 @@ $(window).load(function () {
     ResizeDisplay();
 });
 
+EmailToAdvisor = function (advisor) {
+    var emailRequest = {
+        UserName: viewModel.user().userName(), Advisor: {
+            Name: advisor.name(),
+            EMail: advisor.emailAddress()
+        }
+    };
+    $.ajax({
+        url: window.location.origin + '/api/User/EmailToAdvisor',
+        data: JSON.stringify(emailRequest),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function (data, textSuccess, jqXHR) {
+            alert(data.Message);
+        },
+        error: function () {
+            alert('There is an issue with the server, please try again later');
+        }
+    });
+}
+
 MakeCoursesDraggable = function () {
     $(".course").draggable({
         appendTo: "body",
@@ -368,5 +389,8 @@ ViewModel = function () {
     self.print = function () {
         var url = window.location.origin + '/Home/Print?UserName=' + self.user().userName();
         window.open(url, '_blank');
+    }
+    self.emailToAdvisor = function () {
+        EmailToAdvisor(self.advisor());
     }
 }

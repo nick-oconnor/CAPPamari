@@ -32,7 +32,10 @@ namespace CAPPamari.Web.Helpers
             var major = EntitiesHelper.GetMajor(UserName);
             var dbAdvisors = EntitiesHelper.GetAdvisors(UserName);
             var advisors = new List<AdvisorModel>();
-            dbAdvisors.ForEach(dbAd => advisors.Add(new AdvisorModel(dbAd.Name, dbAd.EMailAddress)));
+            dbAdvisors.ForEach(dbAd => advisors.Add(new AdvisorModel() {
+                Name = dbAd.Name,
+                EMail = dbAd.EMailAddress
+            }));
 
             return new ApplicationUserModel(UserName, major, advisors, sessionID);
         }

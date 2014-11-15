@@ -55,7 +55,7 @@
                     <span style="position:relative;float:right;cursor:pointer;" onclick="viewModel.print()">Print</span><br />
                     <div data-bind="if: user()">
                         <div data-bind="foreach: user().advisors">
-                            <a data-bind="text: name, attr: { href: 'mailto:' + emailAddress() }"></a>
+                            <a data-bind="text: name, click: EmailToAdvisor"></a>
                         </div>
                     </div>
                 </div>
