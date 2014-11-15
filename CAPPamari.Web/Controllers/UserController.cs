@@ -50,5 +50,31 @@ namespace CAPPamari.Web.Controllers
             var message = success ? "Advisor removed successfully" : "Advisor could not be removed"; 
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
+
+        /// <summary>
+        /// Email the current report to your advisor
+        /// </summary>
+        /// <param name="Request">EmailToAdvisorRequest coresponding to the advisor to email the user's report to.</param>
+        /// <returns>ApiResponse<bool> denoting whether or not the action was successful.</returns>
+        [HttpPost]
+        public ApiResponse<bool> EmailToAdvisor([FromBody]EmailToAdvisorRequest Request)
+        {
+            var success = EmailHelper.EmailToAdvisor(Request.UserName, Request.Advisor);
+            var message = success ? "Email sent successfully" : "Email could not be sent";
+            return ApiResponse<bool>.SuccessResponse(message, success);
+        }
+
+        /// <summary>
+        /// Load a CAPP Report for a user
+        /// </summary>
+        /// <param name="UserName">UserName of user to load CAPP Report for</param>
+        /// <returns>ApiResponse<CAPPReportModel> containing user's CAPP Report</returns>
+        [HttpPost]
+        public ApiResponse<CAPPReportModel> GetCAPPReport([FromBody]string UserName)
+        {
+            var cappReport = CourseHelper.GetCAPPReport(UserName);
+            var message = cappReport == null ? "CAPP Report not found for user " + UserName : "CAPP Report loaded successfully";
+            return ApiResponse<CAPPReportModel>.From(cappReport != null, message, cappReport);
+        }
     }
 }

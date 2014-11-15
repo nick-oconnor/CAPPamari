@@ -10,6 +10,7 @@ namespace CAPPamari.Web.Helpers
     {
         //function to autopopulate the HASS requirement set
         public static void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSet HASSreqset, List<CourseModel> CoursesTaken)
+
         {
             List<string> humDepts = new List<string>(){
                 "IHSS",
@@ -70,7 +71,7 @@ namespace CAPPamari.Web.Helpers
 
             //alternate between adding hum and ssci to HASS 
             //until full (or run out of courses, caught below)
-            while (!HASSreqset.Full())
+            while (!HASSreqset.IsFulfilled())
             {
                 if (HumCourses.Count > 0)
                 {
@@ -120,11 +121,11 @@ namespace CAPPamari.Web.Helpers
             return;
         }
 
-        public static void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
+        public static void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
         {
-
-            foreach (var reqset in allSets)
-            {
+            // We need to find another way to do this because we don't have SingleRequirements anymore
+            /*
+            foreach (var reqset in allSets){
                 foreach (var req in reqset.Requirements)
                 {
                     if (req.GetType() == typeof(CAPPamari.Web.Models.Requirements.SingleRequirement))
@@ -141,12 +142,14 @@ namespace CAPPamari.Web.Helpers
                     }
                 }
             }
+            */
         }
 
-        public static void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSet> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
-        {
+        public static void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> allSets, List<CAPPamari.Web.Models.CourseModel> courses){
+            // We need to find another way to do this because we don't have LevelRequirement anymore
+            /*
             foreach (var reqset in allSets)
-            {
+		{
                 foreach (var req in reqset.Requirements)
                 {
                     if (req.GetType() == typeof(CAPPamari.Web.Models.Requirements.LevelRequirement))
@@ -163,6 +166,7 @@ namespace CAPPamari.Web.Helpers
                     }
                 }
             }
+            */
         }
 
         /// <summary>
@@ -171,7 +175,8 @@ namespace CAPPamari.Web.Helpers
         /// </summary>
         /// <param name="requirementSets"></param>
         /// <param name="courses"></param>
-        public static void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSet> requirementSets, List<CAPPamari.Web.Models.CourseModel> courses)
+        
+        public void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> requirements, List<CAPPamari.Web.Models.CourseModel> courses)
         {
             fillNamedRequirements(requirementSets, courses);
             fillLevelRequirements(requirementSets, courses);
