@@ -6,7 +6,9 @@ $(window).resize(function () {
 });
 $(window).load(function () {
     viewModel = new ViewModel();
-    // try to load user from cookie
+    if (LoadUserFromCookie()) {
+        viewModel.loadCAPPReport();
+    }
 
     ko.applyBindings(viewModel);
 
@@ -277,6 +279,14 @@ RedisplayHeader = function () {
     }
     ResizeDisplay();
 }
+LoadUserFromCookie = function () {
+    var cookies = document.cookie.split(';');
+    var userCookie = '';
+    for (var i = 0; i < cookies.length; i++) {
+
+    }
+    if (userCookie === '') return false;
+}
 SignInUser = function (userName, password) {
     var jsonData = { UserName: userName, Password: password };
     $.ajax({
@@ -297,7 +307,7 @@ SignInUser = function (userName, password) {
                 viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
             });
 
-            // set cookie
+            document.cookie = 'CAPPamariCredentials=' + appUser.SessionID + '#' + appUser.UserName + ';';
 
             $('#blockingDiv').hide();
             RedisplayHeader();
