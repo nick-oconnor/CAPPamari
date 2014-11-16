@@ -15,7 +15,7 @@ namespace CAPPamari.Web.Models.Requirements
             if (DepartmentCode != Course.DepartmentCode) return false;
             for (int i = 0; i < 4; i++)
             {
-                if (CourseNumber[i] == 'x') continue;
+                if (CourseNumber[i] == 'x' || Course.CourseNumber[i] == 'x') continue;
                 if (Convert.ToInt32(CourseNumber[i]) > Convert.ToInt32(Course.CourseNumber[i])) return false;
             }
             return true;
