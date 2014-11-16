@@ -16,10 +16,26 @@
         <div id="blockingDiv">
             <span id="blockingDivSpan"></span>
         </div>
+        <div id="advisorDialogRoot">
+            <table style="width:100%">
+                <tr>
+                    <td style="text-align:right">Name:</td>
+                    <td style="text-align:left"><input id="advisorName" type="text" /></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">Email:</td>
+                    <td style="text-align:left"><input id="advisorEmail" type="email" /></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right"><input type="button" onclick="SubmitAdvisorInformation()" value="Submit" /></td>
+                    <td style="text-align:left"><input type="button" onclick="CancelAdvisorDialog()" value="Cancel" /></td>
+                </tr>
+            </table>
+        </div>
         <div id="registrationDialogRoot">
             <table style="width:100%;">
                 <tr>
-                    <td style="text-align:right;">Desired User Name:</td>
+                    <td style="text-align:right;">User Name:</td>
                     <td style="text-align:left;"><input id="registrationUserName" type="text" /></td>
                 </tr>
                 <tr>
@@ -35,7 +51,7 @@
                     <td style="text-align:left;"><input id="registrationMajor" type="text" /></td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;"><input id="registrationSubmit" type="button" onclick="SubmitRegistrationInformation()" value="Register" /></td>
+                    <td style="text-align:right;"><input id="registrationSubmit" type="button" onclick="SubmitRegistrationInformation()" value="Submit" /></td>
                     <td style="text-align:left;"><input id="registrationCancel" type="button" onclick="CancelRegistration()" value="Cancel" /></td>
                 </tr>
             </table>
@@ -71,7 +87,7 @@
                     <td style="text-align:left;"><input id="singletonCredits" type="number" /></td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;"><input id="singletonSumbit" type="button" onclick="SubmitSingletonClassAddInformation()" value="Add" /></td>
+                    <td style="text-align:right;"><input id="singletonSumbit" type="button" onclick="SubmitSingletonClassAddInformation()" value="Submit" /></td>
                     <td style="text-align:left;"><input id="singletonCancel" type="button" onclick="CancelSingletonClassAdd()" value="Cancel" /></td>
                 </tr>
             </table>
@@ -80,14 +96,17 @@
             <div id="headerBarWrapper">
                 <div id="userHeader" style="position:relative;display:none;width:100%;">
                     <span id="userHeaderStudentName" style="position:relative;float:left" data-bind="text: user() === null ? 'NO USER' : user().userName"></span>
+                    <a onclick="EditUserInfo()" style="cursor:pointer;margin-left:2px;position:relative;float:left;" >edit</a> 
                     <span style="position:relative;float:right;cursor:pointer;" onclick="viewModel.user().signOut()">Logout</span><br />
                     <span id="userHeaderMajor" style="position:relative;float:left" data-bind="text: user() === null ? 'NO MAJOR' : user().major"></span>
                     <span style="position:relative;float:right;cursor:pointer;" onclick="viewModel.print()">Print</span><br />
                     <div data-bind="if: user()">
                         <div data-bind="foreach: user().advisors">
                             <a data-bind="text: name, click: EmailToAdvisor"></a>
+                            <a style="cursor:pointer;margin-left:2px" data-bind="click: EditAdvisorInfo">edit</a><br />
                         </div>
                     </div>
+                    <span style="cursor:pointer;" data-bind="click: AddNewAdvisor">Add Advisor</span>
                 </div>
                 <div id="loginHeader" style="position:relative;display:inline-block;width:100%;">
                     <input id="loginHeaderSignInButton" style="position:relative;float:right;" type="button" onclick="SignInButtonClick()" value="Log In"/>

@@ -1,4 +1,4 @@
-﻿var user = null;
+﻿var editMode = '';
 var viewModel = null;
 
 $(window).resize(function () {
@@ -38,7 +38,31 @@ EmailToAdvisor = function (advisor) {
         }
     });
 }
-
+EditAdvisorInfo = function (advisor) {
+    $('#advisorName').val(advisor.name());
+    $('#advisorEmail').val(advisor.emailAddress());
+    $('#advisorName').prop('readonly', 'true');
+    ShowAdvisorDialog();
+}
+ShowAdvisorDialog = function () {
+    $('#advisorDialogRoot').show();
+}
+AddNewAdvisor = function () {
+    editMode = 'new';
+    $('#registrationUserName').val('');
+    $('#registrationMajor').val('');
+    $('#registrationUserName').prop('readonly', 'false');
+    ShowRegistrationDialog();
+}
+SubmitAdvisorInformation = function () {
+    if (editMode === 'new') {
+    } else if (editMode === 'edit') {
+    }
+    $('#advisorDialogRoot').hide();
+}
+CancelAdvisorDialog = function () {
+    $('#advisorDialogRoot').hide();
+}
 MakeCoursesDraggable = function () {
     $(".course").draggable({
         appendTo: "body",
@@ -154,6 +178,13 @@ ShowSingletonClassAddDialog = function () {
 ShowRegistrationDialog = function () {
     $('#registrationDialogRoot').show();
     // add validators if needed
+}
+EditUserInfo = function () {
+    editMode = 'edit';
+    $('#registrationUserName').val(viewModel.user().userName());
+    $('#registrationMajor').val(viewModel.user().major());
+    $('#registrationUserName').prop('readonly', 'true');
+    ShowRegistrationDialog();
 }
 SubmitRegistrationInformation = function () {
     var userName = $('#registrationUserName').val();
@@ -428,6 +459,9 @@ ViewModel = function () {
     }
     self.emailToAdvisor = function () {
         EmailToAdvisor(self.advisor());
+    }
+    self.editAdvisorInfo = function () {
+        EditAdvisorInfo(self.advisor());
     }
     self.clearCAPPReport = function () {
         self.unassignedCourses([]);
