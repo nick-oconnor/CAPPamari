@@ -85,16 +85,18 @@
                     <span style="position:relative;float:right;cursor:pointer;" onclick="viewModel.print()">Print</span><br />
                     <div data-bind="if: user()">
                         <div data-bind="foreach: user().advisors">
-                            <a data-bind="text: name, click: EmailToAdvisor"></a>
+                            <a style="cursor:pointer;" data-bind="text: 'Email ' + name(), click: EmailToAdvisor"></a>
                         </div>
                     </div>
                 </div>
                 <div id="loginHeader" style="position:relative;display:inline-block;width:100%;">
-                    <input id="loginHeaderSignInButton" style="position:relative;float:right;" type="button" onclick="SignInButtonClick()" value="Log In"/>
-                    <input id="loginHeaderPassword" style="position:relative;float:right;" type="password"/>
-                    <span style="position:relative;float:right;">Password:</span>
-                    <input id="loginHeaderUserName" style="position:relative;float:right;" type="text"/>
-                    <span style="position:relative;float:right;">User Name:</span>
+                    <div style="position:relative;float:right">
+                        <span style="position:relative;">User Name:</span>
+                        <input id="loginHeaderUserName" style="position:relative;" type="text" />
+                        <span style="position:relative;">Password:</span>
+                        <input id="loginHeaderPassword" style="position:relative;" type="password" />
+                        <input id="loginHeaderSignInButton" style="position:relative;" type="button" onclick="SignInButtonClick()" value="Log In" />
+                    </div>
                     <span style="position:relative;float:left;cursor:pointer;" onclick="ShowRegistrationDialog()">Register</span>
                 </div>
             </div>
