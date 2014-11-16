@@ -17,9 +17,9 @@
             <span id="blockingDivSpan"></span>
         </div>
         <div id="registrationDialogRoot">
-            <table style="width:100%;">
+            <table style="width:100%;table-layout:fixed;">
                 <tr>
-                    <td style="text-align:right;">Desired User Name:</td>
+                    <td style="text-align:right;">Desired Username:</td>
                     <td style="text-align:left;"><input id="registrationUserName" type="text" /></td>
                 </tr>
                 <tr>
@@ -41,7 +41,7 @@
             </table>
         </div>
         <div id="singletonClassAddDialogRoot">
-            <table style="width:100%;">
+            <table style="width:100%;table-layout:fixed;">
                 <tr>
                     <td style="text-align:right;">Department:</td>
                     <td style="text-align:left;"><input id="singletonDepartment" type="text" /></td>
@@ -77,27 +77,40 @@
             </table>
         </div>
         <div id="headerBarRoot">
-            <div id="headerBarWrapper">
-                <div id="userHeader" style="position:relative;display:none;width:100%;">
-                    <span id="userHeaderStudentName" style="position:relative;float:left" data-bind="text: user() === null ? 'NO USER' : user().userName"></span>
-                    <span style="position:relative;float:right;cursor:pointer;" onclick="viewModel.user().signOut()">Logout</span><br />
-                    <span id="userHeaderMajor" style="position:relative;float:left" data-bind="text: user() === null ? 'NO MAJOR' : user().major"></span>
-                    <span style="position:relative;float:right;cursor:pointer;" onclick="viewModel.print()">Print</span><br />
-                    <div data-bind="if: user()">
-                        <div data-bind="foreach: user().advisors">
-                            <a style="cursor:pointer;" data-bind="text: 'Email ' + name(), click: EmailToAdvisor"></a>
+            <div id="userHeader" style="position:relative;display:none;width:100%;min-height:75px;">
+                <div style="position:relative;float:left;">
+                    <div style="vertical-align:middle;margin:20px;">
+                        <div data-bind="if: user()">
+                            <span id="userHeaderStudentName" style="position:relative;" data-bind="text: user().userName"></span>
+                            <span style="position:relative;"> - </span>
+                            <span id="userHeaderMajor" style="position:relative;" data-bind="text: user().major"></span>
+                            <div data-bind="foreach: user().advisors">
+                                <span style="position: relative;cursor:pointer;" data-bind="text: 'Email ' + name(), click: EmailToAdvisor"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="loginHeader" style="position:relative;display:inline-block;width:100%;">
-                    <div style="position:relative;float:right">
-                        <span style="position:relative;">User Name:</span>
+                <div style="position:relative;float:right;">
+                    <div style="vertical-align:middle;margin:20px;">
+                        <span style="position:relative;cursor:pointer;" onclick="viewModel.user().signOut()">Logout</span><br />
+                        <span style="position:relative;cursor:pointer;" onclick="viewModel.print()">Print</span><br />
+                    </div>
+                </div>
+            </div>
+            <div id="loginHeader" style="position:relative;width:100%;min-height:59px;">
+                <div style="position:relative;float:left;">
+                    <div style="vertical-align:middle;margin:20px;">
+                        <span style="position:relative;cursor:pointer;" onclick="ShowRegistrationDialog()">Register</span>
+                    </div>
+                </div>
+                <div style="position:relative;float:right;">
+                    <div style="vertical-align:middle;margin:20px;">
+                        <span style="position:relative;">Username:</span>
                         <input id="loginHeaderUserName" style="position:relative;" type="text" />
                         <span style="position:relative;">Password:</span>
                         <input id="loginHeaderPassword" style="position:relative;" type="password" />
-                        <input id="loginHeaderSignInButton" style="position:relative;" type="button" onclick="SignInButtonClick()" value="Log In" />
+                        <input id="loginHeaderSignInButton" style="position:relative;" type="button" onclick="SignInButtonClick()" value="Login" />
                     </div>
-                    <span style="position:relative;float:left;cursor:pointer;" onclick="ShowRegistrationDialog()">Register</span>
                 </div>
             </div>
         </div>
@@ -124,6 +137,8 @@
                 </div>
             </div>
             <div id="mainBody">
+                <div id="alertDialog">
+                </div>
                 @RenderBody() 
             </div>
         </div>

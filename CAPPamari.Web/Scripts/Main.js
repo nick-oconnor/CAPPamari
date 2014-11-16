@@ -1,21 +1,45 @@
 ﻿var user = null;
 var viewModel = null;
+var alertDialog = null;
 
 $(window).resize(function () {
     ResizeDisplay();
 });
 $(window).load(function () {
     viewModel = new ViewModel();
-    // try to load user from cookie
 
     ko.applyBindings(viewModel);
 
-    // drag'n drop code
+    SetupAlertDialog();
     SetupDragAndDrop();
-
     ResizeDisplay();
 });
 
+Alert = function (text) {
+    alertDialog.dialog({
+        title: text
+    })
+    alertDialog.dialog('open');
+    alertDialog.hide();
+}
+SetupAlertDialog = function (advisor) {
+    alertDialog = $('#alertDialog');
+    alertDialog.dialog({
+        autoOpen: false,
+        modal: false,
+        resizable: false,
+        draggable: false,
+        title: 'Alert',
+        hide: 'fade',
+        position: 'bottom',
+        minHeight: 0,
+        open: function () {
+            setTimeout(function () {
+                alertDialog.dialog('close');
+            }, 5000);
+        }
+    });
+}
 EmailToAdvisor = function (advisor) {
     var emailRequest = {
         UserName: viewModel.user().userName(), Advisor: {
@@ -29,14 +53,17 @@ EmailToAdvisor = function (advisor) {
         type: 'POST',
         contentType: 'application/json',
         success: function (data, textSuccess, jqXHR) {
-            alert(data.Message);
+            $('#blockingDiv').hide();
+            Alert(data.Message);
         },
         error: function () {
-            alert('There is an issue with the server, please try again later');
+            $('#blockingDiv').hide();
+            Alert('There is an issue with the server, please try again later');
         }
     });
+    $('#blockingDivSpan').text('Sending email...');
+    $('#blockingDiv').show();
 }
-
 MakeCoursesDraggable = function () {
     $(".course").draggable({
         appendTo: "body",
@@ -96,7 +123,7 @@ SubmitSingletonClassAddInformation = function () {
         errorMessage += 'Please enter a valid Credit\n';
     }
     if (errorMessage !== '') {
-        alert(errorMessage);
+        Alert(errorMessage);
         return;
     }
 
@@ -118,7 +145,7 @@ SubmitSingletonClassAddInformation = function () {
         contentType: 'application/json',
         success: function (data, textSuccess, jqXHR) {
             if (!data.Success) {
-                alert(data.Message);
+                Alert(data.Message);
                 return;
             }
 
@@ -127,7 +154,7 @@ SubmitSingletonClassAddInformation = function () {
             $('#blockingDiv').hide();
         },
         error: function () {
-            alert('There is an issue with the server, please try again later');
+            Alert('There is an issue with the server, please try again later');
             $('#blockingDiv').hide();
         }
     });
@@ -166,7 +193,7 @@ SubmitRegistrationInformation = function () {
         contentType: 'application/json',
         success: function (data, textStatus, jqXHR) {
             if (!data.Success) {
-                alert(data.Message);
+                Alert(data.Message);
                 return;
             }
 
@@ -183,7 +210,7 @@ SubmitRegistrationInformation = function () {
                 errorMessage += 'Please enter a major or "Undeclared" if you do not have one yet';
             }
             if (errorMessage !== '') {
-                alert(errorMessage);
+                Alert(errorMessage);
                 return;
             }
 
@@ -195,7 +222,7 @@ SubmitRegistrationInformation = function () {
                 contentType: 'application/json',
                 success: function (data, textStatus, jqXHR) {
                     if (!data.Success) {
-                        alert(data.Message);
+                        Alert(data.Message);
                         return;
                     }
 
@@ -217,7 +244,7 @@ SubmitRegistrationInformation = function () {
             $('#blockingDiv').show();
         },
         error: function () {
-            alert('There is an issue with the server, please try again later');
+            Alert('There is an issue with the server, please try again later');
             waiting = false;
         }
     });
@@ -244,13 +271,15 @@ ResizeDisplay = function () {
     var openCloseSidebarDiv = $('#openCloseSidebarDiv');
     var sideBarRootWidth = sideBarRoot.outerWidth();
 
-    $('#headerBarWrapper').outerWidth(headerBarRoot.innerWidth());
     mainScreen.outerHeight($(window).innerHeight() - headerBarRoot.outerHeight());
     mainBody.css('margin-left', sideBarRootWidth);
     mainBody.outerWidth(mainScreen.innerWidth() - sideBarRootWidth);
     openCloseSidebarDiv.css('padding-top', mainBody.innerHeight() / 2);
     openCloseSidebarDiv.height(mainBody.innerHeight() / 2);
     $('#courses').height(mainScreen.innerHeight() - $('#addClassButton').outerHeight());
+    alertDialog.dialog({
+        width: mainScreen.innerWidth() - 20
+    });
 }
 ToggleSidebar = function () {
     var sidebarWrapper = $('#sidebarWrapper');
@@ -286,7 +315,7 @@ SignInUser = function (userName, password) {
         contentType: 'application/json',
         success: function (data, textStatus, jqXHR) {
             if (!data.Success) {
-                alert(data.Message);
+                Alert(data.Message);
                 $('#blockingDiv').hide();
                 return;
             }
@@ -301,11 +330,12 @@ SignInUser = function (userName, password) {
 
             $('#blockingDiv').hide();
             RedisplayHeader();
+            $('#openCloseSidebarDiv').show();
 
             viewModel.loadCAPPReport();
         },
         error: function () {
-            alert('There is an issue with the server, please try again later');
+            Alert('There is an issue with the server, please try again later');
             $('#blockingDiv').hide();
         }
     });
@@ -333,6 +363,7 @@ User = function (sessionID, userName, major) {
         viewModel.user(null);
 
         RedisplayHeader();
+        $('#openCloseSidebarDiv').hide();
     }
 }
 Advisor = function (name, emailAddress) {
@@ -396,7 +427,7 @@ ViewModel = function () {
             contentType: 'application/json',
             success: function (data, textStatus, jqXHR) {
                 if (!data.Success) {
-                    alert(data.Message);
+                    Alert(data.Message);
                     $('#blockingDiv').hide();
                     return;
                 }
@@ -417,9 +448,10 @@ ViewModel = function () {
                 });
                 SetupDragAndDrop();
                 $('#blockingDiv').hide();
+                
             },
             error: function () {
-                alert('There is an issue with the server, please try again later');
+                Alert('There is an issue with the server, please try again later');
                 $('#blockingDiv').hide();
             }
         });
