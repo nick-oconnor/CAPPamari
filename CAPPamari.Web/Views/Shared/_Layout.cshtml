@@ -79,7 +79,7 @@
                     <td style="text-align:left;"><input id="singletonCommIntensive" type="checkbox" /></td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;">Grade (e.g. 4.0):</td>
+                    <td style="text-align:right;">Grade (e.g. 4.00):</td>
                     <td style="text-align:left;"><input id="singletonGrade" type="text" /></td>
                 </tr>
                 <tr>
@@ -128,7 +128,7 @@
                         <span>Add Course</span>
                     </div>
                     <div id="courses" data-bind="foreach: unassignedCourses" >
-                        <div class="course" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }" >
+                        <div class="course">
                             <!-- when we decide what the course boxes are going to look like we will add that population here -->
                             <span data-bind="text: department"></span>
                             <span>-</span>
@@ -136,6 +136,7 @@
                             <span>(</span>
                             <span data-bind="text: semester"></span>
                             <span>)</span><br />
+                            <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }" ></div>
                         </div>
                     </div>
                 </div>

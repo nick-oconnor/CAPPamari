@@ -324,7 +324,8 @@ namespace CAPPamari.Web.Helpers
                     Grade = NewCourse.Grade,
                     Number = NewCourse.CourseNumber,
                     PassNC = NewCourse.PassNoCredit,
-                    Semester = NewCourse.Semester
+                    Semester = NewCourse.Semester,
+                    CommunicationIntensive = NewCourse.CommIntensive
                 });
                 entities.SaveChanges();
                 return true;

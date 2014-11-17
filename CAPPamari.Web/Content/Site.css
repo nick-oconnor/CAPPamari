@@ -127,6 +127,8 @@
 .course
 {
     cursor: move;
+    width: 200px;
+    text-align: center;
 }
 td
 {

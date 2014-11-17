@@ -161,7 +161,8 @@ SetupDragAndDrop = function () {
     });
     $(".requirementBox").droppable({
         drop: function (event, ui) {
-            var course = $(event.srcElement).parent().parent().find('.course').data('course');
+            var course = $(event.srcElement).parent().find('.courseData').data('course');
+            if(course === undefined) course = $(event.srcElement).find('.courseData').data('course'); 
             var requirementSetName = $(event.target).find('h3').find('a').data('reqsetname');
             var moveCourseRequest = {
                 UserName: viewModel.user().userName(),
@@ -185,8 +186,9 @@ SetupDragAndDrop = function () {
                     if (!data.Success || !data.Payload) {
                         alert(data.Message);
                         $('#blockingDiv').hide();
+                        return;
                     }
-                    ui.draggable.appendTo($(this).find(".courses"));
+                    ui.draggable.appendTo($(event.target).find(".courses"));
                     ui.helper.remove();
                     $(".requirementBox").accordion("resize");
                     if ($(this).accordion("option", "active") === false)
@@ -196,6 +198,7 @@ SetupDragAndDrop = function () {
                     $('#blockingDiv').hide();
                 },
                 error: function () {
+                    alert('There is a problem with the server, please try again later');
                     $('#blockingDiv').hide();
                 }
             });
@@ -205,10 +208,44 @@ SetupDragAndDrop = function () {
     });
     $("#sidebarWrapper #courses").droppable({
         drop: function (event, ui) {
-            var course = $(event.srcElement).parent().parent().find('.course').data('course');
-            ui.draggable.appendTo($(this));
-            ui.helper.remove();
-            $(".requirementBox").accordion("resize");
+            var course = $(event.srcElement).parent().find('.courseData').data('course');
+            if(course === undefined) course = $(event.srcElement).find('.courseData').data('course'); 
+            var moveCourseRequest = {
+                UserName: viewModel.user().userName(),
+                CourseToMove: {
+                    DepartmentCode: course.department,
+                    CourseNumber: course.number,
+                    Grade: course.grade,
+                    Credits: course.credits,
+                    Semester: course.semester,
+                    PassNoCredit: course.passNoCredit,
+                    CommIntensive: course.commIntensive 
+                },
+                RequirementSetName: 'Unapplied Courses' 
+            };
+            $.ajax({
+                url: window.location.origin + '/api/Course/MoveCourse',
+                data: JSON.stringify(moveCourseRequest),
+                type: 'POST',
+                contentType: 'application/json',
+                success: function (data, textStatus, jqXHR) {
+                    if (!data.Success || !data.Payload) {
+                        alert(data.Message);
+                        $('#blockingDiv').hide();
+                        return;
+                    }
+                    ui.draggable.appendTo($('#courses'));
+                    ui.helper.remove();
+                    $(".requirementBox").accordion("resize");
+                    $('#blockingDiv').hide();
+                },
+                error: function () {
+                    alert('There is a problem with the server, please try again later');
+                    $('#blockingDiv').hide();
+                }
+            });
+            $('#blockingDivSpan').text('Moving course...');
+            $('#blockingDiv').show();
         }
     });
     MakeCoursesDraggable();
@@ -227,13 +264,13 @@ SubmitSingletonClassAddInformation = function () {
     if(!deptCode.match(/^[A-Z]{4}$/)) {
         errorMessage += 'Please enter a valid Department Code\n';
     }
-    if(!courseNumber.match(/^[1-4][X|0-9]{3}$/)) {
+    if(!courseNumber.match(/^[1|2|4|6][x|0-9]{3}$/)) {
         errorMessage += 'Please enter a valid Course Number\n';
     }
     if (!semesterCode.match(/^[S|M|F][0-9]{2}$/)) {
         errorMessage += 'Please enter a valid Semester Code\n';
     }
-    if (!grade.match(/^[0-3].[0-9]{2}$/)) {
+    if (!grade.match(/^[0-4].[0-9]{2}$/)) {
         errorMessage += 'Please enter a valid Grade\n';
     }
     if (!credits.match(/^[0-4]$/)) {
@@ -544,7 +581,8 @@ ToJSONCourse = function (course) {
         semester: course.semester(),
         passNoCredit: course.passNoCredit,
         grade: course.grade(),
-        credits: course.credits()
+        credits: course.credits(),
+        commIntensive: course.commIntensive
     };
 }
 
@@ -594,7 +632,7 @@ Course = function (department, number, semester, passNoCredit, grade, credits, c
     self.passNoCredit = passNoCredit;
     self.grade = ko.observable(grade);
     self.credits = ko.observable(credits);
-    self.commIntensive = ko.observable(commIntensive);
+    self.commIntensive = commIntensive;
 }
 RequirementSet = function (name) {
     /* Properties */
