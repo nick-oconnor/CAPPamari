@@ -28,6 +28,7 @@ HideCsvImportAbility = function () {
     importTable.find('tr:nth-child(9n)').hide();
     importTable.find('tr:nth-child(10n)').hide();
     importTable.find('tr:nth-child(11n)').hide();
+    importTable.find('tr:nth-child(12n)').hide();
 }
 EmailToAdvisor = function (advisor) {
     var emailRequest = {
@@ -266,12 +267,13 @@ ImportCSVFile = function () {
         return;
     }
 
+    var autopop = $('#csvAutoPopulateCheckbox')[0].checked;
     var fileToRead = $('#csvFileInput')[0].files[0];
     var reader = new FileReader();
     reader.readAsText(fileToRead);
     reader.onload = function (event) {
         var csvData = event.target.result;
-        var csvImportRequest = { UserName: viewModel.user().userName(), CsvData: csvData };
+        var csvImportRequest = { UserName: viewModel.user().userName(), CsvData: csvData, Autopopulate: autopop };
         $.ajax({
             url: window.location.origin + '/api/Course/AddCsvFile',
             data: JSON.stringify(csvImportRequest),
@@ -280,14 +282,17 @@ ImportCSVFile = function () {
             success: function (data, textStatus, jqXHR) {
                 if (!data.Success) {
                     alert(data.Message);
+                    $('#singletonClassAddDialogRoot').hide();
                     $('#blockingDiv').hide();
                     return;
                 }
                 viewModel.setCAPPReport(data.Payload);
+                $('#singletonClassAddDialogRoot').hide();
                 $('#blockingDiv').hide();
             },
             error: function () {
                 alert('There is an error with the server.  Please try again later');
+                $('#singletonClassAddDialogRoot').hide();
                 $('#blockingDiv').hide();
             }
         });
@@ -296,6 +301,7 @@ ImportCSVFile = function () {
     };
     reader.onerror = function () {
         alert('Unable to read file');
+        $('#singletonClassAddDialogRoot').hide();
         $('#blockingDiv').hide();
     };
     $('#blockingDivSpan').text('Reading in CSV...');

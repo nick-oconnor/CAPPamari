@@ -80,8 +80,11 @@ namespace CAPPamari.Web.Controllers
                 return ApiResponse<CAPPReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
             var courses = CSVParserHelper.parse(Request.CsvData);
-            // var cappReport = CourseHelper.GetCAPPReport(Request.UserName);
-            // AutopopulationHelper.autopopulate(cappReport, courses); 
+            if (Request.Autopopulate)
+            {
+                // var cappReport = CourseHelper.GetCAPPReport(Request.UserName);
+                // AutopopulationHelper.autopopulate(cappReport, courses); 
+            }
             var success = true;
             foreach (var course in courses)
             {
