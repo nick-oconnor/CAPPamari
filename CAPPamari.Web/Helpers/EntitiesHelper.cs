@@ -179,6 +179,24 @@ namespace CAPPamari.Web.Helpers
             }
         }
         /// <summary>
+        /// Updates a session for a user because they have committed an action
+        /// </summary>
+        /// <param name="UserName">UserName of user to update session for</param>
+        /// <returns>True if session is active and refreshed, false otherwise</returns>
+        public static bool UpdateSession(string UserName)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.UserName == UserName);
+                if (session == null) return false;
+
+                session.Expiration = DateTime.Now.AddMinutes(30);
+                entities.SaveChanges();
+
+                return true;
+            }
+        }
+        /// <summary>
         /// Change a major for a specific user.
         /// </summary>
         /// <param name="UserName">UserName of user to change major</param>
@@ -304,7 +322,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="UserName">UserName for user to add new course for</param>
         /// <param name="NewCourse">CourseModel containing information about the new course</param>
         /// <returns>Success state of the course addition</returns>
-        public static bool AddNewCourse(string UserName, CourseModel NewCourse)
+        public static bool AddNewCourse(string UserName, CourseModel NewCourse, string RequirementSetName)
         {
             using (var entities = GetEntityModel())
             {
@@ -314,10 +332,10 @@ namespace CAPPamari.Web.Helpers
                 var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                var unassignedCourses = report.RequirementSets.FirstOrDefault(set => set.Name == "Unapplied Courses");
-                if (unassignedCourses == null) return false;
+                var reqSet = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSetName);
+                if (reqSet == null) return false;
 
-                unassignedCourses.Courses.Add(new Course()
+                reqSet.Courses.Add(new Course()
                 {
                     Credits = NewCourse.Credits,
                     Department = NewCourse.DepartmentCode,

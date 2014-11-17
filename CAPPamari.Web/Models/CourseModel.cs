@@ -15,6 +15,7 @@ namespace CAPPamari.Web.Models
         public string Semester { get; set; }
         public bool PassNoCredit { get; set; }
         public bool CommIntensive { get; set; }
+        public string RequirementSetName { get; set; }
 
         public CourseModel()
         {
@@ -24,6 +25,8 @@ namespace CAPPamari.Web.Models
             Credits = -1;
             Semester = string.Empty;
             PassNoCredit = false;
+            CommIntensive = false;
+            RequirementSetName = "Unapplied Courses";
         }
 
     }

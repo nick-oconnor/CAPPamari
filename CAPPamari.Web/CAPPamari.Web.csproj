@@ -236,6 +236,7 @@
     <Compile Include="Models\EntitiesModelExtensions.cs" />
     <Compile Include="Models\Requests\ChangeAdvisorRequest.cs" />
     <Compile Include="Models\Requests\ChangeMajorRequest.cs" />
+    <Compile Include="Models\Requests\CsvImportRequest.cs" />
     <Compile Include="Models\Requests\EmailToAdvisorRequest.cs" />
     <Compile Include="Models\Requests\LoginRequest.cs" />
     <Compile Include="Models\Model1.Context.cs">

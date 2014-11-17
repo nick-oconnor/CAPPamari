@@ -15,9 +15,9 @@ namespace CAPPamari.Web.Helpers
         /// <param name="UserName">UserName for user to add new course for</param>
         /// <param name="NewCourse">CourseModel contianing new course information</param>
         /// <returns>Success state of the course addition</returns>
-        public static bool AddNewCourse(string UserName, CourseModel NewCourse)
+        public static bool AddNewCourse(string UserName, CourseModel NewCourse, string RequirementSetName = "Unapplied Courses")
         {
-            return EntitiesHelper.AddNewCourse(UserName, NewCourse);
+            return EntitiesHelper.AddNewCourse(UserName, NewCourse, RequirementSetName);
         }
         /// <summary>
         /// Remove course from the database

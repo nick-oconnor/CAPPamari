@@ -11,6 +11,10 @@ $(window).load(function () {
         viewModel.loadCAPPReport();
     }
 
+    if (!window.File || !window.FileReader) {
+        HideCsvImportAbility();
+    }
+
     ko.applyBindings(viewModel);
 
     // drag'n drop code
@@ -19,6 +23,12 @@ $(window).load(function () {
     ResizeDisplay();
 });
 
+HideCsvImportAbility = function () {
+    var importTable = $('#singletonClassAddDialogRoot').find('table');
+    importTable.find('tr:nth-child(9n)').hide();
+    importTable.find('tr:nth-child(10n)').hide();
+    importTable.find('tr:nth-child(11n)').hide();
+}
 EmailToAdvisor = function (advisor) {
     var emailRequest = {
         UserName: viewModel.user().userName(), Advisor: {
@@ -250,6 +260,47 @@ SetupDragAndDrop = function () {
     });
     MakeCoursesDraggable();
 }
+ImportCSVFile = function () {
+    if (!window.File || !window.FileReader) {
+        alert('Your browser does not support file importing!');
+        return;
+    }
+
+    var fileToRead = $('#csvFileInput')[0].files[0];
+    var reader = new FileReader();
+    reader.readAsText(fileToRead);
+    reader.onload = function (event) {
+        var csvData = event.target.result;
+        var csvImportRequest = { UserName: viewModel.user().userName(), CsvData: csvData };
+        $.ajax({
+            url: window.location.origin + '/api/Course/AddCsvFile',
+            data: JSON.stringify(csvImportRequest),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (data, textStatus, jqXHR) {
+                if (!data.Success) {
+                    alert(data.Message);
+                    $('#blockingDiv').hide();
+                    return;
+                }
+                viewModel.setCAPPReport(data.Payload);
+                $('#blockingDiv').hide();
+            },
+            error: function () {
+                alert('There is an error with the server.  Please try again later');
+                $('#blockingDiv').hide();
+            }
+        });
+        $('#blockingDivSpan').text('Uploading courses...');
+        $('#blockingDiv').show();
+    };
+    reader.onerror = function () {
+        alert('Unable to read file');
+        $('#blockingDiv').hide();
+    };
+    $('#blockingDivSpan').text('Reading in CSV...');
+    $('#blockingDiv').show();
+}
 SubmitSingletonClassAddInformation = function () {
     var deptCode = $('#singletonDepartment').val();
     var courseNumber = $('#singletonCourseNumber').val();
@@ -270,7 +321,7 @@ SubmitSingletonClassAddInformation = function () {
     if (!semesterCode.match(/^[S|M|F][0-9]{2}$/)) {
         errorMessage += 'Please enter a valid Semester Code\n';
     }
-    if (!grade.match(/^[0-4].[0-9]{2}$/)) {
+    if (!grade.match(/^[0-3].[0-9]{2}|4.00$/)) {
         errorMessage += 'Please enter a valid Grade\n';
     }
     if (!credits.match(/^[0-4]$/)) {
@@ -680,6 +731,24 @@ ViewModel = function () {
     self.reloadCAPPReport = function () {
         self.clearCAPPReport();
         self.loadCAPPReport();
+    }
+    self.setCAPPReport = function (cappReport) {
+        self.clearCAPPReport();
+        self.requirementSets.push(new RequirementSet('CAPP Report Requirements'));
+        ko.utils.arrayForEach(cappReport.RequirementSets, function (RequirementSetModel) {
+            if (RequirementSetModel.Name === 'Unapplied Courses') {
+                ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function (CourseModel) {
+                    self.unassignedCourses.push(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits, CourseModel.CommIntensive));
+                });
+            } else {
+                var newRequirementSet = new RequirementSet(RequirementSetModel.Name);
+                ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function (CourseModel) {
+                    newRequirementSet.addCourse(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits, CourseModel.CommIntensive));
+                });
+                self.requirementSets.push(newRequirementSet);
+            }
+        });
+        SetupDragAndDrop();
     }
     self.loadCAPPReport = function () {
         $.ajax({
