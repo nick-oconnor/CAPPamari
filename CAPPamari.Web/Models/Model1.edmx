@@ -6,12 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="JustinModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="JustinModelStoreContainer">
-          <EntitySet Name="Advises" EntityType="JustinModel.Store.Advises" store:Type="Tables" store:Schema="dbo" store:Name="Advises">
-            <DefiningQuery>SELECT 
-      [Advises].[AdvisorID] AS [AdvisorID], 
-      [Advises].[UserName] AS [UserName]
-      FROM [dbo].[Advises] AS [Advises]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="Advises" EntityType="JustinModel.Store.Advises" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Advisor" EntityType="JustinModel.Store.Advisor" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ApplicationUser" EntityType="JustinModel.Store.ApplicationUser" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CAPPReport" EntityType="JustinModel.Store.CAPPReport" store:Type="Tables" Schema="dbo" />
@@ -101,9 +96,6 @@
             <End Role="UserSession" EntitySet="UserSession" />
           </AssociationSet>
         </EntityContainer>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Justin.dbo.Advises' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
         <EntityType Name="Advises">
           <Key>
             <PropertyRef Name="AdvisorID" />
@@ -420,10 +412,6 @@
             <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
             <End Role="UserSession" EntitySet="UserSessions" />
           </AssociationSet>
-          <AssociationSet Name="Advises" Association="JustinModel.Advises">
-            <End Role="Advisor" EntitySet="Advisors" />
-            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
-          </AssociationSet>
           <AssociationSet Name="CAPPReportRequirement" Association="JustinModel.CAPPReportRequirement">
             <End Role="CAPPReport" EntitySet="CAPPReports" />
             <End Role="Requirement" EntitySet="Requirements" />
@@ -448,6 +436,10 @@
           <AssociationSet Name="RequirementSetRequirement" Association="JustinModel.RequirementSetRequirement">
             <End Role="RequirementSet" EntitySet="RequirementSets" />
             <End Role="Requirement" EntitySet="Requirements" />
+          </AssociationSet>
+          <AssociationSet Name="Advises" Association="JustinModel.Advises">
+            <End Role="Advisor" EntitySet="Advisors" />
+            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Advisor">
@@ -552,10 +544,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Advises">
-          <End Type="JustinModel.Advisor" Role="Advisor" Multiplicity="*" />
-          <End Type="JustinModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
-        </Association>
         <Association Name="CAPPReportRequirement">
           <End Type="JustinModel.CAPPReport" Role="CAPPReport" Multiplicity="*" />
           <End Type="JustinModel.Requirement" Role="Requirement" Multiplicity="*" />
@@ -611,6 +599,10 @@
         <Association Name="RequirementSetRequirement">
           <End Type="JustinModel.RequirementSet" Role="RequirementSet" Multiplicity="*" />
           <End Type="JustinModel.Requirement" Role="Requirement" Multiplicity="*" />
+        </Association>
+        <Association Name="Advises">
+          <End Type="JustinModel.Advisor" Role="Advisor" Multiplicity="*" />
+          <End Type="JustinModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -689,14 +681,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Advises" TypeName="JustinModel.Advises" StoreEntitySet="Advises">
-            <EndProperty Name="ApplicationUser">
-              <ScalarProperty Name="UserName" ColumnName="UserName" />
-            </EndProperty>
-            <EndProperty Name="Advisor">
-              <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="CAPPReportRequirement" TypeName="JustinModel.CAPPReportRequirement" StoreEntitySet="CAPPReportRequirement">
             <EndProperty Name="Requirement">
               <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
@@ -740,6 +724,14 @@
             </EndProperty>
             <EndProperty Name="RequirementSet">
               <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Advises" TypeName="JustinModel.Advises" StoreEntitySet="Advises">
+            <EndProperty Name="ApplicationUser">
+              <ScalarProperty Name="UserName" ColumnName="UserName" />
+            </EndProperty>
+            <EndProperty Name="Advisor">
+              <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

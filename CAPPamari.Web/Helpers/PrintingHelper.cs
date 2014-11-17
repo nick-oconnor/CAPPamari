@@ -12,6 +12,7 @@ namespace CAPPamari.Web.Helpers
     {
         public static PdfDocument PrintCAPPReport(string UserName)
         {
+            if (EntitiesHelper.GetSessionID(UserName) == -1) return null;
             var userData = UserHelper.GetApplicationUser(UserName);
             var courseData = CourseHelper.GetCAPPReport(UserName);
             var pdf = new PdfDocument();

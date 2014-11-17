@@ -18,6 +18,7 @@ namespace CAPPamari.Web.Controllers
         public ActionResult Print(string UserName)
         {
             var document = PrintingHelper.PrintCAPPReport(UserName);
+            if (document == null) return View("Error");
             using (var pdfStream = new MemoryStream())
             {
                 document.SaveToStream(pdfStream);

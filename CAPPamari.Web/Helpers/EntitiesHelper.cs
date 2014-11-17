@@ -61,18 +61,25 @@ namespace CAPPamari.Web.Helpers
             }
         }
         /// <summary>
-        /// Gets the major for the user with UserName
+        /// Update user information
         /// </summary>
-        /// <param name="UserName">UserName of user to lookup major</param>
-        /// <returns>Major for user with UserName or string.Empty if no user is found</returns>
-        public static string GetMajor(string UserName)
+        /// <param name="UserName">UserName of user to update</param>
+        /// <param name="Password">Password to update to</param>
+        /// <param name="Major">Major to update to</param>
+        /// <returns>True if user was updated, false otherwise</returns>
+        public static bool UpdateUser(string UserName, string Password, string Major)
         {
             using (var entities = GetEntityModel())
             {
                 var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
 
-                if (user == null) return string.Empty;
-                return user.Major;
+                if (user == null) return false;
+
+                user.Password = Password;
+                user.Major = Major;
+                entities.SaveChanges();
+
+                return true;
             }
         }
         /// <summary>
@@ -88,6 +95,16 @@ namespace CAPPamari.Web.Helpers
 
                 if (user == null) return new List<Advisor>();
                 return user.Advisors.ToList();
+            }
+        }
+        public static string GetMajor(string UserName)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+
+                if (user == null) return string.Empty; 
+                return user.Major;
             }
         }
         /// <summary>
@@ -162,6 +179,24 @@ namespace CAPPamari.Web.Helpers
             }
         }
         /// <summary>
+        /// Updates a session for a user because they have committed an action
+        /// </summary>
+        /// <param name="UserName">UserName of user to update session for</param>
+        /// <returns>True if session is active and refreshed, false otherwise</returns>
+        public static bool UpdateSession(string UserName)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.UserName == UserName);
+                if (session == null) return false;
+
+                session.Expiration = DateTime.Now.AddMinutes(30);
+                entities.SaveChanges();
+
+                return true;
+            }
+        }
+        /// <summary>
         /// Change a major for a specific user.
         /// </summary>
         /// <param name="UserName">UserName of user to change major</param>
@@ -201,6 +236,25 @@ namespace CAPPamari.Web.Helpers
                 entities.SaveChanges();
 
                 return newAdvisor.AdvisorID;
+            }
+        }
+        /// <summary>
+        /// Update advisor in database
+        /// </summary>
+        /// <param name="Name">Name of advisor to update</param>
+        /// <param name="EMail">EMail to update advisor to</param>
+        /// <returns>Success status of the update</returns>
+        public static bool UpdateAdvisor(string Name, string EMail)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.Name == Name);
+                if (advisor == null) return false;
+
+                advisor.EMailAddress = EMail;
+                entities.SaveChanges();
+
+                return true;
             }
         }
         /// <summary>
@@ -268,7 +322,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="UserName">UserName for user to add new course for</param>
         /// <param name="NewCourse">CourseModel containing information about the new course</param>
         /// <returns>Success state of the course addition</returns>
-        public static bool AddNewCourse(string UserName, CourseModel NewCourse)
+        public static bool AddNewCourse(string UserName, CourseModel NewCourse, string RequirementSetName)
         {
             using (var entities = GetEntityModel())
             {
@@ -278,17 +332,18 @@ namespace CAPPamari.Web.Helpers
                 var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                var unassignedCourses = report.RequirementSets.FirstOrDefault(set => set.Name == "Unapplied Courses");
-                if (unassignedCourses == null) return false;
+                var reqSet = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSetName);
+                if (reqSet == null) return false;
 
-                unassignedCourses.Courses.Add(new Course()
+                reqSet.Courses.Add(new Course()
                 {
                     Credits = NewCourse.Credits,
                     Department = NewCourse.DepartmentCode,
                     Grade = NewCourse.Grade,
                     Number = NewCourse.CourseNumber,
                     PassNC = NewCourse.PassNoCredit,
-                    Semester = NewCourse.Semester
+                    Semester = NewCourse.Semester,
+                    CommunicationIntensive = NewCourse.CommIntensive
                 });
                 entities.SaveChanges();
                 return true;
@@ -344,6 +399,41 @@ namespace CAPPamari.Web.Helpers
                 if (dbset == null) return null;
 
                 return dbset.ToRequirementSetModel();
+            }
+        }
+        /// <summary>
+        /// Apply a course to a requirement set for a user 
+        /// </summary>
+        /// <param name="UserName">UserName of user to move course for</param>
+        /// <param name="Course">CourseModel for course to move</param>
+        /// <param name="RequirementSet">RequirementSetModel to move course into</param>
+        /// <returns>Success status of move</returns>
+        public static bool ApplyCourse(string UserName,CourseModel Course, RequirementSetModel RequirementSet)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return false;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return false;
+
+                var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSet.Name);
+                if (dbset == null) return false;
+
+                var course = entities.Courses.FirstOrDefault(c => c.CommunicationIntensive == Course.CommIntensive &&
+                                                    c.Credits == Course.Credits &&
+                                                    c.Department == Course.DepartmentCode &&
+                                                    c.Grade == Course.Grade &&
+                                                    c.Number == Course.CourseNumber &&
+                                                    c.PassNC == Course.PassNoCredit &&
+                                                    c.Semester == Course.Semester &&
+                                                    c.RequirementSet.CAPPReport.ApplicationUser.UserName == UserName);
+                if (course == null) return false;
+
+                course.RequirementSet = dbset;
+                entities.SaveChanges();
+                return true;
             }
         }
         /// <summary>

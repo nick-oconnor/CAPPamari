@@ -6,7 +6,7 @@ using CAPPamari.Web.Models;
 
 namespace CAPPamari.Web.Helpers
 {
-    public class AutopopulationHelper
+    public static class AutopopulationHelper
     {
         //function to autopopulate the HASS requirement set
         public static void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSetModel HASSreqset, List<CourseModel> CoursesTaken)
@@ -170,6 +170,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="courses"></param>
         
         public static void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> requirementSets, List<CAPPamari.Web.Models.CourseModel> courses)
+
         {
             fillNamedRequirements(requirementSets, courses);
             fillLevelRequirements(requirementSets, courses);
