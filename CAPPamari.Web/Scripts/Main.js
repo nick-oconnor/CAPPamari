@@ -152,7 +152,7 @@ MakeCoursesDraggable = function () {
         appendTo: "body",
         helper: "clone",
         revert: true,
-        containment: "#mainScreen",
+        containment: "#mainScreen"
     });
 }
 SetupDragAndDrop = function () {
@@ -161,29 +161,57 @@ SetupDragAndDrop = function () {
     });
     $(".requirementBox").droppable({
         drop: function (event, ui) {
-            ui.draggable.appendTo($(this).find(".courses"));
-            ui.helper.remove();
-            $(".requirementBox").accordion("resize");
-            if ($(this).accordion("option", "active") === false)
-            {
-                $(this).accordion("option", "active", 0);
-            }
+            var course = $(event.srcElement).parent().parent().find('.course').data('course');
+            var requirementSetName = $(event.target).find('h3').find('a').data('reqsetname');
+            var moveCourseRequest = {
+                UserName: viewModel.user().userName(),
+                CourseToMove: {
+                    DepartmentCode: course.department,
+                    CourseNumber: course.number,
+                    Grade: course.grade,
+                    Credits: course.credits,
+                    Semester: course.semester,
+                    PassNoCredit: course.passNoCredit,
+                    CommIntensive: course.commIntensive 
+                },
+                RequirementSetName: requirementSetName
+            };
+            $.ajax({
+                url: window.location.origin + '/api/Course/MoveCourse',
+                data: JSON.stringify(moveCourseRequest),
+                type: 'POST',
+                contentType: 'application/json',
+                success: function (data, textStatus, jqXHR) {
+                    if (!data.Success || !data.Payload) {
+                        alert(data.Message);
+                        $('#blockingDiv').hide();
+                    }
+                    ui.draggable.appendTo($(this).find(".courses"));
+                    ui.helper.remove();
+                    $(".requirementBox").accordion("resize");
+                    if ($(this).accordion("option", "active") === false)
+                    {
+                        $(this).accordion("option", "active", 0);
+                    }
+                    $('#blockingDiv').hide();
+                },
+                error: function () {
+                    $('#blockingDiv').hide();
+                }
+            });
+            $('#blockingDivSpan').text('Moving course...');
+            $('#blockingDiv').show();
         }
     });
     $("#sidebarWrapper #courses").droppable({
         drop: function (event, ui) {
+            var course = $(event.srcElement).parent().parent().find('.course').data('course');
             ui.draggable.appendTo($(this));
             ui.helper.remove();
             $(".requirementBox").accordion("resize");
         }
     });
     MakeCoursesDraggable();
-}
-CourseDragStart = function (course) {
-    draggedCourse = course;
-}
-CourseDragEnd = function (course) {
-    draggedCourse = null;
 }
 SubmitSingletonClassAddInformation = function () {
     var deptCode = $('#singletonDepartment').val();
@@ -238,7 +266,7 @@ SubmitSingletonClassAddInformation = function () {
                 return;
             }
 
-            var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits);
+            var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits, commIntensive);
             viewModel.addNewCouse(course);
             $('#blockingDiv').hide();
         },
@@ -509,6 +537,16 @@ SignInUser = function (userName, password) {
     $('#blockingDivSpan').text('Signing you in...');
     $('#blockingDiv').show();
 }
+ToJSONCourse = function (course) {
+    return {
+        department: course.department(),
+        number: course.number(),
+        semester: course.semester(),
+        passNoCredit: course.passNoCredit,
+        grade: course.grade(),
+        credits: course.credits()
+    };
+}
 
 User = function (sessionID, userName, major) {
     /* Properties */
@@ -547,7 +585,7 @@ Advisor = function (name, emailAddress) {
     self.name = ko.observable(name);
     self.emailAddress = ko.observable(emailAddress);
 }
-Course = function (department, number, semester, passNoCredit, grade, credits) {
+Course = function (department, number, semester, passNoCredit, grade, credits, commIntensive) {
     /* Properties */
     var self = this;
     self.department = ko.observable(department);
@@ -556,6 +594,7 @@ Course = function (department, number, semester, passNoCredit, grade, credits) {
     self.passNoCredit = passNoCredit;
     self.grade = ko.observable(grade);
     self.credits = ko.observable(credits);
+    self.commIntensive = ko.observable(commIntensive);
 }
 RequirementSet = function (name) {
     /* Properties */
@@ -621,12 +660,12 @@ ViewModel = function () {
                 ko.utils.arrayForEach(cappReport.RequirementSets, function (RequirementSetModel) {
                     if (RequirementSetModel.Name === 'Unapplied Courses') {
                         ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function (CourseModel) {
-                            self.unassignedCourses.push(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits));
+                            self.unassignedCourses.push(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits, CourseModel.CommIntensive));
                         });
                     } else {
                         var newRequirementSet = new RequirementSet(RequirementSetModel.Name);
                         ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function (CourseModel) {
-                            newRequirementSet.addCourse(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits));
+                            newRequirementSet.addCourse(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits, CourseModel.CommIntensive));
                         });
                         self.requirementSets.push(newRequirementSet);
                     }

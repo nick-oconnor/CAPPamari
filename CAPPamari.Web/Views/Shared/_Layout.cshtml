@@ -110,11 +110,13 @@
                     <span style="cursor:pointer;" data-bind="click: AddNewAdvisor">Add Advisor</span>
                 </div>
                 <div id="loginHeader" style="position:relative;display:inline-block;width:100%;">
-                    <input id="loginHeaderSignInButton" style="position:relative;float:right;" type="button" onclick="SignInButtonClick()" value="Log In"/>
-                    <input id="loginHeaderPassword" style="position:relative;float:right;" type="password"/>
-                    <span style="position:relative;float:right;">Password:</span>
-                    <input id="loginHeaderUserName" style="position:relative;float:right;" type="text"/>
-                    <span style="position:relative;float:right;">User Name:</span>
+                    <div style="position:relative;float:right;">
+                        <span style="position:relative;">User Name:</span>
+                        <input id="loginHeaderUserName" style="position:relative;" type="text"/>
+                        <span style="position:relative;">Password:</span>
+                        <input id="loginHeaderPassword" style="position:relative;" type="password"/>
+                        <input id="loginHeaderSignInButton" style="position:relative;" type="button" onclick="SignInButtonClick()" value="Log In"/>
+                    </div>
                     <span style="position:relative;float:left;cursor:pointer;" onclick="ShowRegistrationDialog()">Register</span>
                 </div>
             </div>
@@ -125,8 +127,8 @@
                     <div id="addClassButton" style="width:100%" onclick="ShowSingletonClassAddDialog()">
                         <span>Add Course</span>
                     </div>
-                    <div id="courses" data-bind="foreach: unassignedCourses">
-                        <div class="course" data-bind="event: { dragstart : CourseDragStart, dragend: CourseDragEnd }">
+                    <div id="courses" data-bind="foreach: unassignedCourses" >
+                        <div class="course" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }" >
                             <!-- when we decide what the course boxes are going to look like we will add that population here -->
                             <span data-bind="text: department"></span>
                             <span>-</span>

@@ -7,7 +7,7 @@
 }
 <div data-bind="foreach: requirementSets">
     <div class="requirementBox">
-        <h3><a href="#" data-bind="text: name"></a></h3>
+        <h3><a href="#" data-bind="text: name, attr: { 'data-reqSetName': name }"></a></h3>
         <div class="courses">
         </div>
     </div>

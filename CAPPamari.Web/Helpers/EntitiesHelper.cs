@@ -383,6 +383,41 @@ namespace CAPPamari.Web.Helpers
             }
         }
         /// <summary>
+        /// Apply a course to a requirement set for a user 
+        /// </summary>
+        /// <param name="UserName">UserName of user to move course for</param>
+        /// <param name="Course">CourseModel for course to move</param>
+        /// <param name="RequirementSet">RequirementSetModel to move course into</param>
+        /// <returns>Success status of move</returns>
+        public static bool ApplyCourse(string UserName,CourseModel Course, RequirementSetModel RequirementSet)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return false;
+
+                var report = user.CAPPReports.FirstOrDefault();
+                if (report == null) return false;
+
+                var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSet.Name);
+                if (dbset == null) return false;
+
+                var course = entities.Courses.FirstOrDefault(c => c.CommunicationIntensive == Course.CommIntensive &&
+                                                    c.Credits == Course.Credits &&
+                                                    c.Department == Course.DepartmentCode &&
+                                                    c.Grade == Course.Grade &&
+                                                    c.Number == Course.CourseNumber &&
+                                                    c.PassNC == Course.PassNoCredit &&
+                                                    c.Semester == Course.Semester &&
+                                                    c.RequirementSet.CAPPReport.ApplicationUser.UserName == UserName);
+                if (course == null) return false;
+
+                course.RequirementSet = dbset;
+                entities.SaveChanges();
+                return true;
+            }
+        }
+        /// <summary>
         /// Gets all the RequirementSets for a user
         /// </summary>
         /// <param name="UserName">UserName for user to get all the RequirementSets for</param>

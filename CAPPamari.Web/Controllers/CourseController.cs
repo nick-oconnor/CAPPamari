@@ -35,11 +35,11 @@ namespace CAPPamari.Web.Controllers
         {
             var reqSet = CourseHelper.GetRequirementSet(Request.UserName, Request.RequirementSetName);
             var success = reqSet.CanApplyCourse(Request.CourseToMove);
-            var message = success ? "Moved course successfully" : "Could not move course"; 
             if (success)
             {
-                // save changes in the database
+                success &= CourseHelper.ApplyCourse(Request.UserName, Request.CourseToMove, reqSet);
             }
+            var message = success ? "Moved course successfully" : "You cannot apply this course to this requirement set"; 
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
@@ -55,5 +55,11 @@ namespace CAPPamari.Web.Controllers
             var message = success ? "Course removed successfully" : "Could not remove course";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
+        /*
+        [HttpPost]
+        public ApiResponse<CAPPReportModel> AddCsvFile([FromBody]string CsvData)
+        {
+        }
+        */
     }
 }
