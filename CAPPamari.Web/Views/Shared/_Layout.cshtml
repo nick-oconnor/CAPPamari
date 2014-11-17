@@ -103,7 +103,8 @@
                     <div data-bind="if: user()">
                         <div data-bind="foreach: user().advisors">
                             <a data-bind="text: name, click: EmailToAdvisor"></a>
-                            <a style="cursor:pointer;margin-left:2px" data-bind="click: EditAdvisorInfo">edit</a><br />
+                            <a style="cursor:pointer;margin-left:2px" data-bind="click: EditAdvisorInfo">edit</a>
+                            <a style="cursor:pointer;margin-left:2px" data-bind="click: DeleteAdvisor">delete</a><br />
                         </div>
                     </div>
                     <span style="cursor:pointer;" data-bind="click: AddNewAdvisor">Add Advisor</span>
@@ -125,7 +126,7 @@
                         <span>Add Course</span>
                     </div>
                     <div id="courses" data-bind="foreach: unassignedCourses">
-                        <div class="course">
+                        <div class="course" data-bind="event: { dragstart : CourseDragStart, dragend: CourseDragEnd }">
                             <!-- when we decide what the course boxes are going to look like we will add that population here -->
                             <span data-bind="text: department"></span>
                             <span>-</span>

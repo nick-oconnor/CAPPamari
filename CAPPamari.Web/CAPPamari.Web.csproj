@@ -257,6 +257,7 @@
     <Compile Include="Models\Requests\NewCourseRequest.cs" />
     <Compile Include="Models\Requests\RegistrationRequest.cs" />
     <Compile Include="Models\Requests\RemoveCourseRequest.cs" />
+    <Compile Include="Models\Requests\UpdateUserRequest.cs" />
     <Compile Include="Models\Requirement.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

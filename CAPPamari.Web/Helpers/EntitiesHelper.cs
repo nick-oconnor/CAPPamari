@@ -61,18 +61,25 @@ namespace CAPPamari.Web.Helpers
             }
         }
         /// <summary>
-        /// Gets the major for the user with UserName
+        /// Update user information
         /// </summary>
-        /// <param name="UserName">UserName of user to lookup major</param>
-        /// <returns>Major for user with UserName or string.Empty if no user is found</returns>
-        public static string GetMajor(string UserName)
+        /// <param name="UserName">UserName of user to update</param>
+        /// <param name="Password">Password to update to</param>
+        /// <param name="Major">Major to update to</param>
+        /// <returns>True if user was updated, false otherwise</returns>
+        public static bool UpdateUser(string UserName, string Password, string Major)
         {
             using (var entities = GetEntityModel())
             {
                 var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
 
-                if (user == null) return string.Empty;
-                return user.Major;
+                if (user == null) return false;
+
+                user.Password = Password;
+                user.Major = Major;
+                entities.SaveChanges();
+
+                return true;
             }
         }
         /// <summary>
@@ -88,6 +95,16 @@ namespace CAPPamari.Web.Helpers
 
                 if (user == null) return new List<Advisor>();
                 return user.Advisors.ToList();
+            }
+        }
+        public static string GetMajor(string UserName)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+
+                if (user == null) return string.Empty; 
+                return user.Major;
             }
         }
         /// <summary>
@@ -201,6 +218,25 @@ namespace CAPPamari.Web.Helpers
                 entities.SaveChanges();
 
                 return newAdvisor.AdvisorID;
+            }
+        }
+        /// <summary>
+        /// Update advisor in database
+        /// </summary>
+        /// <param name="Name">Name of advisor to update</param>
+        /// <param name="EMail">EMail to update advisor to</param>
+        /// <returns>Success status of the update</returns>
+        public static bool UpdateAdvisor(string Name, string EMail)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.Name == Name);
+                if (advisor == null) return false;
+
+                advisor.EMailAddress = EMail;
+                entities.SaveChanges();
+
+                return true;
             }
         }
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿var editMode = '';
 var viewModel = null;
+var draggedCourse = null;
 
 $(window).resize(function () {
     ResizeDisplay();
@@ -38,7 +39,34 @@ EmailToAdvisor = function (advisor) {
         }
     });
 }
+DeleteAdvisor = function (advisor) {
+    var removeAdvisorRequest = { UserName: viewModel.user().userName(), NewAdvisor: { Name: advisor.name(), EMail: advisor.emailAddress() } };
+    $.ajax({
+        url: window.location.origin + '/api/User/RemoveAdvisor',
+        data: JSON.stringify(removeAdvisorRequest),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function (data, textStatus, jqXHR) {
+            if (!data.Success || !data.Payload) {
+                alert(data.Message);
+                $('#blockingDiv').hide();
+                return;
+            }
+
+            viewModel.user().advisors.pop(advisor);
+
+            $('#blockingDiv').hide();
+            RedisplayHeader();
+        },
+        error: function () {
+            $('#blockingDiv').hide();
+        }
+    });
+    $('#blockingDivSpan').text('Deleting advisor...');
+    $('#blockingDiv').show();
+}
 EditAdvisorInfo = function (advisor) {
+    editMode = 'edit';
     $('#advisorName').val(advisor.name());
     $('#advisorEmail').val(advisor.emailAddress());
     $('#advisorName').prop('readonly', 'true');
@@ -52,11 +80,67 @@ AddNewAdvisor = function () {
     $('#registrationUserName').val('');
     $('#registrationMajor').val('');
     $('#registrationUserName').prop('readonly', 'false');
-    ShowRegistrationDialog();
+    ShowAdvisorDialog();
 }
 SubmitAdvisorInformation = function () {
+    var name = $('#advisorName').val();
+    var email = $('#advisorEmail').val();
     if (editMode === 'new') {
+        var newAdvisorRequest = { UserName: viewModel.user().userName(), NewAdvisor: { Name: name, EMail: email }};
+        $.ajax({
+            url: window.location.origin + '/api/User/AddAdvisor',
+            data: JSON.stringify(newAdvisorRequest),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (data, textStatus, jqXHR) {
+                if (!data.Success || !data.Payload) {
+                    alert(data.Message);
+                    $('#blockingDiv').hide();
+                    return;
+                }
+
+                viewModel.user().advisors.push(new Advisor(name, email));
+
+                $('#blockingDiv').hide();
+                RedisplayHeader();
+            },
+            error: function () {
+                alert('There is something wrong with the server, please try again later');
+                $('#blockingDiv').hide();
+            }
+        });
+        $('#blockingDivSpan').text('Adding advisor...');
+        $('#blockingDiv').show();
     } else if (editMode === 'edit') {
+        var editAdvisorRequest = { Name: name, EMail: email };
+        $.ajax({
+            url: window.location.origin + '/api/User/UpdateAdvisor',
+            data: JSON.stringify(editAdvisorRequest),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (data, textStatus, jqXHR) {
+                if (!data.Success || !data.Payload) {
+                    alert(data.Message);
+                    $('#blockingDiv').hide();
+                    return;
+                }
+
+                ko.utils.arrayForEach(viewModel.user().advisors(), function (advisor) {
+                    if (advisor.name() === name) {
+                        advisor.emailAddress(email);
+                    }
+                });
+
+                $('#blockingDiv').hide();
+                RedisplayHeader();
+            },
+            error: function () {
+                alert('There is something wrong with the server, please try again later');
+                $('#blockingDiv').hide();
+            }
+        });
+        $('#blockingDivSpan').text('Updating advisor...');
+        $('#blockingDiv').show();
     }
     $('#advisorDialogRoot').hide();
 }
@@ -95,6 +179,12 @@ SetupDragAndDrop = function () {
     });
     MakeCoursesDraggable();
 }
+CourseDragStart = function (course) {
+    draggedCourse = course;
+}
+CourseDragEnd = function (course) {
+    draggedCourse = null;
+}
 SubmitSingletonClassAddInformation = function () {
     var deptCode = $('#singletonDepartment').val();
     var courseNumber = $('#singletonCourseNumber').val();
@@ -106,19 +196,19 @@ SubmitSingletonClassAddInformation = function () {
 
     var errorMessage = '';
     // make sure deptCode is a 4 letter all caps code
-    if(!deptCode.match('/^[A-Z]{4}$/')) {
+    if(!deptCode.match(/^[A-Z]{4}$/)) {
         errorMessage += 'Please enter a valid Department Code\n';
     }
-    if(!courseNumber.match('/^[1-4][X|0-9]{3}$/')) {
+    if(!courseNumber.match(/^[1-4][X|0-9]{3}$/)) {
         errorMessage += 'Please enter a valid Course Number\n';
     }
-    if (!semesterCode.match('/^[S|M|F][0-9]{2}$/')) {
+    if (!semesterCode.match(/^[S|M|F][0-9]{2}$/)) {
         errorMessage += 'Please enter a valid Semester Code\n';
     }
-    if (!grade.match('/^[0-3].[0-9]{2}$/')) {
+    if (!grade.match(/^[0-3].[0-9]{2}$/)) {
         errorMessage += 'Please enter a valid Grade\n';
     }
-    if (!credits.match('/^[0-4]$/')) {
+    if (!credits.match(/^[0-4]$/)) {
         errorMessage += 'Please enter a valid Credit\n';
     }
     if (errorMessage !== '') {
@@ -134,11 +224,11 @@ SubmitSingletonClassAddInformation = function () {
             Credits: credits,
             Semester: semesterCode,
             PassNoCredit: passNoCredit,
-            CommIntensive: commIntesive
+            CommIntensive: commIntensive
         }
     };
     $.ajax({
-        url: window.location.origin + '/Course/AddNewCourse',
+        url: window.location.origin + '/api/Course/AddNewCourse',
         data: JSON.stringify(newCourseRequest),
         type: 'POST',
         contentType: 'application/json',
@@ -173,11 +263,9 @@ CancelSingletonClassAdd = function () {
 }
 ShowSingletonClassAddDialog = function () {
     $('#singletonClassAddDialogRoot').show();
-    // add validators if needed
 }
 ShowRegistrationDialog = function () {
     $('#registrationDialogRoot').show();
-    // add validators if needed
 }
 EditUserInfo = function () {
     editMode = 'edit';
@@ -191,69 +279,111 @@ SubmitRegistrationInformation = function () {
     var password = $('#registrationPassword1').val();
     var confirmPswd = $('#registrationPassword2').val();
     var major = $('#registrationMajor').val();
+    if (editMode === 'new') {
+        $.ajax({
+            url: window.location.origin + '/Account/CheckUserName',
+            data: JSON.stringify({ UserName: userName }),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (data, textStatus, jqXHR) {
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
 
-    $.ajax({
-        url: window.location.origin + '/Account/CheckUserName',
-        data: JSON.stringify({ UserName: userName }),
-        type: 'POST',
-        contentType: 'application/json',
-        success: function (data, textStatus, jqXHR) {
-            if (!data.Success) {
-                alert(data.Message);
-                return;
-            }
-
-            var errorMessage = '';
-            if (!data.Payload) {
-                errorMessage += 'User name not available\n';
-            }
-            if (password != confirmPswd) {
-                errorMessage += 'Passowrds do not match\n';
+                var errorMessage = '';
+                if (!data.Payload) {
+                    errorMessage += 'User name not available\n';
+                }
+                if (password != confirmPswd) {
+                    errorMessage += 'Passowrds do not match\n';
+                }
+                if (major.length < 1) {
+                    errorMessage += 'Please enter a major or "Undeclared" if you do not have one yet';
+                }
                 $('#registrationPassword1').val('');
                 $('#registrationPassword2').val('');
-            }
-            if (major.length < 1) {
-                errorMessage += 'Please enter a major or "Undeclared" if you do not have one yet';
-            }
-            if (errorMessage !== '') {
-                alert(errorMessage);
-                return;
-            }
-
-            var registrationRequest = { UserName: userName, Password: password, Major: major };
-            $.ajax({
-                url: window.location.origin + '/Account/Register',
-                data: JSON.stringify(registrationRequest),
-                type: 'POST',
-                contentType: 'application/json',
-                success: function (data, textStatus, jqXHR) {
-                    if (!data.Success) {
-                        alert(data.Message);
-                        return;
-                    }
-
-                    var appUser = data.Payload;
-                    viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
-                    ko.utils.arrayForEach(appUser.Advisors, function (advisor) {
-                        user.advisors.push(new Advisor(advisor.Name, advisor.EMail));
-                    });
-
-                    // set cookie
-
-                    $('#registrationDialogRoot').hide();
-
-                    $('#blockingDiv').hide();
-                    RedisplayHeader();
+                if (errorMessage !== '') {
+                    alert(errorMessage);
+                    return;
                 }
-            });
-            $('#blockingDivSpan').text('Registering...');
-            $('#blockingDiv').show();
-        },
-        error: function () {
-            alert('There is an issue with the server, please try again later');
-            waiting = false;
+
+                var registrationRequest = { UserName: userName, Password: password, Major: major };
+                $.ajax({
+                    url: window.location.origin + '/Account/Register',
+                    data: JSON.stringify(registrationRequest),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function (data, textStatus, jqXHR) {
+                        if (!data.Success) {
+                            alert(data.Message);
+                            $('#blockingDiv').hide();
+                            return;
+                        }
+
+                        var appUser = data.Payload;
+                        viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
+                        ko.utils.arrayForEach(appUser.Advisors, function (advisor) {
+                            viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                        });
+
+                        document.cookie = 'CAPPamariCredentials=' + appUser.SessionID + '#' + appUser.UserName + ';';
+
+                        $('#registrationDialogRoot').hide();
+
+                        $('#blockingDiv').hide();
+                        RedisplayHeader();
+                    }
+                });
+                $('#blockingDivSpan').text('Registering...');
+                $('#blockingDiv').show();
+            },
+            error: function () {
+                alert('There is an issue with the server, please try again later');
+                $('#blockingDiv').hide();
+            }
+        });
+        $('#blockingDivSpan').text('Checking UserName...');
+        $('#blockingDiv').show();
+    } else if (editMode === 'edit') {
+        var registrationRequest = { UserName: userName, Password: password, Major: major };
+        if (password != confirmPswd) {
+            alert('Passwords do not match!');
+            $('#registrationPassword1').val('');
+            $('#registrationPassword2').val('');
+            return;
         }
-    });
+        $('#registrationPassword1').val('');
+        $('#registrationPassword2').val('');
+        $.ajax({
+            url: window.location.origin + '/api/User/UpdateUser',
+            data: JSON.stringify(registrationRequest),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (data, textStatus, jqXHR) {
+                if (!data.Success) {
+                    alert(data.Message);
+                    $('#blockingDiv').hide();
+                    return;
+                }
+
+                var appUser = data.Payload;
+                viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
+                ko.utils.arrayForEach(appUser.Advisors, function (advisor) {
+                    viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                });
+
+                document.cookie = 'CAPPamariCredentials=' + appUser.SessionID + '#' + appUser.UserName + ';';
+
+                $('#registrationDialogRoot').hide();
+
+                $('#blockingDiv').hide();
+                RedisplayHeader();
+            }
+        });
+        $('#blockingDivSpan').text('Updating...');
+        $('#blockingDiv').show();
+    }
 }
 CancelRegistration = function () {
     $('#registrationUserName').val('');
@@ -462,6 +592,9 @@ ViewModel = function () {
     }
     self.editAdvisorInfo = function () {
         EditAdvisorInfo(self.advisor());
+    }
+    self.deleteAdvisor = function () {
+        DeleteAdvisor(self.advisor());
     }
     self.clearCAPPReport = function () {
         self.unassignedCourses([]);

@@ -18,11 +18,12 @@ namespace CAPPamari.Web.Controllers
         /// <param name="Request">ChangeMajorRequest denoting which user needs to change their major and what to change it to.</param>
         /// <returns>ApiResponse<bool> denoting whether or not the action was successful.</returns>
         [HttpPost]
-        public ApiResponse<bool> ChangeMajor([FromBody]ChangeMajorRequest Request)
+        public ApiResponse<ApplicationUserModel> UpdateUser([FromBody]UpdateUserRequest Request)
         {
-            var success = UserHelper.ChangeMajor(Request.UserName, Request.NewMajor);
-            var message = success ? "Major changed successfully" : "Could not change major"; 
-            return ApiResponse<bool>.SuccessResponse(message, success);
+            var success = UserHelper.UpdateUser(Request.UserName, Request.Password, Request.Major);
+            var userData = success ? UserHelper.GetApplicationUser(Request.UserName) : null;
+            var message = success ? "Major changed successfully" : "Could not change major";
+            return ApiResponse<ApplicationUserModel>.From(success, message, userData);
         }
 
         /// <summary>
@@ -48,6 +49,18 @@ namespace CAPPamari.Web.Controllers
         {
             var success = UserHelper.RemoveAdvisor(Request.UserName, Request.NewAdvisor);
             var message = success ? "Advisor removed successfully" : "Advisor could not be removed"; 
+            return ApiResponse<bool>.SuccessResponse(message, success);
+        }
+
+        /// <summary>
+        /// Update an advisor for a user
+        /// </summary>
+        /// <param name="Request">ChangeAdvisorRequest coresponding to the user to update the advisor for</param>
+        /// <returns>ApiResponse<bool> denoting whether or not the advisor was updated.</returns>
+        public ApiResponse<bool> UpdateAdvisor([FromBody]AdvisorModel Request)
+        {
+            var success = UserHelper.UpdateAdvisor(Request);
+            var message = success ? "Advisor updated successfully" : "Could not update advisor email";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
