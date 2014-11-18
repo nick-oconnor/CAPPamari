@@ -18,12 +18,13 @@ namespace CAPPamari.Web.Models.Requirements
         public bool Match(CourseModel Course)
         {
             if (CommunicationIntensive && !Course.CommIntensive) return false;
-            return Exclusion ^ CourseFullfillments.Any(fulfillment => fulfillment.Match(Course)); 
+            return CourseFullfillments.Any(fulfillment => fulfillment.Match(Course)); 
         }
         public bool Apply(CourseModel Course)
         {
             if (Match(Course))
             {
+                if (Exclusion) return false;
                 if (Course.PassNoCredit)
                 {
                     if (PassNoCreditsApplied + Course.Credits <= MaxPassNoCreditCredits)

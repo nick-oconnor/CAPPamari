@@ -62,14 +62,16 @@ namespace CAPPamari.Web.Helpers
         }
 
         /// <summary>
-        /// Change major for a user
+        /// Update user if there is a session active
         /// </summary>
-        /// <param name="UserName">UserName of user to change major of.</param>
-        /// <param name="NewMajor">Major to change to.</param>
-        /// <returns>Success status of change.</returns>
-        public static bool ChangeMajor(string UserName, string NewMajor)
+        /// <param name="UserName">UserName for user to update</param>
+        /// <param name="Password">Password to update to</param>
+        /// <param name="Major">Major to update to</param>
+        /// <returns>True if the user was updated, false otherwise</returns>
+        public static bool UpdateUser(string UserName, string Password, string Major)
         {
-            return EntitiesHelper.ChangeMajor(UserName, NewMajor);
+            if (EntitiesHelper.GetSessionID(UserName) == -1) return false;
+            return EntitiesHelper.UpdateUser(UserName, Password, Major);
         }
 
         /// <summary>
@@ -86,6 +88,17 @@ namespace CAPPamari.Web.Helpers
                 advisorID = EntitiesHelper.AddAdvisor(NewAdvisor.Name, NewAdvisor.EMail);
             }
             return EntitiesHelper.AssociateAdvisorAndUser(UserName, advisorID);
+        }
+
+        /// <summary>
+        /// Update an advisor for a user
+        /// </summary>
+        /// <param name="UserName">UserName for user to update an advisor for</param>
+        /// <param name="AdvisorToUpdate">AdvisorModel containing data to update into the advisor</param>
+        /// <returns>Success status of the update</returns>
+        public static bool UpdateAdvisor(AdvisorModel AdvisorToUpdate)
+        {
+            return EntitiesHelper.UpdateAdvisor(AdvisorToUpdate.Name, AdvisorToUpdate.EMail); 
         }
 
         /// <summary>

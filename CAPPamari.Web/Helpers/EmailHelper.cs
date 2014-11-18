@@ -16,6 +16,7 @@ namespace CAPPamari.Web.Helpers
         public static bool EmailToAdvisor(string UserName, AdvisorModel Advisor)
         {
             var document = PrintingHelper.PrintCAPPReport(UserName);
+            if (document == null) return false;
             Attachment attachment;
             MailMessage email = new MailMessage("do-not-reply@iecfusor.com", Advisor.EMail);
             email.Subject = "CAPPamari - Please review " + UserName + "'s CAPP report";

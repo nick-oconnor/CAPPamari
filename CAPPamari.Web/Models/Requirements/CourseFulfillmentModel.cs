@@ -16,7 +16,7 @@ namespace CAPPamari.Web.Models.Requirements
             for (int i = 0; i < 4; i++)
             {
                 if (CourseNumber[i] == 'x' || Course.CourseNumber[i] == 'x') continue;
-                if (Convert.ToInt32(CourseNumber[i]) > Convert.ToInt32(Course.CourseNumber[i])) return false;
+                if (CourseNumber[i] != Course.CourseNumber[i]) return false;
             }
             return true;
         }

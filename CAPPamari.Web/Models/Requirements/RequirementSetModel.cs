@@ -18,11 +18,51 @@ namespace CAPPamari.Web.Models.Requirements
 
         public bool CanApplyCourse(CourseModel Course)
         {
+            if(Name == "Unapplied Courses" || Name == "Free Electives") return true;
+            ApplyCourses();
+            var positiveMatch = false;
             foreach (var req in Requirements)
             {
-                if (req.Match(Course)) return true;
+                if (req.Match(Course))
+                {
+                    if (req.Exclusion) return false;
+                    positiveMatch |= !req.IsFulfilled();
+                }
             }
-            return false;
+            return positiveMatch;
+        }
+        private void ApplyCourses()
+        {
+            var workingSet = new List<Fulfillment>();
+            foreach (var req in Requirements)
+            {
+                workingSet.Add(new Fulfillment()
+                {
+                    Requirement = req,
+                    Courses = AppliedCourses.Where(course => req.Match(course)).ToList()
+                });
+            }
+            while (workingSet.Count > 0)
+            {
+                var positiveCounts = workingSet.Where(set => set.Courses.Count() > 0);
+                if (positiveCounts.Count() == 0) return;
+                var smallestListCount = positiveCounts.Min(set => set.Courses.Count());
+
+                var weakestLink = workingSet.First(set => set.Courses.Count() == smallestListCount);
+                var courseCounts = new List<CourseCount>();
+                foreach (var course in weakestLink.Courses)
+                {
+                    courseCounts.Add(GetCourseCount(course, workingSet));
+                }
+                var mostSelectiveClass = courseCounts.Min(cc => cc.Count);
+
+                var weakestCourse = courseCounts.First(cc => cc.Count == mostSelectiveClass).Course;
+                RemoveCourseFromFulfillments(weakestCourse, workingSet);
+                if (weakestLink.Requirement.Apply(weakestCourse))
+                {
+                    workingSet.Remove(weakestLink);
+                }
+            }
         }
         public bool Fulfills(List<CourseModel> Courses)
         {
@@ -47,37 +87,9 @@ namespace CAPPamari.Web.Models.Requirements
             }
 
             // check requirements
-            var workingSet = new List<Fulfillment>();
-            foreach (var req in Requirements)
-            {
-                workingSet.Add(new Fulfillment()
-                {
-                    Requirement = req,
-                    Courses = Courses.Where(course => req.Match(course))
-                });
-            }
-            while (workingSet.Count > 0)
-            {
-                var smallestListCount = workingSet.Min(set => set.Courses.Count());
-                if (smallestListCount == 0) return false;
+            ApplyCourses();
 
-                var weakestLink = workingSet.First(set => set.Courses.Count() == smallestListCount);
-                var courseCounts = new List<CourseCount>();
-                foreach (var course in weakestLink.Courses)
-                {
-                    courseCounts.Add(GetCourseCount(course, workingSet));
-                }
-                var mostSelectiveClass = courseCounts.Min(cc => cc.Count);
-
-                var weakestCourse = courseCounts.First(cc => cc.Count == mostSelectiveClass).Course;
-                RemoveCourseFromFulfillments(weakestCourse, workingSet);
-                if (weakestLink.Requirement.Apply(weakestCourse))
-                {
-                    workingSet.Remove(weakestLink);
-                }
-            }
-
-            return true;
+            return !Requirements.Any(req => !req.IsFulfilled());
         }
         public bool IsFulfilled()
         {
@@ -113,14 +125,14 @@ namespace CAPPamari.Web.Models.Requirements
         {
             foreach (var fulfillment in Fulfillments)
             {
-                fulfillment.Courses.ToList().Remove(Course);
+                fulfillment.Courses.Remove(Course);
             }
         }
 
         internal class Fulfillment
         {
             public RequirementModel Requirement { get; set; }
-            public IEnumerable<CourseModel> Courses { get; set; } 
+            public List<CourseModel> Courses { get; set; } 
         }
         internal class CourseCount
         {

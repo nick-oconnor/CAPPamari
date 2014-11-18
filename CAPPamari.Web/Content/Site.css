@@ -89,6 +89,15 @@
     cursor: pointer;
     border-bottom: thin solid black;
 }
+#autopopButton 
+{
+    width: 100%;
+    text-align: center;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    cursor: pointer;
+    border-bottom: thin solid black;
+}
 /* Registration Dialog */
 #registrationDialogRoot
 {
@@ -103,6 +112,17 @@
     color: white;
 }
 #singletonClassAddDialogRoot {
+    padding-top: 50px;
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.8);
+    z-index: 50;
+    text-align: center;
+    color: white;
+}
+#advisorDialogRoot {
     padding-top: 50px;
     display: none;
     position: absolute;
@@ -135,4 +155,10 @@
 .course
 {
     cursor: move;
+    width: 200px;
+    text-align: center;
+}
+td
+{
+    width:50%;
 }

@@ -6,10 +6,10 @@ using CAPPamari.Web.Models;
 
 namespace CAPPamari.Web.Helpers
 {
-    public class AutopopulationHelper
+    public static class AutopopulationHelper
     {
         //function to autopopulate the HASS requirement set
-        public void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSetModel HASSreqset, List<CourseModel> CoursesTaken)
+        public static void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSetModel HASSreqset, List<CourseModel> CoursesTaken)
         {
             List<string> humDepts = new List<string>(){
                 "IHSS",
@@ -114,7 +114,7 @@ namespace CAPPamari.Web.Helpers
             return;
         }
 
-        public void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
+        public static void fillNamedRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> allSets, List<CAPPamari.Web.Models.CourseModel> courses)
         {
             // We need to find another way to do this because we don't have SingleRequirements anymore
             /*
@@ -138,7 +138,7 @@ namespace CAPPamari.Web.Helpers
             */
         }
 
-        public void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> allSets, List<CAPPamari.Web.Models.CourseModel> courses){
+        public static void fillLevelRequirements(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> allSets, List<CAPPamari.Web.Models.CourseModel> courses){
             // We need to find another way to do this because we don't have LevelRequirement anymore
             /*
             foreach (var reqset in allSets){
@@ -161,7 +161,7 @@ namespace CAPPamari.Web.Helpers
             */
         }
 
-        public void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> requirements, List<CAPPamari.Web.Models.CourseModel> courses)
+        public static void autopopulate(List<CAPPamari.Web.Models.Requirements.RequirementSetModel> requirements, List<CAPPamari.Web.Models.CourseModel> courses)
         {
             fillNamedRequirements(requirements, courses);
             fillLevelRequirements(requirements, courses);

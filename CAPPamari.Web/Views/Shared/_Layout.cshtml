@@ -16,10 +16,26 @@
         <div id="blockingDiv">
             <span id="blockingDivSpan"></span>
         </div>
+        <div id="advisorDialogRoot">
+            <table style="width:100%">
+                <tr>
+                    <td style="text-align:right">Name:</td>
+                    <td style="text-align:left"><input id="advisorName" type="text" /></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">Email:</td>
+                    <td style="text-align:left"><input id="advisorEmail" type="email" /></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right"><input type="button" onclick="SubmitAdvisorInformation()" value="Submit" /></td>
+                    <td style="text-align:left"><input type="button" onclick="CancelAdvisorDialog()" value="Cancel" /></td>
+                </tr>
+            </table>
+        </div>
         <div id="registrationDialogRoot">
             <table style="width:100%;table-layout:fixed;">
                 <tr>
-                    <td style="text-align:right;">Desired Username:</td>
+                    <td style="text-align:right;">User Name:</td>
                     <td style="text-align:left;"><input id="registrationUserName" type="text" /></td>
                 </tr>
                 <tr>
@@ -35,7 +51,7 @@
                     <td style="text-align:left;"><input id="registrationMajor" type="text" /></td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;"><input id="registrationSubmit" type="button" onclick="SubmitRegistrationInformation()" value="Register" /></td>
+                    <td style="text-align:right;"><input id="registrationSubmit" type="button" onclick="SubmitRegistrationInformation()" value="Submit" /></td>
                     <td style="text-align:left;"><input id="registrationCancel" type="button" onclick="CancelRegistration()" value="Cancel" /></td>
                 </tr>
             </table>
@@ -63,7 +79,7 @@
                     <td style="text-align:left;"><input id="singletonCommIntensive" type="checkbox" /></td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;">Grade (e.g. 4.0):</td>
+                    <td style="text-align:right;">Grade (e.g. 4.00):</td>
                     <td style="text-align:left;"><input id="singletonGrade" type="text" /></td>
                 </tr>
                 <tr>
@@ -71,45 +87,66 @@
                     <td style="text-align:left;"><input id="singletonCredits" type="number" /></td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;"><input id="singletonSumbit" type="button" onclick="SubmitSingletonClassAddInformation()" value="Add" /></td>
+                    <td style="text-align:right;"><input id="singletonSumbit" type="button" onclick="SubmitSingletonClassAddInformation()" value="Submit" /></td>
                     <td style="text-align:left;"><input id="singletonCancel" type="button" onclick="CancelSingletonClassAdd()" value="Cancel" /></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;">O</td>
+                    <td style="text-align:left;">R</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:left;"><input id="csvFileInput" type="file" accept=".csv" /></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;"><input id="csvAutoPopulateCheckbox" type="checkbox" checked="checked" /></td>
+                    <td style="text-align:left;">Auto-populate courses</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;"><input id="csvImportbutton" type="button" value="Import" onclick="ImportCSVFile()"/></td>
+                    <td style="text-align:left"><input type="button" value="Cancel" onclick="CancelSingletonClassAdd()" /></td>
                 </tr>
             </table>
         </div>
         <div id="headerBarRoot">
-            <div id="userHeader" style="position:relative;display:none;width:100%;min-height:75px;">
-                <div style="position:relative;float:left;">
-                    <div style="vertical-align:middle;margin:20px;">
-                        <div data-bind="if: user()">
-                            <span id="userHeaderStudentName" style="position:relative;" data-bind="text: user().userName"></span>
-                            <span style="position:relative;"> - </span>
-                            <span id="userHeaderMajor" style="position:relative;" data-bind="text: user().major"></span>
-                            <div data-bind="foreach: user().advisors">
-                                <span style="position:relative;cursor:pointer;" data-bind="text: 'Email ' + name(), click: EmailToAdvisor"></span>
-                            <div>
+            <div id="headerBarWrapper">
+                <div id="userHeader" style="position:relative;display:none;width:100%;min-height:75px;">
+                    <div style="position:relative;float:left;">
+                        <div style="vertical-align:middle;margin:20px;">
+                            <span id="userHeaderStudentName" style="position:relative" data-bind="text: user() === null ? 'NO USER' : user().userName"></span>
+                            <a onclick="EditUserInfo()" style="cursor:pointer;margin-left:2px;position:relative;">edit</a>
+                            <span id="userHeaderMajor" style="position:relative;" data-bind="text: user() === null ? 'NO MAJOR' : user().major"></span>
+                            <div data-bind="if: user()">
+                                <div data-bind="foreach: user().advisors">
+                                    <a data-bind="text: name, click: EmailToAdvisor"></a>
+                                    <a style="cursor:pointer;margin-left:2px" data-bind="click: EditAdvisorInfo">edit</a>
+                                    <a style="cursor:pointer;margin-left:2px" data-bind="click: DeleteAdvisor">delete</a><br />
+                                </div>
+                            </div>
+                            <span style="cursor:pointer;" data-bind="click: AddNewAdvisor">Add Advisor</span>
+                        </div>
+                    </div>
+                    <div style="position:relative;float:right;">
+                        <div style="vertical-align:middle;margin:20px;">
+                            <span style="position:relative;cursor:pointer;" onclick="viewModel.user().signOut()">Logout</span><br />
+                            <span style="position:relative;cursor:pointer;" onclick="viewModel.print()">Print</span><br />
                         </div>
                     </div>
                 </div>
-                <div style="position:relative;float:right;">
-                    <div style="vertical-align:middle;margin:20px;">
-                        <span style="position:relative;cursor:pointer;" onclick="viewModel.user().signOut()">Logout</span><br />
-                        <span style="position:relative;cursor:pointer;" onclick="viewModel.print()">Print</span><br />
+                <div id="loginHeader" style="position:relative;width:100%;min-height:59px;">
+                    <div style="position:relative;float:left;">
+                        <div style="vertical-align:middle;margin:20px;">
+                            <span style="position:relative;cursor:pointer;" onclick="ShowRegistrationDialog()">Register</span>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div id="loginHeader" style="position:relative;width:100%;min-height:59px;">
-                <div style="position:relative;float:left;">
-                    <div style="vertical-align:middle;margin:20px;">
-                        <span style="position:relative;cursor:pointer;" onclick="ShowRegistrationDialog()">Register</span>
-                    </div>
-                </div>
-                <div style="position:relative;float:right;">
-                    <div style="vertical-align:middle;margin:20px;">
-                        <span style="position:relative;">Username:</span>
-                        <input id="loginHeaderUserName" style="position:relative;" type="text" />
-                        <span style="position:relative;">Password:</span>
-                        <input id="loginHeaderPassword" style="position:relative;" type="password" />
-                        <input id="loginHeaderSignInButton" style="position:relative;" type="button" onclick="SignInButtonClick()" value="Login" />
+                    <div style="position:relative;float:right;">
+                        <div style="vertical-align:middle;margin:20px;">
+                            <span style="position:relative;">Username:</span>
+                            <input id="loginHeaderUserName" style="position:relative;" type="text" />
+                            <span style="position:relative;">Password:</span>
+                            <input id="loginHeaderPassword" style="position:relative;" type="password" />
+                            <input id="loginHeaderSignInButton" style="position:relative;" type="button" onclick="SignInButtonClick()" value="Login" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -117,8 +154,11 @@
         <div id="mainScreen">
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
-                    <div id="addClassButton" style="width:100%" onclick="ShowSingletonClassAddDialog()">
+                    <div id="addClassButton" onclick="ShowSingletonClassAddDialog()">
                         <span>Add Course</span>
+                    </div>
+                    <div id="autopopButton" onclick="AutopopulateUnappliedCourses()">
+                        <span>Auto-populate</span>
                     </div>
                     <div id="courses" data-bind="foreach: unassignedCourses">
                         <div class="course">
@@ -129,6 +169,7 @@
                             <span>(</span>
                             <span data-bind="text: semester"></span>
                             <span>)</span><br />
+                            <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }"></div>
                         </div>
                     </div>
                 </div>
@@ -139,9 +180,8 @@
             <div id="mainBody">
                 <div id="alertDialog">
                 </div>
-                @RenderBody() 
+                @RenderBody()
             </div>
         </div>
-
     </body>
 </html>
