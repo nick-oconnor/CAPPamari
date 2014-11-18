@@ -26,7 +26,7 @@ namespace CAPPamari.Web.Models.Requirements
                 if (req.Match(Course))
                 {
                     if (req.Exclusion) return false;
-                    positiveMatch = !req.IsFulfilled();
+                    positiveMatch |= !req.IsFulfilled();
                 }
             }
             return positiveMatch;
@@ -39,7 +39,7 @@ namespace CAPPamari.Web.Models.Requirements
                 workingSet.Add(new Fulfillment()
                 {
                     Requirement = req,
-                    Courses = AppliedCourses.Where(course => req.Match(course))
+                    Courses = AppliedCourses.Where(course => req.Match(course)).ToList()
                 });
             }
             while (workingSet.Count > 0)
@@ -125,14 +125,14 @@ namespace CAPPamari.Web.Models.Requirements
         {
             foreach (var fulfillment in Fulfillments)
             {
-                fulfillment.Courses.ToList().Remove(Course);
+                fulfillment.Courses.Remove(Course);
             }
         }
 
         internal class Fulfillment
         {
             public RequirementModel Requirement { get; set; }
-            public IEnumerable<CourseModel> Courses { get; set; } 
+            public List<CourseModel> Courses { get; set; } 
         }
         internal class CourseCount
         {

@@ -140,9 +140,12 @@
         <div id="mainScreen">
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
-                    <div id="addClassButton" style="width:100%" onclick="ShowSingletonClassAddDialog()">
+                    <div id="addClassButton" onclick="ShowSingletonClassAddDialog()">
                         <span>Add Course</span>
                     </div>
+                    <div id="autopopButton" onclick="AutopopulateUnappliedCourses()">
+                        <span>Auto-populate</span>
+                    </div> 
                     <div id="courses" data-bind="foreach: unassignedCourses" >
                         <div class="course">
                             <!-- when we decide what the course boxes are going to look like we will add that population here -->

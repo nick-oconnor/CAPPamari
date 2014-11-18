@@ -95,5 +95,31 @@ namespace CAPPamari.Web.Controllers
             var cappReport = CourseHelper.GetCAPPReport(Request.UserName);
             return ApiResponse<CAPPReportModel>.From(success, message, cappReport);
         }
+        /// <summary>
+        /// Find a place to put all unapplied courses
+        /// </summary>
+        /// <param name="UserName">UserName of user to autopopulate for</param>
+        /// <returns>ApiResponse<CAPPReportModel> reporesenting the new CAPP Report for the user</returns>
+        [HttpPost]
+        public ApiResponse<CAPPReportModel> AutopopulateUnappliedCourses([FromBody]string UserName)
+        {
+            if (!EntitiesHelper.UpdateSession(UserName))
+            {
+                return ApiResponse<CAPPReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
+            }
+            var courses = CourseHelper.GetRequirementSet(UserName, "Unapplied Courses").AppliedCourses;
+            // var cappReport = CourseHelper.GetCAPPReport(UserName);
+            // AutopopulationHelper.autopopulate(cappReport, courses);
+            var success = true;
+            foreach (var course in courses)
+            {
+                var reqSetName = string.IsNullOrEmpty(course.RequirementSetName) ? "Unapplied Courses" : course.RequirementSetName;
+                var reqSet = CourseHelper.GetRequirementSet(UserName, reqSetName);
+                success &= CourseHelper.ApplyCourse(UserName, course, reqSet); 
+            }
+            var message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
+            var cappReport = CourseHelper.GetCAPPReport(UserName);
+            return ApiResponse<CAPPReportModel>.From(success, message, cappReport);
+        }
     }
 }

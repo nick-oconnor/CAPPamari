@@ -23,6 +23,27 @@ $(window).load(function () {
     ResizeDisplay();
 });
 
+AutopopulateUnappliedCourses = function () {
+    $.ajax({
+        url: window.location.origin + '/api/Course/AutopopulateUnappliedCourses',
+        data: JSON.stringify(viewModel.user().userName()),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function (data, textStatus, jqXHR) {
+            if (!data.Success) {
+                alert(data.Message);
+            }
+            viewModel.setCAPPReport(data.Payload);
+            $('#blockingDiv').hide();
+        },
+        error: function () {
+            alert('There is a problem with the server.  Please try again later');
+            $('#blockingDiv').hide();
+        }
+    });
+    $('#blockingDivSpan').text('Auto-populating courses...');
+    $('#blockingDiv').show();
+}
 HideCsvImportAbility = function () {
     var importTable = $('#singletonClassAddDialogRoot').find('table');
     importTable.find('tr:nth-child(9n)').hide();
@@ -282,9 +303,6 @@ ImportCSVFile = function () {
             success: function (data, textStatus, jqXHR) {
                 if (!data.Success) {
                     alert(data.Message);
-                    $('#singletonClassAddDialogRoot').hide();
-                    $('#blockingDiv').hide();
-                    return;
                 }
                 viewModel.setCAPPReport(data.Payload);
                 $('#singletonClassAddDialogRoot').hide();
@@ -535,7 +553,7 @@ ResizeDisplay = function () {
     mainBody.outerWidth(mainScreen.innerWidth() - sideBarRootWidth);
     openCloseSidebarDiv.css('padding-top', mainBody.innerHeight() / 2);
     openCloseSidebarDiv.height(mainBody.innerHeight() / 2);
-    $('#courses').height(mainScreen.innerHeight() - $('#addClassButton').outerHeight());
+    $('#courses').height(mainScreen.innerHeight() - $('#addClassButton').outerHeight() - $('#autopopButton').outerHeight());
 }
 ToggleSidebar = function () {
     var sidebarWrapper = $('#sidebarWrapper');
