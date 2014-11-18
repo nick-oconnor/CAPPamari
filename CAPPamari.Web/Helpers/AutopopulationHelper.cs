@@ -8,6 +8,18 @@ namespace CAPPamari.Web.Helpers
 {
     public static class AutopopulationHelper
     {
+        //function to convert course number to an int
+        public static int courseNumToInt(string courseNum)
+        {
+            if (courseNum.Contains('x'))
+            {
+                return Convert.ToInt32(courseNum[0]) * 1000;
+            }
+            else{
+                return Convert.ToInt32(courseNum);
+            }
+        }
+        
         //function to autopopulate the HASS requirement set
         public static void FillHASS(CAPPamari.Web.Models.Requirements.RequirementSetModel HASSreqset, List<CourseModel> CoursesTaken)
         {
@@ -38,7 +50,7 @@ namespace CAPPamari.Web.Helpers
             {
                 if (humDepts.Contains(CoursesTaken[i].DepartmentCode))
                 {
-                    int courseNum = Convert.ToInt32(CoursesTaken[i].CourseNumber);
+                    int courseNum = courseNumToInt(CoursesTaken[i].CourseNumber);
                     if(HumCourses.ContainsKey(courseNum)){
                         HumCourses[courseNum].Add(CoursesTaken[i]);
                     }
@@ -51,7 +63,7 @@ namespace CAPPamari.Web.Helpers
                 }
                 else if (ssciDepts.Contains(CoursesTaken[i].DepartmentCode))
                 {
-                    int courseNum = Convert.ToInt32(CoursesTaken[i].CourseNumber);
+                    int courseNum = courseNumToInt(CoursesTaken[i].CourseNumber);
                     if(SsciCourses.ContainsKey(courseNum)){
                         SsciCourses[courseNum].Add(CoursesTaken[i]);
                     }
