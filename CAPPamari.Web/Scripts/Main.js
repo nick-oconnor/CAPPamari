@@ -29,10 +29,8 @@ SetupAlertDialog = function (advisor) {
     alertDialog = $('#alertDialog');
     alertDialog.dialog({
         autoOpen: false,
-        modal: false,
         resizable: false,
         draggable: false,
-        title: 'Alert',
         hide: 'fade',
         position: 'bottom',
         minHeight: 0,
@@ -402,7 +400,6 @@ User = function (sessionID, userName, major) {
         $('#blockingDiv').show();
         viewModel.user(null);
         viewModel.clearCAPPReport();
-
         RedisplayHeader();
         $('#openCloseSidebarDiv').hide();
     }
@@ -493,8 +490,8 @@ ViewModel = function () {
                 });
                 $('#openCloseSidebarDiv').show();
                 SetupDragAndDrop();
+                ResizeDisplay();
                 $('#blockingDiv').hide();
-                
             },
             error: function () {
                 Alert('There is an issue with the server, please try again later');
