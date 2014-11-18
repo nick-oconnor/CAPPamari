@@ -16,6 +16,31 @@ namespace CAPPamari.Web.Models.Requirements
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public RequirementSetModel()
+        {
+            this.Requirements = new List<RequirementModel>();
+            this.RequirementSetRequirements = new List<RequirementModel>();
+            this.AppliedCourses = new List<CourseModel>();
+            this.DepthRequirementSetRequirement = false;
+            this.CreditsNeeded = 0;
+            this.MaxPassNoCreditCredits = 0;
+            this.Name = "Default";
+            this.Description = "Default";
+        }
+
+        public RequirementSetModel( List<RequirementModel> Requirements, List<RequirementModel> RequirementSetRequirements,
+            List<CourseModel> AppliedCourses, bool DepthRequirementSetRequirement, int CreditsNeeded,
+            int MaxPassNoCreditCredits, string Name, string Description){
+            this.Requirements = Requirements;
+            this.RequirementSetRequirements = RequirementSetRequirements;
+            this.AppliedCourses = AppliedCourses;
+            this.DepthRequirementSetRequirement = DepthRequirementSetRequirement;
+            this.CreditsNeeded = CreditsNeeded;
+            this.MaxPassNoCreditCredits = MaxPassNoCreditCredits;
+            this.Name = Name;
+            this.Description = Description;
+        }
+
         public bool CanApplyCourse(CourseModel Course)
         {
             if(Name == "Unapplied Courses" || Name == "Free Electives") return true;
