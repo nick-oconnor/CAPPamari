@@ -49,6 +49,20 @@ namespace CAPPamari.Web.Helpers
             return EntitiesHelper.GetCAPPReport(UserName);
         }
         /// <summary>
+        /// Creates a new capp report for the user
+        /// </summary>
+        /// <param name="UserName">UserName of user to create a capp report for</param>
+        /// <param name="Major">Major to create a capp report in for the user</param>
+        public static void CreateNewCAPPReport(string UserName, SupportedMajors Major)
+        {
+            switch (Major)
+            {
+                case SupportedMajors.CSCI:
+                    CreateComputerScienceCAPPReport(UserName);
+                    break;
+            }
+        }
+        /// <summary>
         /// Apply a course to a requirement set for a user
         /// </summary>
         /// <param name="UserName">UserName of user to move course for</param>
@@ -59,6 +73,55 @@ namespace CAPPamari.Web.Helpers
         {
             if (!RequirementSet.CanApplyCourse(Course)) return false;
             return EntitiesHelper.ApplyCourse(UserName, Course, RequirementSet);
+        }
+
+        /// <summary>
+        /// Creates a new computer science capp report for the user
+        /// </summary>
+        /// <param name="UserName">UserName of user to create a computer science capp report for</param>
+        private static void CreateComputerScienceCAPPReport(string UserName)
+        {
+            var cappreport = EntitiesHelper.CreateNewCAPPReport(UserName, "Computer Science");
+            // put in capp report requirements
+            //    add course fulfillments to each requirement
+            EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "Unapplied Courses", false, 0, 0);
+            EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "Free Electives", false, 33, 33);
+            var mathReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "Math", false, 16, 0);
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, mathReqset.Name, 4, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("MATH","1010")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, mathReqset.Name, 4, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("MATH","1020")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, mathReqset.Name, 4, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("MATH","2xxx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, mathReqset.Name, 4, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("MATH","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("MATP","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","2140"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","4140"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","4420")
+            });
+            //    add Math requirements
+            //       add course fulfillments to each requirement
+            var scienceReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name,"Science", false, 12, 0);
+            //    add Science requirements
+            //       add course fulfillments to each requirement
+            var cscireqReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "CSCI Required", false, 32, 0);
+            //    add CSCI Required requirements
+            //       add course fulfillments to each requirement
+            var csciOpReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "CSCI Options", false, 11, 0);
+            //    add CSCI Options requirements
+            //       add course fulfillments to each requirement
+            var hassReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "HASS", true, 24, 6);
+            //    add HASS requirements
+            //    add HASS requirement set requirements
+            //       add course fulfillments to each requirement
         }
     }
 }
