@@ -93,7 +93,7 @@ DeleteCourse = function(course) {
         success: function (data) {
             Alert(data.Message);
             if (!data.Success) return;
-            self.unassignedCourses.pop(course);
+            viewModel.unassignedCourses.remove(course);
         },
         error: function () {
             Alert('There is an issue with the server, please try again later');

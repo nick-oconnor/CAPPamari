@@ -394,7 +394,7 @@ namespace CAPPamari.Web.Helpers
                             course =>
                                 course.Department == oldCourse.DepartmentCode && course.Number == oldCourse.CourseNumber);
                     if (remover == null) continue;
-                    reqSet.Courses.Remove(remover);
+                    entities.Courses.Remove(remover);
                     entities.SaveChanges();
                     return true;
                 }
