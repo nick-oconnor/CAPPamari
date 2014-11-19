@@ -5,7 +5,7 @@
         #region Properties
 
         public string Username { get; set; }
-        public AdvisorModel NewAdvisor { get; set; }
+        public AdvisorModel Advisor { get; set; }
 
         #endregion
     }

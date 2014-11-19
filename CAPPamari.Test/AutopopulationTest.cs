@@ -42,7 +42,7 @@ namespace CAPPamari.Test
 
             List<CourseModel> courses = CsvParserHelper.Parse(input).ToList();
 
-            AutopopulationHelper.Autopopulate(reqSets, courses);
+            AutopopulationHelper.AutoPopulate(reqSets, courses);
 
             //check results
             Assert.IsTrue(csciSet.AppliedCourses.ElementAt(0).CourseNumber == "4440");

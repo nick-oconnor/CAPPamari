@@ -39,7 +39,7 @@ namespace CAPPamari.Web.Controllers
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = UserHelper.AddAdvisor(request.Username, request.NewAdvisor);
+            bool success = UserHelper.AddAdvisor(request.Username, request.Advisor);
             string message = success ? "Advisor added successfully" : "Could not add advisor";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
@@ -56,7 +56,7 @@ namespace CAPPamari.Web.Controllers
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = UserHelper.RemoveAdvisor(request.Username, request.NewAdvisor);
+            bool success = UserHelper.RemoveAdvisor(request.Username, request.Advisor);
             string message = success ? "Advisor removed successfully" : "Advisor could not be removed";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }

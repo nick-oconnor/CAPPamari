@@ -1,7 +1,4 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
-<div data-bind="foreach: requirementSets">
+﻿<div data-bind="foreach: requirementSets">
     <div class="requirementBox">
         <h3><a href="#" data-bind="text: name, attr: { 'data-reqSetName': name }"></a></h3>
         <div class="courses" data-bind="foreach: appliedCourses">
@@ -12,7 +9,7 @@
                 <span data-bind="text: number"></span>
                 <span>(</span>
                 <span data-bind="text: semester"></span>
-                <span>)</span><br />
+                <span>)</span>
                 <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }" ></div>
             </div>
         </div>

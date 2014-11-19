@@ -6,9 +6,10 @@
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
-        @Styles.Render("~/Content/jqueryui/css")
+        @Styles.Render("~/Content/themes/base/jquery-ui")
+        @Styles.Render("~/Content/themes/base/font-awesome")
         @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/jquery-ui")
         @Scripts.Render("~/bundles/knockout")
         @Scripts.Render("~/bundles/main")
     </head>
@@ -167,7 +168,8 @@
                             <span data-bind="text: number"></span>
                             <span>(</span>
                             <span data-bind="text: semester"></span>
-                            <span>)</span><br />
+                            <span>)</span>
+                            <span class="fa fa-trash-o" data-bind="click: DeleteCourse"></span><br />
                             <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }"></div>
                         </div>
                     </div>

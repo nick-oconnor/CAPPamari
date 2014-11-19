@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-family: Verdana, Arial, sans-serif;
     font-size: 16px;
     margin: 0;
     overflow: hidden;
@@ -7,11 +7,19 @@
 
 .ui-dialog {
     border: 0 !important;
+    font-family: Verdana, Arial, sans-serif !important;
     font-size: 13px !important;
     padding: 0 !important;
 }
 
 .ui-dialog-titlebar-close { visibility: hidden; }
+
+.ui-accordion {
+    font-family: Verdana, Arial, sans-serif !important;
+    font-size: 16px !important;
+}
+
+.fa { cursor: pointer; }
 
 /* HEADER BAR */
 
@@ -165,8 +173,6 @@
 
 .course {
     cursor: move;
-    text-align: center;
-    width: 200px;
 }
 
 td { width: 50%; }

@@ -52,21 +52,55 @@ AutopopulateUnappliedCourses = function() {
         data: JSON.stringify(viewModel.user().username()),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data) {
+        success: function (data) {
             if (!data.Success) {
+                $('#blockingDiv').hide();
                 Alert(data.Message);
+                return;
             }
+
             viewModel.setCAPPReport(data.Payload);
             $('#blockingDiv').hide();
+            Alert(data.Message);
         },
-        error: function() {
-            Alert('There is a problem with the server.  Please try again later');
+        error: function () {
             $('#blockingDiv').hide();
+            Alert('There is a problem with the server.  Please try again later');
         }
     });
     $('#blockingDivSpan').text('Auto-populating courses...');
     $('#blockingDiv').show();
 };
+DeleteCourse = function(course) {
+    var removeCourseRequest = {
+        Username: viewModel.user().username(),
+        CourseToRemove: {
+            DepartmentCode: course.department(),
+            CourseNumber: course.number(),
+            Grade: course.grade(),
+            Credits: course.credits(),
+            Semester: course.semester(),
+            PassNoCredit: course.passNoCredit,
+            CommIntensive: course.commIntensive,
+            RequirementSetName: 'Unapplied Courses'
+        }
+    };
+    $.ajax({
+        url: window.location.origin + '/api/Course/RemoveCourse',
+        data: JSON.stringify(removeCourseRequest),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function (data) {
+            Alert(data.Message);
+            if (!data.Success) return;
+            self.unassignedCourses.pop(course);
+        },
+        error: function () {
+            Alert('There is an issue with the server, please try again later');
+        }
+    });
+    Alert('Deleting course...');
+}
 HideCsvImportAbility = function() {
     var importTable = $('#singletonClassAddDialogRoot').find('table');
     importTable.find('tr:nth-child(9n)').hide();
@@ -97,26 +131,33 @@ EmailToAdvisor = function(advisor) {
     Alert('Sending email...');
 };
 DeleteAdvisor = function(advisor) {
-    var removeAdvisorRequest = { Username: viewModel.user().username(), NewAdvisor: { Name: advisor.name(), Email: advisor.emailAddress() } };
+    var removeAdvisorRequest = {
+        Username: viewModel.user().username(),
+        Advisor: {
+            Name: advisor.name(),
+            Email: advisor.emailAddress()
+        }
+    };
     $.ajax({
         url: window.location.origin + '/api/User/RemoveAdvisor',
         data: JSON.stringify(removeAdvisorRequest),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data) {
+        success: function (data) {
             if (!data.Success || !data.Payload) {
-                Alert(data.Message);
                 $('#blockingDiv').hide();
+                Alert(data.Message);
                 return;
             }
 
             viewModel.user().advisors.pop(advisor);
-
-            $('#blockingDiv').hide();
             RedisplayHeader();
+            $('#blockingDiv').hide();
+            Alert(data.Message);
         },
         error: function() {
             $('#blockingDiv').hide();
+            Alert('There is an issue with the server, please try again later');
         }
     });
     $('#blockingDivSpan').text('Deleting advisor...');
@@ -143,27 +184,27 @@ SubmitAdvisorInformation = function() {
     var name = $('#advisorName').val();
     var email = $('#advisorEmail').val();
     if (editMode === 'new') {
-        var newAdvisorRequest = { Username: viewModel.user().username(), NewAdvisor: { Name: name, Email: email } };
+        var newAdvisorRequest = { Username: viewModel.user().username(), Advisor: { Name: name, Email: email } };
         $.ajax({
             url: window.location.origin + '/api/User/AddAdvisor',
             data: JSON.stringify(newAdvisorRequest),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data) {
+            success: function (data) {
                 if (!data.Success || !data.Payload) {
-                    Alert(data.Message);
                     $('#blockingDiv').hide();
+                    Alert(data.Message);
                     return;
                 }
 
                 viewModel.user().advisors.push(new Advisor(name, email));
-
-                $('#blockingDiv').hide();
                 RedisplayHeader();
+                $('#blockingDiv').hide();
+                Alert(data.Message);
             },
             error: function() {
-                Alert('There is something wrong with the server, please try again later');
                 $('#blockingDiv').hide();
+                Alert('There is something wrong with the server, please try again later');
             }
         });
         $('#blockingDivSpan').text('Adding advisor...');
@@ -177,8 +218,8 @@ SubmitAdvisorInformation = function() {
             contentType: 'application/json',
             success: function(data) {
                 if (!data.Success || !data.Payload) {
-                    Alert(data.Message);
                     $('#blockingDiv').hide();
+                    Alert(data.Message);
                     return;
                 }
 
@@ -188,12 +229,13 @@ SubmitAdvisorInformation = function() {
                     }
                 });
 
-                $('#blockingDiv').hide();
                 RedisplayHeader();
-            },
-            error: function() {
-                Alert('There is something wrong with the server, please try again later');
                 $('#blockingDiv').hide();
+                Alert(data.Message);
+            },
+            error: function () {
+                $('#blockingDiv').hide();
+                Alert('There is something wrong with the server, please try again later');
             }
         });
         $('#blockingDivSpan').text('Updating advisor...');
@@ -318,26 +360,23 @@ ImportCSVFile = function() {
             type: 'POST',
             contentType: 'application/json',
             success: function(data) {
-                if (!data.Success) {
-                    Alert(data.Message);
-                }
                 viewModel.setCAPPReport(data.Payload);
-                $('#singletonClassAddDialogRoot').hide();
                 $('#blockingDiv').hide();
+                Alert(data.Message);
             },
-            error: function() {
-                Alert('There is an error with the server.  Please try again later');
-                $('#singletonClassAddDialogRoot').hide();
+            error: function () {
                 $('#blockingDiv').hide();
+                Alert('There is an error with the server.  Please try again later');
             }
         });
+        $('#singletonClassAddDialogRoot').hide();
         $('#blockingDivSpan').text('Uploading courses...');
         $('#blockingDiv').show();
     };
     reader.onerror = function() {
-        Alert('Unable to read file');
         $('#singletonClassAddDialogRoot').hide();
         $('#blockingDiv').hide();
+        Alert('Unable to read file');
     };
     $('#blockingDivSpan').text('Reading in CSV...');
     $('#blockingDiv').show();
@@ -406,6 +445,7 @@ SubmitSingletonClassAddInformation = function() {
             $('#singletonGrade').val('');
             $('#singletonCredits').val('');
             $('#blockingDiv').hide();
+            Alert(data.Message)
         },
         error: function() {
             Alert('There is an issue with the server, please try again later');
@@ -453,8 +493,8 @@ SubmitRegistrationInformation = function() {
             contentType: 'application/json',
             success: function(data) {
                 if (!data.Success) {
-                    Alert(data.Message);
                     $('#blockingDiv').hide();
+                    Alert(data.Message);
                     return;
                 }
 
@@ -471,6 +511,7 @@ SubmitRegistrationInformation = function() {
                 $('#registrationPassword1').val('');
                 $('#registrationPassword2').val('');
                 if (errorMessage !== '') {
+                    $('#blockingDiv').hide();
                     Alert(errorMessage);
                     return;
                 }
@@ -483,8 +524,8 @@ SubmitRegistrationInformation = function() {
                     contentType: 'application/json',
                     success: function(data) {
                         if (!data.Success) {
-                            Alert(data.Message);
                             $('#blockingDiv').hide();
+                            Alert(data.Message);
                             return;
                         }
 
@@ -497,19 +538,23 @@ SubmitRegistrationInformation = function() {
                         document.cookie = 'CAPPamariCredentials=' + appUser.SessionId + '#' + appUser.Username + ';';
 
                         $('#registrationDialogRoot').hide();
-
                         $('#sidebarRoot').show();
                         SetupDragAndDrop();
                         RedisplayHeader();
                         $('#blockingDiv').hide();
+                        Alert(data.Message);
+                    },
+                    error: function() {
+                        $('#blockingDiv').hide();
+                        Alert('There is an issue with the server, please try again later');
                     }
                 });
                 $('#blockingDivSpan').text('Registering...');
                 $('#blockingDiv').show();
             },
             error: function() {
-                Alert('There is an issue with the server, please try again later');
                 $('#blockingDiv').hide();
+                Alert('There is an issue with the server, please try again later');
             }
         });
         $('#blockingDivSpan').text('Checking Username...');
@@ -531,8 +576,8 @@ SubmitRegistrationInformation = function() {
             contentType: 'application/json',
             success: function(data) {
                 if (!data.Success) {
-                    Alert(data.Message);
                     $('#blockingDiv').hide();
+                    Alert(data.Message);
                     return;
                 }
 
@@ -545,9 +590,13 @@ SubmitRegistrationInformation = function() {
                 document.cookie = 'CAPPamariCredentials=' + appUser.SessionId + '#' + appUser.Username + ';';
 
                 $('#registrationDialogRoot').hide();
-
-                $('#blockingDiv').hide();
                 RedisplayHeader();
+                $('#blockingDiv').hide();
+                Alert(data.Message);
+            },
+            error: function() {
+                $('#blockingDiv').hide();
+                Alert('There is an issue with the server, please try again later');
             }
         });
         $('#blockingDivSpan').text('Updating...');
@@ -636,6 +685,7 @@ LoadUserFromCookie = function() {
                 viewModel.loadCAPPReport();
             } else {
                 $('#blockingDiv').hide();
+                Alert(data.message);
             }
         },
         error: function() {
@@ -646,16 +696,16 @@ LoadUserFromCookie = function() {
     $('#blockingDiv').show();
 };
 SignInUser = function(username, password) {
-    var jsonData = { Username: username, Password: password };
+    var loginRequest = { Username: username, Password: password };
     $.ajax({
         url: window.location.origin + '/Account/Login',
-        data: JSON.stringify(jsonData),
+        data: JSON.stringify(loginRequest),
         type: 'POST',
         contentType: 'application/json',
         success: function(data) {
             if (!data.Success) {
-                Alert(data.Message);
                 $('#blockingDiv').hide();
+                Alert(data.Message);
                 return;
             }
 
@@ -781,15 +831,6 @@ ViewModel = function() {
         var url = window.location.origin + '/Home/Print?Username=' + self.user().username();
         window.open(url, '_blank');
     };
-    self.emailToAdvisor = function() {
-        EmailToAdvisor(self.advisor());
-    };
-    self.editAdvisorInfo = function() {
-        EditAdvisorInfo(self.advisor());
-    };
-    self.deleteAdvisor = function() {
-        DeleteAdvisor(self.advisor());
-    };
     self.clearCAPPReport = function() {
         self.unassignedCourses([]);
         self.requirementSets([]);
@@ -847,10 +888,11 @@ ViewModel = function() {
                 SetupDragAndDrop();
                 ResizeDisplay();
                 $('#blockingDiv').hide();
+                Alert(data.Message);
             },
             error: function() {
-                Alert('There is an issue with the server, please try again later');
                 $('#blockingDiv').hide();
+                Alert('There is an issue with the server, please try again later');
             }
         });
         $('#blockingDivSpan').text('Loading your CAPP Report...');

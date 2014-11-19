@@ -177,23 +177,24 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\themes\font-awesome\font-awesome.css" />
+    <Content Include="Content\themes\fonts\fontawesome-webfont.svg" />
     <Content Include="Images\background.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\jqueryui\jquery-ui.css" />
-    <Content Include="Content\jqueryui\jquery-ui.structure.css" />
-    <Content Include="Content\jqueryui\jquery-ui.theme.css" />
+    <Content Include="Content\themes\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\jquery-ui\jquery-ui.css" />
+    <Content Include="Content\themes\jquery-ui\jquery-ui.theme.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <EntityDeploy Include="Models\Model1.edmx">
@@ -213,7 +214,10 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
-    <None Include="Properties\PublishProfiles\Justin.pubxml" />
+    <Content Include="Content\themes\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\themes\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\themes\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\themes\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Nicholas.pubxml" />
     <None Include="Properties\PublishProfiles\SDD.pubxml" />
     <Content Include="Scripts\jquery.js" />
