@@ -73,7 +73,7 @@
                 </tr>
                 <tr class="singletonForm">
                     <td style="text-align: right;">Pass No Credit:</td>
-                    <td style="text-align: left;"><input id="singletonPassNoCredit" type="checkbox" onchange=" CheckForPNCCheck() " /></td>
+                    <td style="text-align: left;"><input id="singletonPassNoCredit" type="checkbox" onchange=" CheckForCsvFile() " /></td>
                 </tr>
                 <tr class="singletonForm">
                     <td style="text-align: right;">Communication Intensive:</td>
@@ -97,14 +97,14 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="text-align: left;"><input id="csvFileInput" type="file" accept=".csv" onchange=" CheckForCSVFile() " /></td>
+                    <td style="text-align: left;"><input id="csvFileInput" type="file" accept=".csv" onchange=" CheckForCsvFile() " /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right;"><input id="csvAutoPopulateCheckbox" type="checkbox" checked="checked" /></td>
                     <td style="text-align: left;">Auto-populate courses</td>
                 </tr>
                 <tr>
-                    <td style="text-align: right;"><input id="csvImportbutton" type="button" value="Import" onclick=" ImportCSVFile() "/></td>
+                    <td style="text-align: right;"><input id="csvImportbutton" type="button" value="Import" onclick=" ImportCsvFile() "/></td>
                     <td style="text-align: left"><input type="button" value="Cancel" onclick=" CancelSingletonClassAdd() " /></td>
                 </tr>
             </table>
@@ -114,7 +114,7 @@
                 <div style="position: absolute; width: 100%; text-align: center; font-size: 40px;">
                     <span style="font-family: 'Brush Script MT', cursive;">CAPPamari</span>
                 </div>
-                <div id="userHeader" style="display: none; min-height: 75px; position: relative; width: 100%;">
+                <div id="userHeader" style="display: none; position: relative; width: 100%;">
                     <div style="float: left; position: relative;">
                         <div style="margin: 20px; vertical-align: middle;">
                             <span id="userHeaderStudentName" data-bind="text: user() === null ? 'NO USER' : user().username"></span> - 
@@ -179,18 +179,18 @@
                             <span data-bind="text: semester"></span>
                             <span>)</span>
                             <span class="fa fa-trash-o" title="Delete this course" data-bind="click: DeleteCourse"></span><br />
-                            <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }"></div>
+                            <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJsonCourse($data)) }"></div>
                         </div>
                     </div>
                 </div>
                 <div id="openCloseSidebarDiv" onclick=" ToggleSidebar() ">
-                    <span id="arrowSpan">></span>
+                    <span id="arrowSpan"><</span>
                 </div>
             </div>
             <div id="mainBody">
-                <div id="alertDialog">
-                </div>
                 @RenderBody()
+            </div>
+            <div id="alert" class="ui-corner-all">
             </div>
         </div>
     </body>

@@ -11,7 +11,7 @@
                 <span data-bind="text: semester"></span>
                 <span>)</span>
                 <span class="fa fa-trash-o" title="Delete this course" data-bind="click: DeleteCourse"></span><br />
-                <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }" ></div>
+                <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJsonCourse($data)) }" ></div>
             </div>
         </div>
     </div>
