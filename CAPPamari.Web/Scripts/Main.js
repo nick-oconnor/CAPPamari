@@ -398,6 +398,13 @@ SubmitSingletonClassAddInformation = function () {
 
             var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits, commIntensive);
             viewModel.addNewCouse(course);
+            $('#singletonDepartment').val('');
+            $('#singletonCourseNumber').val('');
+            $('#singletonSemesterCode').val('');
+            $('#singletonPassNoCredit')[0].checked = false;
+            $('#singletonCommIntensive')[0].checked = false;
+            $('#singletonGrade').val('');
+            $('#singletonCredits').val('');
             $('#blockingDiv').hide();
         },
         error: function () {
@@ -414,6 +421,7 @@ CancelSingletonClassAdd = function () {
     $('#singletonCourseNumber').val('');
     $('#singletonSemesterCode').val('');
     $('#singletonPassNoCredit')[0].checked = false;
+    $('#singletonCommIntensive')[0].checked = false;
     $('#singletonGrade').val('');
     $('#singletonCredits').val('');
 
@@ -446,6 +454,7 @@ SubmitRegistrationInformation = function () {
             success: function (data, textStatus, jqXHR) {
                 if (!data.Success) {
                     Alert(data.Message);
+                    $('#blockingDiv').hide();
                     return;
                 }
 
@@ -676,6 +685,20 @@ ToJSONCourse = function (course) {
         credits: course.credits(),
         commIntensive: course.commIntensive
     };
+}
+CheckForPNCCheck = function () {
+    if ($('#singletonPassNoCredit')[0].checked) {
+        $('#singletonGradeRow').hide();
+    } else {
+        $('#singletonGradeRow').show();
+    }
+}
+CheckForCSVFile = function () {
+    if ($('#csvFileInput')[0].files.length === 0) {
+        $('.singletonForm').show();
+    } else {
+        $('.singletonForm').hide();
+    }
 }
 
 User = function (sessionID, userName, major) {
