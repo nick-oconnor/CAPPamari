@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Text.RegularExpressions;
 using System.Web;
 using CAPPamari.Web.Models;
 using CAPPamari.Web.Models.Requirements;
@@ -97,6 +98,11 @@ namespace CAPPamari.Web.Helpers
                 return user.Advisors.ToList();
             }
         }
+        /// <summary>
+        /// Gets the major for the user
+        /// </summary>
+        /// <param name="UserName">UserName of user to get major for</param>
+        /// <returns>Major or string.Empty if the user is not found.</returns>
         public static string GetMajor(string UserName)
         {
             using (var entities = GetEntityModel())
@@ -454,6 +460,129 @@ namespace CAPPamari.Web.Helpers
                 return report.ToCAPPReportModel();
             }
         }
+        /// <summary>
+        /// Creates a new capp report for the user
+        /// </summary>
+        /// <param name="UserName">UserName for the user to add a capp report for.</param>
+        /// <param name="CAPPReportName">Name of the resulting capp report</param>
+        /// <returns>CAPPReportModel of the resulting capp report or null if the user is not found</returns>
+        public static CAPPReportModel CreateNewCAPPReport(string UserName, string CAPPReportName)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return null;
+
+                var newCappReport = new CAPPReport()
+                {
+                    Name = CAPPReportName,
+                };
+                user.CAPPReports.Add(newCappReport);
+                entities.SaveChanges();
+
+                return newCappReport.ToCAPPReportModel();
+            }
+        }
+        /// <summary>
+        /// Adds a requirement set to a capp report for a user
+        /// </summary>
+        /// <param name="UserName">UserName of user to add requirement set for</param>
+        /// <param name="CAPPReportName">Name of capp report to add requirement set to</param>
+        /// <param name="RequirementSetName">Name of requirement set to add to capp report</param>
+        /// <param name="DepthRequirement">Bool indicating whether or not there is a depth requirement in this requirement set</param>
+        /// <param name="CreditsNeeded">Credits needed to fulfill the requirement set</param>
+        /// <param name="MaxPNC">Maximum number of Pass No Credit credits allowed in this requirement set</param>
+        /// <returns>RequirementSetModel of requirement set added or null if user or capp report could not be found</returns>
+        public static RequirementSetModel CreateRequirementSet(string UserName, string CAPPReportName, string RequirementSetName,
+            bool DepthRequirement, int CreditsNeeded, int MaxPNC)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return null;
+
+                var cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == CAPPReportName);
+                if (cappreport == null) return null;
+
+                var reqset = new RequirementSet()
+                {
+                    Credits = CreditsNeeded,
+                    DepthRSR = DepthRequirement,
+                    Name = RequirementSetName,
+                    PassNCCredits = MaxPNC,
+                    Description = string.Empty
+                };
+                cappreport.RequirementSets.Add(reqset);
+                entities.SaveChanges();
+
+                return reqset.ToRequirementSetModel();
+            }
+        }
+        /// <summary>
+        /// Add a Requirement to a requirement set given it's vital information
+        /// </summary>
+        /// <param name="UserName">UserName of user to add requirement for</param>
+        /// <param name="CAPPReportName">Name of capp report to add requirement to</param>
+        /// <param name="RequirementSetName">Name of requirement set to add requirement to</param>
+        /// <param name="CreditsNeeded">Number of credits needed to fulfill requirement</param>
+        /// <param name="MaxPNC">Maximum number of Pass No Credit credits allowed in requirement</param>
+        /// <param name="CommIntensive">Bool indicating whether or not the requirement is communication intensive</param>
+        /// <param name="Exclusion">Bool idicating whether or not the requirement is an exlusion</param>
+        /// <param name="Fulfillments">List of id's corresponding to CourseFulfillments from the database for this requirement</param>
+        public static void CreateRequirementInRequirementSet(string UserName, string CAPPReportName, string RequirementSetName,
+            int CreditsNeeded, int MaxPNC, bool CommIntensive, bool Exclusion, List<int> Fulfillments)
+        {
+            using (var entities = GetEntityModel())
+            {
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                if (user == null) return;
+
+                var cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == CAPPReportName);
+                if (cappreport == null) return;
+
+                var reqset = cappreport.RequirementSets.FirstOrDefault(rs => rs.Name == RequirementSetName);
+                if (reqset == null) return;
+
+                var req = new Requirement()
+                {
+                    CommunicationIntensive = CommIntensive,
+                    CourseFulfillments = GetCourseFulfillmentsFromIds(Fulfillments,entities).ToList(),
+                    CreditsNeeded = CreditsNeeded,
+                    Exclusion = Exclusion,
+                    PassNoCreditCreditsAllowed = MaxPNC
+                };
+                reqset.Requirements.Add(req);
+                entities.SaveChanges();
+            }
+        }
+        /// <summary>
+        /// Get the id of the course fulfillment
+        /// </summary>
+        /// <param name="DeptCode">Department code for the course fulfillment</param>
+        /// <param name="CourseCode">Course code for the course fulfillment</param>
+        /// <returns>ID of the pre-existing or newly created course fulfillment</returns>
+        public static int GetCourseFulfillmentID(string DeptCode, string CourseCode)
+        {
+            var deptRegex = new Regex("/^[A-Z]{4}$/");
+            var numRegex= new Regex("/^[1|2|4|6][0-9|x]{3}$/");
+            if (!deptRegex.IsMatch(DeptCode)) return -1;
+            if (!numRegex.IsMatch(CourseCode)) return -1;
+            using (var entities = GetEntityModel())
+            {
+                var fulfillment = entities.CourseFulfillments.FirstOrDefault(flfll => flfll.DepartmentCode == DeptCode && flfll.CourseNumber == CourseCode);
+                if (fulfillment != null) return fulfillment.CourseFulfillmentID;
+
+                fulfillment = new CourseFulfillment()
+                {
+                    CourseNumber = CourseCode,
+                    DepartmentCode = DeptCode
+                };
+                entities.CourseFulfillments.Add(fulfillment);
+                entities.SaveChanges();
+
+                return fulfillment.CourseFulfillmentID;
+            }
+        }
 
         /// <summary>
         /// Returns new entities object.
@@ -462,6 +591,18 @@ namespace CAPPamari.Web.Helpers
         private static JustinEntities GetEntityModel()
         {
             return new JustinEntities();
+        }
+        /// <summary>
+        /// Gets CourseFulfillments by their id's given a data context
+        /// </summary>
+        /// <param name="FulfillmentIds">List of fulfillment id's to find in the databsae</param>
+        /// <returns>List of CourseFulfillments as they were found in the databse</returns>
+        private static IEnumerable<CourseFulfillment> GetCourseFulfillmentsFromIds(List<int> FulfillmentIds, JustinEntities Context)
+        {
+            foreach (var id in FulfillmentIds)
+            {
+                yield return Context.CourseFulfillments.First(flfll => flfll.CourseFulfillmentID == id);
+            }
         }
     }
 }
