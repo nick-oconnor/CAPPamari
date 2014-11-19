@@ -20,7 +20,7 @@
         public bool Match(CourseModel course)
         {
             if (DepartmentCode != course.DepartmentCode) return false;
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if (CourseNumber[i] == 'x' || course.CourseNumber[i] == 'x') continue;
                 if (CourseNumber[i] != course.CourseNumber[i]) return false;

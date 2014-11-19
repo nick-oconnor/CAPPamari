@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Web;
 using CAPPamari.Web.Models;
+using Spire.Pdf;
 
 namespace CAPPamari.Web.Helpers
 {
@@ -11,7 +12,7 @@ namespace CAPPamari.Web.Helpers
     {
         public static bool EmailToAdvisor(string username, AdvisorModel advisor)
         {
-            var document = PrintingHelper.PrintCappReport(username);
+            PdfDocument document = PrintingHelper.PrintCappReport(username);
             if (document == null) return false;
             var email = new MailMessage("do-not-reply@iecfusor.com", advisor.Email)
             {

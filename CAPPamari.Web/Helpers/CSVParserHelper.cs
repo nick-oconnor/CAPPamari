@@ -14,7 +14,7 @@ namespace CAPPamari.Web.Helpers
             var reader = new CsvReader(sr);
             //somehow we have to make it delimit the header by newline instead of whatever it's doing
 
-            var courses = reader.GetRecords<CourseModel>();
+            IEnumerable<CourseModel> courses = reader.GetRecords<CourseModel>();
 
             return courses;
         }

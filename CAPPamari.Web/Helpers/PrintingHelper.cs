@@ -12,22 +12,24 @@ namespace CAPPamari.Web.Helpers
         public static PdfDocument PrintCappReport(string username)
         {
             if (EntitiesHelper.GetSessionId(username) == -1) return null;
-            var userData = UserHelper.GetApplicationUser(username);
-            var courseData = CourseHelper.GetCappReport(username);
+            ApplicationUserModel userData = UserHelper.GetApplicationUser(username);
+            CappReportModel courseData = CourseHelper.GetCappReport(username);
             var pdf = new PdfDocument();
-            var cappSection = pdf.Sections.Add();
-            var page = cappSection.Pages.Add();
+            PdfSection cappSection = pdf.Sections.Add();
+            PdfNewPage page = cappSection.Pages.Add();
             var font = new PdfFont(PdfFontFamily.TimesRoman, 11);
             var format = new PdfStringFormat {LineSpacing = 20f};
-            var brush = PdfBrushes.Black;
-            var stringData = "\n";
+            PdfBrush brush = PdfBrushes.Black;
+            string stringData = "\n";
             stringData += userData.Username + "\t" + userData.Major + "\n";
-            stringData = userData.Advisors.Aggregate(stringData, (current, adivsor) => current + (adivsor.Name + ": " + adivsor.Email + "\n"));
+            stringData = userData.Advisors.Aggregate(stringData,
+                (current, adivsor) => current + (adivsor.Name + ": " + adivsor.Email + "\n"));
             stringData += "\n\n";
-            foreach (var reqSet in courseData.RequirementSets)
+            foreach (RequirementSetModel reqSet in courseData.RequirementSets)
             {
                 stringData += reqSet.Name + "\n";
-                stringData = reqSet.AppliedCourses.Aggregate(stringData, (current, course) => current + (course.DepartmentCode + "-" + course.CourseNumber + "\n"));
+                stringData = reqSet.AppliedCourses.Aggregate(stringData,
+                    (current, course) => current + (course.DepartmentCode + "-" + course.CourseNumber + "\n"));
                 stringData += "\n";
             }
             // put user info at the top

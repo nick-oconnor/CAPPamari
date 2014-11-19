@@ -134,9 +134,9 @@ ShowAdvisorDialog = function() {
 };
 AddNewAdvisor = function() {
     editMode = 'new';
-    $('#registrationUsername').val('');
-    $('#registrationMajor').val('');
-    $('#registrationUserName').removeAttr('readonly');
+    $('#advisorName').val('');
+    $('#advisorEmail').val('');
+    $('#advisorName').removeAttr('readonly');
     ShowAdvisorDialog();
 };
 SubmitAdvisorInformation = function() {

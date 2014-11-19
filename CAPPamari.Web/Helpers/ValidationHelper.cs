@@ -23,9 +23,11 @@ namespace CAPPamari.Web.Helpers
                 return ValidationStatus.IncorrectPassword;
             }
             if (sessionId <= -1) return ValidationStatus.BadInput;
-            var currentSessionId = EntitiesHelper.GetSessionId(username);
+            int currentSessionId = EntitiesHelper.GetSessionId(username);
             if (currentSessionId != sessionId) return ValidationStatus.InvalidSession;
-            return DateTime.Now < EntitiesHelper.GetSessionExpiration(currentSessionId) ? ValidationStatus.Validated : ValidationStatus.InvalidSession;
+            return DateTime.Now < EntitiesHelper.GetSessionExpiration(currentSessionId)
+                ? ValidationStatus.Validated
+                : ValidationStatus.InvalidSession;
         }
     }
 

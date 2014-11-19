@@ -37,11 +37,11 @@ namespace CAPPamari.Web.Helpers
             var humCourses = new SortedDictionary<int, List<CourseModel>>();
             var ssciCourses = new SortedDictionary<int, List<CourseModel>>();
 
-            foreach (var courseTaken in coursesTaken)
+            foreach (CourseModel courseTaken in coursesTaken)
             {
                 if (humDepts.Contains(courseTaken.DepartmentCode))
                 {
-                    var courseNum = Convert.ToInt32(courseTaken.CourseNumber);
+                    int courseNum = Convert.ToInt32(courseTaken.CourseNumber);
                     if (humCourses.ContainsKey(courseNum))
                     {
                         humCourses[courseNum].Add(courseTaken);
@@ -57,7 +57,7 @@ namespace CAPPamari.Web.Helpers
                 }
                 else if (ssciDepts.Contains(courseTaken.DepartmentCode))
                 {
-                    var courseNum = Convert.ToInt32(courseTaken.CourseNumber);
+                    int courseNum = Convert.ToInt32(courseTaken.CourseNumber);
                     if (ssciCourses.ContainsKey(courseNum))
                     {
                         ssciCourses[courseNum].Add(courseTaken);
@@ -80,7 +80,7 @@ namespace CAPPamari.Web.Helpers
                 if (humCourses.Count > 0)
                 {
                     //find the largest course number (last b/c ascending order)
-                    var maxCourseList = humCourses.Last().Value;
+                    List<CourseModel> maxCourseList = humCourses.Last().Value;
                     if (maxCourseList.Count == 1)
                     {
                         hassReqSet.CanApplyCourse(maxCourseList[0]);
@@ -99,7 +99,7 @@ namespace CAPPamari.Web.Helpers
                 if (ssciCourses.Count > 0)
                 {
                     //find the largest course number (last b/c ascending order)
-                    var maxCourseList = ssciCourses.Last().Value;
+                    List<CourseModel> maxCourseList = ssciCourses.Last().Value;
                     if (maxCourseList.Count == 1)
                     {
                         hassReqSet.CanApplyCourse(maxCourseList[0]);
@@ -128,10 +128,10 @@ namespace CAPPamari.Web.Helpers
         {
             // We need to find another way to do this because we don't have SingleRequirements anymore
 
-            foreach (var reqset in allSets)
+            foreach (RequirementSetModel reqset in allSets)
             {
                 RequirementSetModel reqset1 = reqset;
-                foreach (var course in courses.Where(reqset1.CanApplyCourse))
+                foreach (CourseModel course in courses.Where(reqset1.CanApplyCourse))
                 {
                     reqset.ApplyCourse(course);
                     courses.Remove(course);
@@ -152,7 +152,7 @@ namespace CAPPamari.Web.Helpers
             FillNamedRequirements(requirementSets, courses);
 
             //find and check HASS
-            foreach (var reqset in requirementSets.Where(reqset => reqset.Name == "HASS"))
+            foreach (RequirementSetModel reqset in requirementSets.Where(reqset => reqset.Name == "HASS"))
             {
                 FillHass(reqset, courses);
             }
