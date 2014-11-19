@@ -2,6 +2,7 @@
 var viewModel = null;
 var alertDialog = null;
 var draggedCourse = null;
+var requirementBox = null;
 
 $(window).resize(function () {
     ResizeDisplay();
@@ -37,7 +38,7 @@ SetupAlertDialog = function (advisor) {
         resizable: false,
         draggable: false,
         hide: 'fade',
-        position: 'bottom',
+        position: { my: 'bottom', at: 'bottom', of: window },
         minHeight: 0,
         open: function () {
             setTimeout(function () {
@@ -207,7 +208,7 @@ MakeCoursesDraggable = function () {
     $(".course").draggable({
         appendTo: "body",
         helper: "clone",
-        revert: true,
+        revert: "invalid",
         containment: "#mainScreen"
     });
 }
@@ -217,8 +218,9 @@ SetupDragAndDrop = function () {
     });
     $(".requirementBox").droppable({
         drop: function (event, ui) {
-            var course = $(event.srcElement).parent().find('.courseData').data('course');
-            if(course === undefined) course = $(event.srcElement).find('.courseData').data('course'); 
+            var requirementBox = $(this);
+            var course = $(ui.draggable).parent().find('.courseData').data('course');
+            if (course === undefined) course = $(ui.draggable).find('.courseData').data('course');
             var requirementSetName = $(event.target).find('h3').find('a').data('reqsetname');
             var moveCourseRequest = {
                 UserName: viewModel.user().userName(),
@@ -244,10 +246,10 @@ SetupDragAndDrop = function () {
                         return;
                     }
                     ui.draggable.appendTo($(event.target).find(".courses"));
-                    $(".requirementBox").accordion("resize");
-                    if ($(this).accordion("option", "active") === false)
+                    $(".requirementBox").accordion("refresh");
+                    if (requirementBox.accordion("option", "active") === false)
                     {
-                        $(this).accordion("option", "active", 0);
+                        requirementBox.accordion("option", "active", 0);
                     }
                     Alert(data.Message);
                 },
@@ -255,14 +257,13 @@ SetupDragAndDrop = function () {
                     Alert('There is a problem with the server, please try again later');
                 }
             });
-            ui.helper.remove();
             Alert('Moving course...');
         }
     });
     $("#sidebarWrapper #courses").droppable({
         drop: function (event, ui) {
-            var course = $(event.srcElement).parent().find('.courseData').data('course');
-            if(course === undefined) course = $(event.srcElement).find('.courseData').data('course'); 
+            var course = $(ui.draggable).parent().find('.courseData').data('course');
+            if (course === undefined) course = $(ui.draggable).find('.courseData').data('course');
             var moveCourseRequest = {
                 UserName: viewModel.user().userName(),
                 CourseToMove: {
@@ -287,14 +288,13 @@ SetupDragAndDrop = function () {
                         return;
                     }
                     ui.draggable.appendTo($('#courses'));
-                    $(".requirementBox").accordion("resize");
+                    $(".requirementBox").accordion("refresh");
                     Alert(data.Message);
                 },
                 error: function () {
                     Alert('There is a problem with the server, please try again later');
                 }
             });
-            ui.helper.remove();
             Alert('Moving course...');
         }
     });
@@ -706,7 +706,7 @@ User = function (sessionID, userName, major) {
         viewModel.user(null);
         viewModel.clearCAPPReport();
         RedisplayHeader();
-        $('#openCloseSidebarDiv').hide();
+        $('#sidebarRoot').hide();
     }
 }
 Advisor = function (name, emailAddress) {
@@ -818,7 +818,7 @@ ViewModel = function () {
                         self.requirementSets.push(newRequirementSet);
                     }
                 });
-                $('#openCloseSidebarDiv').show();
+                $('#sidebarRoot').show();
                 SetupDragAndDrop();
                 ResizeDisplay();
                 $('#blockingDiv').hide();
