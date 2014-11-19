@@ -114,13 +114,13 @@
                     <div style="position:relative;float:left;">
                         <div style="vertical-align:middle;margin:20px;">
                             <span id="userHeaderStudentName" style="position:relative" data-bind="text: user() === null ? 'NO USER' : user().userName"></span>
-                            <a onclick="EditUserInfo()" style="cursor:pointer;margin-left:2px;position:relative;">edit</a>
+                            <span onclick="EditUserInfo()" style="cursor:pointer;margin-left:2px;position:relative;">edit</span>
                             <span id="userHeaderMajor" style="position:relative;" data-bind="text: user() === null ? 'NO MAJOR' : user().major"></span>
                             <div data-bind="if: user()">
                                 <div data-bind="foreach: user().advisors">
-                                    <a data-bind="text: name, click: EmailToAdvisor"></a>
-                                    <a style="cursor:pointer;margin-left:2px" data-bind="click: EditAdvisorInfo">edit</a>
-                                    <a style="cursor:pointer;margin-left:2px" data-bind="click: DeleteAdvisor">delete</a><br />
+                                    <span data-bind="text: name, click: EmailToAdvisor"></span>
+                                    <span style="cursor:pointer;margin-left:2px" data-bind="click: EditAdvisorInfo">edit</span>
+                                    <span style="cursor:pointer;margin-left:2px" data-bind="click: DeleteAdvisor">delete</span><br />
                                 </div>
                             </div>
                             <span style="cursor:pointer;" data-bind="click: AddNewAdvisor">Add Advisor</span>
@@ -162,7 +162,6 @@
                     </div>
                     <div id="courses" data-bind="foreach: unassignedCourses">
                         <div class="course">
-                            <!-- when we decide what the course boxes are going to look like we will add that population here -->
                             <span data-bind="text: department"></span>
                             <span>-</span>
                             <span data-bind="text: number"></span>

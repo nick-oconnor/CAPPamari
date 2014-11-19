@@ -1,4 +1,4 @@
-﻿var editMode = '';
+﻿var editMode = 'new';
 var viewModel = null;
 var alertDialog = null;
 var draggedCourse = null;
@@ -26,7 +26,7 @@ $(window).load(function () {
 Alert = function (text) {
     alertDialog.dialog({
         title: text
-    })
+    });
     alertDialog.dialog('open');
     alertDialog.hide();
 }
@@ -88,15 +88,12 @@ EmailToAdvisor = function (advisor) {
         contentType: 'application/json',
         success: function (data, textSuccess, jqXHR) {
             Alert(data.Message);
-            $('#blockingDiv').hide();
         },
         error: function () {
             Alert('There is an issue with the server, please try again later');
-            $('#blockingDiv').hide();
         }
     });
-    $('#blockingDivSpan').text('Sending email...');
-    $('#blockingDiv').show();
+    Alert('Sending email...');
 }
 DeleteAdvisor = function (advisor) {
     var removeAdvisorRequest = { UserName: viewModel.user().userName(), NewAdvisor: { Name: advisor.name(), EMail: advisor.emailAddress() } };
@@ -247,19 +244,18 @@ SetupDragAndDrop = function () {
                         return;
                     }
                     ui.draggable.appendTo($(event.target).find(".courses"));
-                    ui.helper.remove();
                     $(".requirementBox").accordion("resize");
                     if ($(this).accordion("option", "active") === false)
                     {
                         $(this).accordion("option", "active", 0);
                     }
-                    $('#blockingDiv').hide();
+                    Alert(data.Message);
                 },
                 error: function () {
                     Alert('There is a problem with the server, please try again later');
-                    $('#blockingDiv').hide();
                 }
             });
+            ui.helper.remove();
             Alert('Moving course...');
         }
     });
@@ -288,21 +284,18 @@ SetupDragAndDrop = function () {
                 success: function (data, textStatus, jqXHR) {
                     if (!data.Success || !data.Payload) {
                         Alert(data.Message);
-                        $('#blockingDiv').hide();
                         return;
                     }
                     ui.draggable.appendTo($('#courses'));
-                    ui.helper.remove();
                     $(".requirementBox").accordion("resize");
-                    $('#blockingDiv').hide();
+                    Alert(data.Message);
                 },
                 error: function () {
                     Alert('There is a problem with the server, please try again later');
-                    $('#blockingDiv').hide();
                 }
             });
-            $('#blockingDivSpan').text('Moving course...');
-            $('#blockingDiv').show();
+            ui.helper.remove();
+            Alert('Moving course...');
         }
     });
     MakeCoursesDraggable();
