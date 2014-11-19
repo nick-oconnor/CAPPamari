@@ -1,14 +1,14 @@
 ﻿body {
     font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
     font-size: 16px;
-    margin: 0px;
+    margin: 0;
     overflow: hidden;
 }
 
 .ui-dialog {
-    border: 0px !important;
+    border: 0 !important;
     font-size: 13px !important;
-    padding: 0px !important;
+    padding: 0 !important;
 }
 
 .ui-dialog-titlebar-close { visibility: hidden; }
@@ -47,6 +47,7 @@
     bottom: 0;
     content: "";
     left: 0;
+    -ms-opacity: 0.1;
     opacity: 0.1;
     position: absolute;
     right: 0;
@@ -102,6 +103,7 @@
 /* Registration Dialog */
 
 #registrationDialogRoot {
+    background-color: #000000;
     background-color: rgba(0, 0, 0, .8);
     color: white;
     display: none;
@@ -114,6 +116,7 @@
 }
 
 #singletonClassAddDialogRoot {
+    background-color: #000000;
     background-color: rgba(0, 0, 0, .8);
     color: white;
     display: none;
@@ -126,6 +129,7 @@
 }
 
 #advisorDialogRoot {
+    background-color: #000000;
     background-color: rgba(0, 0, 0, .8);
     color: white;
     display: none;
@@ -138,6 +142,7 @@
 }
 
 #blockingDiv {
+    background-color: #000000;
     background-color: rgba(0, 0, 0, .9);
     color: white;
     display: none;

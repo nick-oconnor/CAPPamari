@@ -9,9 +9,8 @@ $(window).resize(function() {
 });
 $(window).load(function() {
     viewModel = new ViewModel();
-    if (LoadUserFromCookie()) {
-        viewModel.loadCAPPReport();
-    }
+
+    LoadUserFromCookie();
 
     if (!window.File || !window.FileReader) {
         HideCsvImportAbility();
@@ -31,7 +30,7 @@ Alert = function(text) {
     alertDialog.dialog('open');
     alertDialog.hide();
 };
-SetupAlertDialog = function(advisor) {
+SetupAlertDialog = function() {
     alertDialog = $('#alertDialog');
     alertDialog.dialog({
         autoOpen: false,
@@ -50,10 +49,10 @@ SetupAlertDialog = function(advisor) {
 AutopopulateUnappliedCourses = function() {
     $.ajax({
         url: window.location.origin + '/api/Course/AutopopulateUnappliedCourses',
-        data: JSON.stringify(viewModel.user().userName()),
+        data: JSON.stringify(viewModel.user().username()),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textStatus) {
+        success: function(data) {
             if (!data.Success) {
                 Alert(data.Message);
             }
@@ -77,10 +76,10 @@ HideCsvImportAbility = function() {
 };
 EmailToAdvisor = function(advisor) {
     var emailRequest = {
-        UserName: viewModel.user().userName(),
+        Username: viewModel.user().username(),
         Advisor: {
             Name: advisor.name(),
-            EMail: advisor.emailAddress()
+            Email: advisor.emailAddress()
         }
     };
     $.ajax({
@@ -88,7 +87,7 @@ EmailToAdvisor = function(advisor) {
         data: JSON.stringify(emailRequest),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textSuccess) {
+        success: function(data) {
             Alert(data.Message);
         },
         error: function() {
@@ -98,13 +97,13 @@ EmailToAdvisor = function(advisor) {
     Alert('Sending email...');
 };
 DeleteAdvisor = function(advisor) {
-    var removeAdvisorRequest = { UserName: viewModel.user().userName(), NewAdvisor: { Name: advisor.name(), EMail: advisor.emailAddress() } };
+    var removeAdvisorRequest = { Username: viewModel.user().username(), NewAdvisor: { Name: advisor.name(), Email: advisor.emailAddress() } };
     $.ajax({
         url: window.location.origin + '/api/User/RemoveAdvisor',
         data: JSON.stringify(removeAdvisorRequest),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textStatus) {
+        success: function(data) {
             if (!data.Success || !data.Payload) {
                 Alert(data.Message);
                 $('#blockingDiv').hide();
@@ -135,16 +134,16 @@ ShowAdvisorDialog = function() {
 };
 AddNewAdvisor = function() {
     editMode = 'new';
-    $('#registrationUserName').val('');
+    $('#registrationUsername').val('');
     $('#registrationMajor').val('');
-    $('#registrationUserName').prop('readonly', 'false');
+    $('#registrationUsername').prop('readonly', 'false');
     ShowAdvisorDialog();
 };
 SubmitAdvisorInformation = function() {
     var name = $('#advisorName').val();
     var email = $('#advisorEmail').val();
     if (editMode === 'new') {
-        var newAdvisorRequest = { UserName: viewModel.user().userName(), NewAdvisor: { Name: name, EMail: email } };
+        var newAdvisorRequest = { Username: viewModel.user().username(), NewAdvisor: { Name: name, Email: email } };
         $.ajax({
             url: window.location.origin + '/api/User/AddAdvisor',
             data: JSON.stringify(newAdvisorRequest),
@@ -170,7 +169,7 @@ SubmitAdvisorInformation = function() {
         $('#blockingDivSpan').text('Adding advisor...');
         $('#blockingDiv').show();
     } else if (editMode === 'edit') {
-        var editAdvisorRequest = { Name: name, EMail: email };
+        var editAdvisorRequest = { Name: name, Email: email };
         $.ajax({
             url: window.location.origin + '/api/User/UpdateAdvisor',
             data: JSON.stringify(editAdvisorRequest),
@@ -224,7 +223,7 @@ SetupDragAndDrop = function() {
             if (course === undefined) course = $(ui.draggable).find('.courseData').data('course');
             var requirementSetName = $(event.target).find('h3').find('a').data('reqsetname');
             var moveCourseRequest = {
-                UserName: viewModel.user().userName(),
+                Username: viewModel.user().username(),
                 CourseToMove: {
                     DepartmentCode: course.department,
                     CourseNumber: course.number,
@@ -265,7 +264,7 @@ SetupDragAndDrop = function() {
             var course = $(ui.draggable).parent().find('.courseData').data('course');
             if (course === undefined) course = $(ui.draggable).find('.courseData').data('course');
             var moveCourseRequest = {
-                UserName: viewModel.user().userName(),
+                Username: viewModel.user().username(),
                 CourseToMove: {
                     DepartmentCode: course.department,
                     CourseNumber: course.number,
@@ -312,7 +311,7 @@ ImportCSVFile = function() {
     reader.readAsText(fileToRead);
     reader.onload = function(event) {
         var csvData = event.target.result;
-        var csvImportRequest = { UserName: viewModel.user().userName(), CsvData: csvData, Autopopulate: autopop };
+        var csvImportRequest = { Username: viewModel.user().username(), CsvData: csvData, Autopopulate: autopop };
         $.ajax({
             url: window.location.origin + '/api/Course/AddCsvFile',
             data: JSON.stringify(csvImportRequest),
@@ -375,7 +374,7 @@ SubmitSingletonClassAddInformation = function() {
     }
 
     var newCourseRequest = {
-        UserName: viewModel.user().userName(),
+        Username: viewModel.user().username(),
         NewCourse: {
             DepartmentCode: deptCode,
             CourseNumber: courseNumber,
@@ -428,20 +427,20 @@ ShowRegistrationDialog = function() {
 };
 EditUserInfo = function() {
     editMode = 'edit';
-    $('#registrationUserName').val(viewModel.user().userName());
+    $('#registrationUsername').val(viewModel.user().username());
     $('#registrationMajor').val(viewModel.user().major());
-    $('#registrationUserName').prop('readonly', 'true');
+    $('#registrationUsername').prop('readonly', 'true');
     ShowRegistrationDialog();
 };
 SubmitRegistrationInformation = function() {
-    var userName = $('#registrationUserName').val();
+    var username = $('#registrationUsername').val();
     var password = $('#registrationPassword1').val();
     var confirmPswd = $('#registrationPassword2').val();
     var major = $('#registrationMajor').val();
     if (editMode === 'new') {
         $.ajax({
-            url: window.location.origin + '/Account/CheckUserName',
-            data: JSON.stringify({ UserName: userName }),
+            url: window.location.origin + '/Account/CheckUsername',
+            data: JSON.stringify({ Username: username }),
             type: 'POST',
             contentType: 'application/json',
             success: function(data) {
@@ -467,7 +466,7 @@ SubmitRegistrationInformation = function() {
                     return;
                 }
 
-                var registrationRequest = { UserName: userName, Password: password, Major: major };
+                var registrationRequest = { Username: username, Password: password, Major: major };
                 $.ajax({
                     url: window.location.origin + '/Account/Register',
                     data: JSON.stringify(registrationRequest),
@@ -481,12 +480,12 @@ SubmitRegistrationInformation = function() {
                         }
 
                         var appUser = data.Payload;
-                        viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
+                        viewModel.user(new User(appUser.SessionId, appUser.Username, appUser.Major));
                         ko.utils.arrayForEach(appUser.Advisors, function(advisor) {
-                            viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                            viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.Email));
                         });
 
-                        document.cookie = 'CAPPamariCredentials=' + appUser.SessionID + '#' + appUser.UserName + ';';
+                        document.cookie = 'CAPPamariCredentials=' + appUser.SessionId + '#' + appUser.Username + ';';
 
                         $('#registrationDialogRoot').hide();
 
@@ -502,10 +501,10 @@ SubmitRegistrationInformation = function() {
                 $('#blockingDiv').hide();
             }
         });
-        $('#blockingDivSpan').text('Checking UserName...');
+        $('#blockingDivSpan').text('Checking Username...');
         $('#blockingDiv').show();
     } else if (editMode === 'edit') {
-        var registrationRequest = { UserName: userName, Password: password, Major: major };
+        var registrationRequest = { Username: username, Password: password, Major: major };
         if (password != confirmPswd) {
             Alert('Passwords do not match!');
             $('#registrationPassword1').val('');
@@ -527,12 +526,12 @@ SubmitRegistrationInformation = function() {
                 }
 
                 var appUser = data.Payload;
-                viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
+                viewModel.user(new User(appUser.SessionId, appUser.Username, appUser.Major));
                 ko.utils.arrayForEach(appUser.Advisors, function(advisor) {
-                    viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                    viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.Email));
                 });
 
-                document.cookie = 'CAPPamariCredentials=' + appUser.SessionID + '#' + appUser.UserName + ';';
+                document.cookie = 'CAPPamariCredentials=' + appUser.SessionId + '#' + appUser.Username + ';';
 
                 $('#registrationDialogRoot').hide();
 
@@ -545,7 +544,7 @@ SubmitRegistrationInformation = function() {
     }
 };
 CancelRegistration = function() {
-    $('#registrationUserName').val('');
+    $('#registrationUsername').val('');
     $('#registrationPassword1').val('');
     $('#registrationPassword2').val('');
     $('#registrationMajor').val('');
@@ -553,9 +552,9 @@ CancelRegistration = function() {
     $('#registrationDialogRoot').hide();
 };
 SignInButtonClick = function() {
-    var userName = $('#loginHeaderUserName').val();
+    var username = $('#loginHeaderUsername').val();
     var password = $('#loginHeaderPassword').val();
-    SignInUser(userName, password);
+    SignInUser(username, password);
     $('#loginHeaderPassword').val('');
 };
 ResizeDisplay = function() {
@@ -609,7 +608,7 @@ LoadUserFromCookie = function() {
         while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
         if (cookie.indexOf('CAPPamariCredentials=') !== -1) userCookie = cookie.substring(21, cookie.length);
     }
-    if (userCookie === '') return false;
+    if (userCookie === '') return;
     $.ajax({
         url: window.location.origin + '/api/User/LoadFromUserSessionCookie',
         data: JSON.stringify(userCookie),
@@ -618,9 +617,9 @@ LoadUserFromCookie = function() {
         success: function(data) {
             if (data.Success) {
                 var appUser = data.Payload;
-                viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
+                viewModel.user(new User(appUser.SessionId, appUser.Username, appUser.Major));
                 ko.utils.arrayForEach(appUser.Advisors, function(advisor) {
-                    viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                    viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.Email));
                 });
                 RedisplayHeader();
                 viewModel.loadCAPPReport();
@@ -635,8 +634,8 @@ LoadUserFromCookie = function() {
     $('#blockingDivSpan').text('Signing you in...');
     $('#blockingDiv').show();
 };
-SignInUser = function(userName, password) {
-    var jsonData = { UserName: userName, Password: password };
+SignInUser = function(username, password) {
+    var jsonData = { Username: username, Password: password };
     $.ajax({
         url: window.location.origin + '/Account/Login',
         data: JSON.stringify(jsonData),
@@ -650,12 +649,12 @@ SignInUser = function(userName, password) {
             }
 
             var appUser = data.Payload;
-            viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
+            viewModel.user(new User(appUser.SessionId, appUser.Username, appUser.Major));
             ko.utils.arrayForEach(appUser.Advisors, function(advisor) {
-                viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.EMail));
+                viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.Email));
             });
 
-            document.cookie = 'CAPPamariCredentials=' + appUser.SessionID + '#' + appUser.UserName + ';';
+            document.cookie = 'CAPPamariCredentials=' + appUser.SessionId + '#' + appUser.Username + ';';
             RedisplayHeader();
             viewModel.loadCAPPReport();
         },
@@ -678,23 +677,23 @@ ToJSONCourse = function(course) {
         commIntensive: course.commIntensive
     };
 };
-User = function(sessionID, userName, major) {
+User = function(sessionId, username, major) {
     /* Properties */
     var self = this;
-    self.userName = ko.observable(userName);
+    self.username = ko.observable(username);
     self.major = ko.observable(major);
-    self.sessionID = sessionID;
+    self.sessionId = sessionId;
     self.advisors = ko.observableArray([]);
 
     /* Functions */
     self.signOut = function() {
-        var jsonData = { UserName: self.userName() };
+        var jsonData = { Username: self.username() };
         $.ajax({
             url: window.location.origin + '/Account/Logout',
             data: JSON.stringify(jsonData),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data) {
+            success: function() {
                 $('#blockingDiv').hide();
             },
             error: function() {
@@ -753,7 +752,7 @@ ViewModel = function() {
         MakeCoursesDraggable();
     };
     self.print = function() {
-        var url = window.location.origin + '/Home/Print?UserName=' + self.user().userName();
+        var url = window.location.origin + '/Home/Print?Username=' + self.user().username();
         window.open(url, '_blank');
     };
     self.emailToAdvisor = function() {
@@ -776,15 +775,15 @@ ViewModel = function() {
     self.setCAPPReport = function(cappReport) {
         self.clearCAPPReport();
         self.requirementSets.push(new RequirementSet('CAPP Report Requirements'));
-        ko.utils.arrayForEach(cappReport.RequirementSets, function(RequirementSetModel) {
-            if (RequirementSetModel.Name === 'Unapplied Courses') {
-                ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function(CourseModel) {
-                    self.unassignedCourses.push(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits, CourseModel.CommIntensive));
+        ko.utils.arrayForEach(cappReport.RequirementSets, function(requirementSetModel) {
+            if (requirementSetModel.Name === 'Unapplied Courses') {
+                ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
+                    self.unassignedCourses.push(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                 });
             } else {
-                var newRequirementSet = new RequirementSet(RequirementSetModel.Name);
-                ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function(CourseModel) {
-                    newRequirementSet.addCourse(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits, CourseModel.CommIntensive));
+                var newRequirementSet = new RequirementSet(requirementSetModel.Name);
+                ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
+                    newRequirementSet.addCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                 });
                 self.requirementSets.push(newRequirementSet);
             }
@@ -794,7 +793,7 @@ ViewModel = function() {
     self.loadCAPPReport = function() {
         $.ajax({
             url: window.location.origin + '/api/User/GetCAPPReport',
-            data: JSON.stringify(self.user().userName()),
+            data: JSON.stringify(self.user().username()),
             type: 'POST',
             contentType: 'application/json',
             success: function(data) {
@@ -805,15 +804,15 @@ ViewModel = function() {
                 }
                 var cappReport = data.Payload;
                 self.requirementSets.push(new RequirementSet('CAPP Report Requirements'));
-                ko.utils.arrayForEach(cappReport.RequirementSets, function(RequirementSetModel) {
-                    if (RequirementSetModel.Name === 'Unapplied Courses') {
-                        ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function(CourseModel) {
-                            self.unassignedCourses.push(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits, CourseModel.CommIntensive));
+                ko.utils.arrayForEach(cappReport.RequirementSets, function(requirementSetModel) {
+                    if (requirementSetModel.Name === 'Unapplied Courses') {
+                        ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
+                            self.unassignedCourses.push(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                         });
                     } else {
-                        var newRequirementSet = new RequirementSet(RequirementSetModel.Name);
-                        ko.utils.arrayForEach(RequirementSetModel.AppliedCourses, function(CourseModel) {
-                            newRequirementSet.addCourse(new Course(CourseModel.DepartmentCode, CourseModel.CourseNumber, CourseModel.Semester, CourseModel.PassNoCredit, CourseModel.Grade, CourseModel.Credits, CourseModel.CommIntensive));
+                        var newRequirementSet = new RequirementSet(requirementSetModel.Name);
+                        ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function (courseModel) {
+                            newRequirementSet.addCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                         });
                         self.requirementSets.push(newRequirementSet);
                     }

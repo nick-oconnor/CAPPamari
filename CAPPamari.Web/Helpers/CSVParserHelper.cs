@@ -5,16 +5,16 @@ using CsvHelper;
 
 namespace CAPPamari.Web.Helpers
 {
-    public class CSVParserHelper
+    public class CsvParserHelper
     {
-        public static IEnumerable<CourseModel> parse(string file)
+        public static IEnumerable<CourseModel> Parse(string file)
         {
             var sr = new StringReader(file);
 
             var reader = new CsvReader(sr);
             //somehow we have to make it delimit the header by newline instead of whatever it's doing
 
-            IEnumerable<CourseModel> courses = reader.GetRecords<CourseModel>();
+            var courses = reader.GetRecords<CourseModel>();
 
             return courses;
         }

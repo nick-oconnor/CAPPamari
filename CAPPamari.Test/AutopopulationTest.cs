@@ -40,9 +40,9 @@ namespace CAPPamari.Test
             }
             reader.Close();
 
-            List<CourseModel> courses = CSVParserHelper.parse(input).ToList();
+            List<CourseModel> courses = CsvParserHelper.Parse(input).ToList();
 
-            AutopopulationHelper.autopopulate(reqSets, courses);
+            AutopopulationHelper.Autopopulate(reqSets, courses);
 
             //check results
             Assert.IsTrue(csciSet.AppliedCourses.ElementAt(0).CourseNumber == "4440");

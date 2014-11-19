@@ -7,36 +7,32 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Validates a user.
         /// </summary>
-        /// <param name="UserName">UserName of the user to validate</param>
-        /// <param name="Password">Raw password for user to validate</param>
-        /// <param name="SessionID">SessionID of current user if revalidating</param>
+        /// <param name="username">Username of the user to validate</param>
+        /// <param name="password">Raw password for user to validate</param>
+        /// <param name="sessionId">SessionID of current user if revalidating</param>
         /// <returns>True if credentials are valid, false otherwise.</returns>
-        public static ValidationStatus Validate(string UserName, string Password = null, int SessionID = -1)
+        public static ValidationStatus Validate(string username, string password = null, int sessionId = -1)
         {
-            if (Password == null && SessionID == -1) return ValidationStatus.BadInput;
+            if (password == null && sessionId == -1) return ValidationStatus.BadInput;
 
-            if (Password != null)
+            if (password != null)
             {
-                string password = EntitiesHelper.GetPassword(UserName);
-                if (string.IsNullOrEmpty(password)) return ValidationStatus.NoSuchUserName;
-                if (password == Password) return ValidationStatus.Validated;
+                string currentPassword = EntitiesHelper.GetPassword(username);
+                if (string.IsNullOrEmpty(password)) return ValidationStatus.NoSuchUsername;
+                if (currentPassword == password) return ValidationStatus.Validated;
                 return ValidationStatus.IncorrectPassword;
             }
-            if (SessionID > -1)
-            {
-                int sessionID = EntitiesHelper.GetSessionID(UserName);
-                if (sessionID != SessionID) return ValidationStatus.InvalidSession;
-                if (DateTime.Now < EntitiesHelper.GetSessionExpiration(sessionID)) return ValidationStatus.Validated;
-                return ValidationStatus.InvalidSession;
-            }
-            return ValidationStatus.BadInput;
+            if (sessionId <= -1) return ValidationStatus.BadInput;
+            var currentSessionId = EntitiesHelper.GetSessionId(username);
+            if (currentSessionId != sessionId) return ValidationStatus.InvalidSession;
+            return DateTime.Now < EntitiesHelper.GetSessionExpiration(currentSessionId) ? ValidationStatus.Validated : ValidationStatus.InvalidSession;
         }
     }
 
     public enum ValidationStatus
     {
         BadInput,
-        NoSuchUserName,
+        NoSuchUsername,
         IncorrectPassword,
         InvalidSession,
         Validated

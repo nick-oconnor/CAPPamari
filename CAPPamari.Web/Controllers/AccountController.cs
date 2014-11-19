@@ -11,13 +11,13 @@ namespace CAPPamari.Web.Controllers
         /// <summary>
         ///     Login function for logging in a new user
         /// </summary>
-        /// <param name="Request">Request containing UserName and Password of user to log in</param>
-        /// <returns>ApiResponse<ApplicationUserModel> correxponding to the user if sign in was successful.</returns>
+        /// <param name="request">Request containing Username and Password of user to log in</param>
+        /// <returns>ApplicationUserModel correxponding to the user if sign in was successful.</returns>
         [System.Web.Mvc.HttpPost]
-        public JsonResult Login([FromBody] LoginRequest Request)
+        public JsonResult Login([FromBody] LoginRequest request)
         {
-            ValidationStatus validationStatus = ValidationHelper.Validate(Request.UserName, Request.Password);
-            ApplicationUserModel badUser = ApplicationUserModel.InvalidUser();
+            var validationStatus = ValidationHelper.Validate(request.Username, request.Password);
+            var badUser = ApplicationUserModel.InvalidUser();
             switch (validationStatus)
             {
                 case ValidationStatus.BadInput:
@@ -26,11 +26,11 @@ namespace CAPPamari.Web.Controllers
                     return Json(ApiResponse<ApplicationUserModel>.FailureResponse("Incorrect password", badUser));
                 case ValidationStatus.InvalidSession:
                     return Json(ApiResponse<ApplicationUserModel>.FailureResponse("Invalid session", badUser));
-                case ValidationStatus.NoSuchUserName:
+                case ValidationStatus.NoSuchUsername:
                     return Json(ApiResponse<ApplicationUserModel>.FailureResponse("No such user name exists", badUser));
                 case ValidationStatus.Validated:
-                    UserHelper.CreateUserSession(Request.UserName);
-                    ApplicationUserModel user = UserHelper.GetApplicationUser(Request.UserName);
+                    UserHelper.CreateUserSession(request.Username);
+                    var user = UserHelper.GetApplicationUser(request.Username);
                     return Json(ApiResponse<ApplicationUserModel>.SuccessResponse("Logged in successfully", user));
             }
 
@@ -40,36 +40,36 @@ namespace CAPPamari.Web.Controllers
         /// <summary>
         ///     Log out function to log a user out.
         /// </summary>
-        /// <param name="UserName">UserName of user to log out.</param>
+        /// <param name="userName">Username of user to log out.</param>
         [System.Web.Mvc.HttpPost]
-        public void Logout([FromBody] string UserName)
+        public void Logout([FromBody] string userName)
         {
-            UserHelper.DestroySession(UserName);
+            UserHelper.DestroySession(userName);
         }
 
         /// <summary>
         ///     Register function to register a new user.
         /// </summary>
-        /// <param name="Request">RegistrationRequest containing pertinent user information for creation of the new user.</param>
-        /// <returns>ApiResponse<ApplicationUserModel> corresponding to the newly created user and their session.</returns>
+        /// <param name="request">RegistrationRequest containing pertinent user information for creation of the new user.</param>
+        /// <returns>ApplicationUserModel corresponding to the newly created user and their session.</returns>
         [System.Web.Mvc.HttpPost]
-        public JsonResult Register(RegistrationRequest Request)
+        public JsonResult Register(RegistrationRequest request)
         {
-            UserHelper.CreateNewUser(Request.UserName, Request.Password, Request.Major);
-            UserHelper.CreateUserSession(Request.UserName);
-            ApplicationUserModel user = UserHelper.GetApplicationUser(Request.UserName);
+            UserHelper.CreateNewUser(request.Username, request.Password, request.Major);
+            UserHelper.CreateUserSession(request.Username);
+            var user = UserHelper.GetApplicationUser(request.Username);
             return Json(ApiResponse<ApplicationUserModel>.SuccessResponse("Registered successfully", user));
         }
 
         /// <summary>
-        ///     Checks to see if a UserName is already taken by another user.
+        ///     Checks to see if a Username is already taken by another user.
         /// </summary>
-        /// <param name="UserName">UserName to check for existence of in the database.</param>
-        /// <returns>ApiReponse<bool> denoting whether or not the UserName is available.</returns>
+        /// <param name="userName">Username to check for existence of in the database.</param>
+        /// <returns>Bool denoting whether or not the userName is available.</returns>
         [System.Web.Mvc.HttpPost]
-        public JsonResult CheckUserName(string UserName)
+        public JsonResult CheckUsername(string userName)
         {
-            bool userNameExists = EntitiesHelper.UserNameExists(UserName);
+            var userNameExists = EntitiesHelper.UsernameExists(userName);
             return Json(ApiResponse<bool>.SuccessResponse("Checked successfully", !userNameExists));
         }
     }

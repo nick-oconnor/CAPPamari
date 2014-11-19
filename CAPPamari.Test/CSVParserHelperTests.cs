@@ -23,7 +23,7 @@ namespace CAPPamari.Test
             reader.Close();
 
             //parse it
-            IEnumerable<CourseModel> courses = CSVParserHelper.parse(input);
+            IEnumerable<CourseModel> courses = CsvParserHelper.Parse(input);
 
             if (courses == null)
             {

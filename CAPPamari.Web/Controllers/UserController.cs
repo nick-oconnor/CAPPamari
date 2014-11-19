@@ -10,116 +10,116 @@ namespace CAPPamari.Web.Controllers
         /// <summary>
         ///     Change a users major
         /// </summary>
-        /// <param name="Request">ChangeMajorRequest denoting which user needs to change their major and what to change it to.</param>
-        /// <returns>ApiResponse<bool> denoting whether or not the action was successful.</returns>
+        /// <param name="request">ChangeMajorRequest denoting which user needs to change their major and what to change it to.</param>
+        /// <returns>ApplicationUserModel denoting whether or not the action was successful.</returns>
         [HttpPost]
-        public ApiResponse<ApplicationUserModel> UpdateUser([FromBody] UpdateUserRequest Request)
+        public ApiResponse<ApplicationUserModel> UpdateUser([FromBody] UpdateUserRequest request)
         {
-            if (!EntitiesHelper.UpdateSession(Request.UserName))
+            if (!EntitiesHelper.UpdateSession(request.Username))
             {
                 return
                     ApiResponse<ApplicationUserModel>.FailureResponse(
                         "Your session is bad, please refresh and sign back in");
             }
-            bool success = UserHelper.UpdateUser(Request.UserName, Request.Password, Request.Major);
-            ApplicationUserModel userData = success ? UserHelper.GetApplicationUser(Request.UserName) : null;
-            string message = success ? "Major changed successfully" : "Could not change major";
+            var success = UserHelper.UpdateUser(request.Username, request.Password, request.Major);
+            var userData = success ? UserHelper.GetApplicationUser(request.Username) : null;
+            var message = success ? "Major changed successfully" : "Could not change major";
             return ApiResponse<ApplicationUserModel>.From(success, message, userData);
         }
 
         /// <summary>
         ///     Add an advisor for a user
         /// </summary>
-        /// <param name="Request">ChangeAdvisorRequest coresponding to the user to add the advisor to.</param>
-        /// <returns>ApiResponse<bool> denoting whether or not the action was successful.</returns>
+        /// <param name="request">ChangeAdvisorRequest coresponding to the user to add the advisor to.</param>
+        /// <returns>Bool denoting whether or not the action was successful.</returns>
         [HttpPost]
-        public ApiResponse<bool> AddAdvisor([FromBody] ChangeAdvisorRequest Request)
+        public ApiResponse<bool> AddAdvisor([FromBody] ChangeAdvisorRequest request)
         {
-            if (!EntitiesHelper.UpdateSession(Request.UserName))
+            if (!EntitiesHelper.UpdateSession(request.Username))
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = UserHelper.AddAdvisor(Request.UserName, Request.NewAdvisor);
-            string message = success ? "Advisor added successfully" : "Could not add advisor";
+            var success = UserHelper.AddAdvisor(request.Username, request.NewAdvisor);
+            var message = success ? "Advisor added successfully" : "Could not add advisor";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
         ///     Remove an advisor for a user
         /// </summary>
-        /// <param name="Request">ChangeAdvisorRequest coresponding to the user to remove the advisor from.</param>
-        /// <returns>ApiResponse<bool> denoting whether or not the action was successful.</returns>
+        /// <param name="request">ChangeAdvisorRequest coresponding to the user to remove the advisor from.</param>
+        /// <returns>Bool denoting whether or not the action was successful.</returns>
         [HttpPost]
-        public ApiResponse<bool> RemoveAdvisor([FromBody] ChangeAdvisorRequest Request)
+        public ApiResponse<bool> RemoveAdvisor([FromBody] ChangeAdvisorRequest request)
         {
-            if (!EntitiesHelper.UpdateSession(Request.UserName))
+            if (!EntitiesHelper.UpdateSession(request.Username))
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = UserHelper.RemoveAdvisor(Request.UserName, Request.NewAdvisor);
-            string message = success ? "Advisor removed successfully" : "Advisor could not be removed";
+            var success = UserHelper.RemoveAdvisor(request.Username, request.NewAdvisor);
+            var message = success ? "Advisor removed successfully" : "Advisor could not be removed";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
         ///     Update an advisor for a user
         /// </summary>
-        /// <param name="Request">ChangeAdvisorRequest coresponding to the user to update the advisor for</param>
-        /// <returns>ApiResponse<bool> denoting whether or not the advisor was updated.</returns>
-        public ApiResponse<bool> UpdateAdvisor([FromBody] AdvisorModel Request)
+        /// <param name="request">ChangeAdvisorRequest coresponding to the user to update the advisor for</param>
+        /// <returns>Bool denoting whether or not the advisor was updated.</returns>
+        public ApiResponse<bool> UpdateAdvisor([FromBody] AdvisorModel request)
         {
-            bool success = UserHelper.UpdateAdvisor(Request);
-            string message = success ? "Advisor updated successfully" : "Could not update advisor email";
+            var success = UserHelper.UpdateAdvisor(request);
+            var message = success ? "Advisor updated successfully" : "Could not update advisor email";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
         ///     Email the current report to your advisor
         /// </summary>
-        /// <param name="Request">EmailToAdvisorRequest coresponding to the advisor to email the user's report to.</param>
-        /// <returns>ApiResponse<bool> denoting whether or not the action was successful.</returns>
+        /// <param name="request">EmailToAdvisorRequest coresponding to the advisor to email the user's report to.</param>
+        /// <returns>Bool denoting whether or not the action was successful.</returns>
         [HttpPost]
-        public ApiResponse<bool> EmailToAdvisor([FromBody] EmailToAdvisorRequest Request)
+        public ApiResponse<bool> EmailToAdvisor([FromBody] EmailToAdvisorRequest request)
         {
-            if (!EntitiesHelper.UpdateSession(Request.UserName))
+            if (!EntitiesHelper.UpdateSession(request.Username))
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = EmailHelper.EmailToAdvisor(Request.UserName, Request.Advisor);
-            string message = success ? "Email sent successfully" : "Email could not be sent";
+            var success = EmailHelper.EmailToAdvisor(request.Username, request.Advisor);
+            var message = success ? "Email sent successfully" : "Email could not be sent";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
         ///     Load a CAPP Report for a user
         /// </summary>
-        /// <param name="UserName">UserName of user to load CAPP Report for</param>
-        /// <returns>ApiResponse<CAPPReportModel> containing user's CAPP Report</returns>
+        /// <param name="userName">Username of user to load CAPP Report for</param>
+        /// <returns>CAPPReportModel containing user's CAPP Report</returns>
         [HttpPost]
-        public ApiResponse<CAPPReportModel> GetCAPPReport([FromBody] string UserName)
+        public ApiResponse<CappReportModel> GetCappReport([FromBody] string userName)
         {
-            if (!EntitiesHelper.UpdateSession(UserName))
+            if (!EntitiesHelper.UpdateSession(userName))
             {
                 return
-                    ApiResponse<CAPPReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
+                    ApiResponse<CappReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            CAPPReportModel cappReport = CourseHelper.GetCAPPReport(UserName);
-            string message = cappReport == null
-                ? "CAPP Report not found for user " + UserName
+            var cappReport = CourseHelper.GetCappReport(userName);
+            var message = cappReport == null
+                ? "CAPP Report not found for user " + userName
                 : "CAPP Report loaded successfully";
-            return ApiResponse<CAPPReportModel>.From(cappReport != null, message, cappReport);
+            return ApiResponse<CappReportModel>.From(cappReport != null, message, cappReport);
         }
 
         /// <summary>
         ///     Loads a user from the session cookie set on the client
         /// </summary>
-        /// <param name="UserSessionCookie">string stored in Javascript to save user's session</param>
-        /// <returns>ApiResponse<ApplicationUserModel> for user or null if the cookie is bad</returns>
-        public ApiResponse<ApplicationUserModel> LoadFromUserSessionCookie([FromBody] string UserSessionCookie)
+        /// <param name="userSessionCookie">string stored in Javascript to save user's session</param>
+        /// <returns>ApplicationUserModel for user or null if the cookie is bad</returns>
+        public ApiResponse<ApplicationUserModel> LoadFromUserSessionCookie([FromBody] string userSessionCookie)
         {
-            ApplicationUserModel user = UserHelper.GetUserFromCookie(UserSessionCookie);
-            bool success = user != null;
-            string message = success
+            var user = UserHelper.GetUserFromCookie(userSessionCookie);
+            var success = user != null;
+            var message = success
                 ? "User loaded successfully from the session cookie"
                 : "User could not be loaded from the session cookie";
             return ApiResponse<ApplicationUserModel>.From(success, message, user);

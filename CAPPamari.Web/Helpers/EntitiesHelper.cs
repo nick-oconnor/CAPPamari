@@ -11,18 +11,18 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Creates a new user
         /// </summary>
-        /// <param name="UserName">UserName for new user</param>
-        /// <param name="Password">Password for new user</param>
-        /// <param name="Major">Major for new user</param>
-        public static void CreateNewUser(string UserName, string Password, string Major)
+        /// <param name="username">Username for new user</param>
+        /// <param name="password">Password for new user</param>
+        /// <param name="major">Major for new user</param>
+        public static void CreateNewUser(string username, string password, string major)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
                 var newUser = new ApplicationUser
                 {
-                    UserName = UserName,
-                    Password = Password,
-                    Major = Major
+                    Username = username,
+                    Password = password,
+                    Major = major
                 };
 
                 entities.ApplicationUsers.Add(newUser);
@@ -31,15 +31,15 @@ namespace CAPPamari.Web.Helpers
         }
 
         /// <summary>
-        ///     Checks to see if UserName is already taken
+        ///     Checks to see if Username is already taken
         /// </summary>
-        /// <param name="UserName">UserName to check in the database for existence</param>
-        /// <returns>True if UserName is taken, false otherwise</returns>
-        public static bool UserNameExists(string UserName)
+        /// <param name="username">Username to check in the database for existence</param>
+        /// <returns>True if Username is taken, false otherwise</returns>
+        public static bool UsernameExists(string username)
         {
             using (JustinEntities entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 return user != null;
             }
         }
@@ -47,36 +47,35 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Gets the password for the user name given.
         /// </summary>
-        /// <param name="UserName">UserName of user to get password for</param>
-        /// <returns>Password for user with UserName or string.Empty if no user is found</returns>
-        public static string GetPassword(string UserName)
+        /// <param name="username">Username of user to get password for</param>
+        /// <returns>Password for user with Username or string.Empty if no user is found</returns>
+        public static string GetPassword(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
-                if (user == null) return string.Empty;
-                return user.Password;
+                return user == null ? string.Empty : user.Password;
             }
         }
 
         /// <summary>
         ///     Update user information
         /// </summary>
-        /// <param name="UserName">UserName of user to update</param>
-        /// <param name="Password">Password to update to</param>
-        /// <param name="Major">Major to update to</param>
+        /// <param name="username">Username of user to update</param>
+        /// <param name="password">Password to update to</param>
+        /// <param name="major">Major to update to</param>
         /// <returns>True if user was updated, false otherwise</returns>
-        public static bool UpdateUser(string UserName, string Password, string Major)
+        public static bool UpdateUser(string username, string password, string major)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
                 if (user == null) return false;
 
-                user.Password = Password;
-                user.Major = Major;
+                user.Password = password;
+                user.Major = major;
                 entities.SaveChanges();
 
                 return true;
@@ -84,45 +83,43 @@ namespace CAPPamari.Web.Helpers
         }
 
         /// <summary>
-        ///     Gets the list of advisors for the user with UserName
+        ///     Gets the list of advisors for the user with Username
         /// </summary>
-        /// <param name="UserName">UserName for user to look up advisors</param>
-        /// <returns>List of advisors for user with UserName or empty list if no user is found</returns>
-        public static List<Advisor> GetAdvisors(string UserName)
+        /// <param name="username">Username for user to look up advisors</param>
+        /// <returns>List of advisors for user with Username or empty list if no user is found</returns>
+        public static List<Advisor> GetAdvisors(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
-                if (user == null) return new List<Advisor>();
-                return user.Advisors.ToList();
+                return user == null ? new List<Advisor>() : user.Advisors.ToList();
             }
         }
 
-        public static string GetMajor(string UserName)
+        public static string GetMajor(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
-                if (user == null) return string.Empty;
-                return user.Major;
+                return user == null ? string.Empty : user.Major;
             }
         }
 
         /// <summary>
         ///     Gets active SessionID if one exists
         /// </summary>
-        /// <param name="UserName">UserName for user to look up SessionID</param>
+        /// <param name="username">Username for user to look up SessionID</param>
         /// <returns>SessionID of valid session or -1 if no such session exists</returns>
-        public static int GetSessionID(string UserName)
+        public static int GetSessionId(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
                 if (user == null) return -1;
 
-                UserSession session = user.UserSessions.FirstOrDefault();
+                var session = user.UserSessions.FirstOrDefault();
                 if (session == null) return -1;
                 return session.Expiration < DateTime.Now ? -1 : session.SessionID;
             }
@@ -131,18 +128,18 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Creates a new session for the user, deleting a current session if one exists
         /// </summary>
-        /// <param name="UserName">UserName to create session for</param>
+        /// <param name="username">Username to create session for</param>
         /// <returns>SessionID of newly created session</returns>
-        public static int CreateNewSession(string UserName)
+        public static int CreateNewSession(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                UserSession session = entities.UserSessions.FirstOrDefault(sess => sess.UserName == UserName);
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.Username == username);
                 if (session != null) entities.UserSessions.Remove(session);
 
                 var newSession = new UserSession
                 {
-                    UserName = UserName,
+                    Username = username,
                     Expiration = DateTime.Now.AddMinutes(30)
                 };
                 entities.UserSessions.Add(newSession);
@@ -155,29 +152,28 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Gets the expiration of the session refered to by SessionID
         /// </summary>
-        /// <param name="SessionID">SessionID for session to look up expiration</param>
+        /// <param name="sessionId">SessionID for session to look up expiration</param>
         /// <returns>Expriation of session or DateTime.MinValue</returns>
-        public static DateTime GetSessionExpiration(int SessionID)
+        public static DateTime GetSessionExpiration(int sessionId)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                UserSession session = entities.UserSessions.FirstOrDefault(sess => sess.SessionID == SessionID);
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.SessionID == sessionId);
 
-                if (session == null) return DateTime.MinValue;
-                return session.Expiration;
+                return session == null ? DateTime.MinValue : session.Expiration;
             }
         }
 
         /// <summary>
-        ///     Removes session for SessionID and UserName
+        ///     Removes session for SessionID and Username
         /// </summary>
-        /// <param name="SessionID">SessionID for session to clear</param>
-        /// <param name="UserName">UserName for session to clear</param>
-        public static void RemoveSession(int SessionID, string UserName)
+        /// <param name="sessionId">SessionID for session to clear</param>
+        /// <param name="username">Username for session to clear</param>
+        public static void RemoveSession(int sessionId, string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                UserSession session = entities.UserSessions.FirstOrDefault(sess => sess.SessionID == SessionID);
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.SessionID == sessionId);
                 if (session == null) return;
                 entities.UserSessions.Remove(session);
 
@@ -188,13 +184,13 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Updates a session for a user because they have committed an action
         /// </summary>
-        /// <param name="UserName">UserName of user to update session for</param>
+        /// <param name="username">Username of user to update session for</param>
         /// <returns>True if session is active and refreshed, false otherwise</returns>
-        public static bool UpdateSession(string UserName)
+        public static bool UpdateSession(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                UserSession session = entities.UserSessions.FirstOrDefault(sess => sess.UserName == UserName);
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.Username == username);
                 if (session == null) return false;
 
                 session.Expiration = DateTime.Now.AddMinutes(30);
@@ -207,17 +203,17 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Change a major for a specific user.
         /// </summary>
-        /// <param name="UserName">UserName of user to change major</param>
-        /// <param name="Major">Major to change to.</param>
+        /// <param name="username">Username of user to change major</param>
+        /// <param name="major">Major to change to.</param>
         /// <returns>Success status of change.</returns>
-        public static bool ChangeMajor(string UserName, string Major)
+        public static bool ChangeMajor(string username, string major)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
                 if (user == null) return false;
 
-                user.Major = Major;
+                user.Major = major;
                 entities.SaveChanges();
                 return true;
             }
@@ -226,22 +222,22 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Add an advisor to the database
         /// </summary>
-        /// <param name="Name">Name of the new advisor to add</param>
-        /// <param name="Email">Email address of the new advisor to add</param>
+        /// <param name="name">Name of the new advisor to add</param>
+        /// <param name="email">Email address of the new advisor to add</param>
         /// <returns>The AdvisorID of the new advisor or -1 if the advisor already exists in the database</returns>
-        public static int AddAdvisor(string Name, string Email)
+        public static int AddAdvisor(string name, string email)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                Advisor existingAdvisor =
+                var existingAdvisor =
                     entities.Advisors.FirstOrDefault(
-                        dbadvisor => dbadvisor.Name == Name && dbadvisor.EMailAddress == Email);
+                        dbadvisor => dbadvisor.Name == name && dbadvisor.EmailAddress == email);
                 if (existingAdvisor != null) return -1;
 
                 var newAdvisor = new Advisor
                 {
-                    EMailAddress = Email,
-                    Name = Name
+                    EmailAddress = email,
+                    Name = name
                 };
                 entities.Advisors.Add(newAdvisor);
                 entities.SaveChanges();
@@ -253,17 +249,17 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Update advisor in database
         /// </summary>
-        /// <param name="Name">Name of advisor to update</param>
-        /// <param name="EMail">EMail to update advisor to</param>
+        /// <param name="name">Name of advisor to update</param>
+        /// <param name="email">Email to update advisor to</param>
         /// <returns>Success status of the update</returns>
-        public static bool UpdateAdvisor(string Name, string EMail)
+        public static bool UpdateAdvisor(string name, string email)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                Advisor advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.Name == Name);
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.Name == name);
                 if (advisor == null) return false;
 
-                advisor.EMailAddress = EMail;
+                advisor.EmailAddress = email;
                 entities.SaveChanges();
 
                 return true;
@@ -273,16 +269,16 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Gets the AdvisorID of an advisor
         /// </summary>
-        /// <param name="Name">Name of the advisor to get the AdvisorID of</param>
-        /// <param name="Email">EMailAddress of the advisor to get the AdvisorID of</param>
+        /// <param name="name">Name of the advisor to get the AdvisorID of</param>
+        /// <param name="email">EmailAddress of the advisor to get the AdvisorID of</param>
         /// <returns>AdvisorID corresponding to the right advisor or -1 if no such advisor exists</returns>
-        public static int GetAdvisorID(string Name, string Email)
+        public static int GetAdvisorId(string name, string email)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                Advisor advisor =
+                var advisor =
                     entities.Advisors.FirstOrDefault(
-                        dbadvisor => dbadvisor.Name == Name && dbadvisor.EMailAddress == Email);
+                        dbadvisor => dbadvisor.Name == name && dbadvisor.EmailAddress == email);
                 if (advisor == null) return -1;
 
                 return advisor.AdvisorID;
@@ -292,17 +288,17 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Add an association between a user and an advisor
         /// </summary>
-        /// <param name="UserName">UserName of user to create the association with</param>
-        /// <param name="AdvisorID">AdvisorID of the advisor to create the association with</param>
+        /// <param name="username">Username of user to create the association with</param>
+        /// <param name="advisorId">AdvisorID of the advisor to create the association with</param>
         /// <returns>Success state of the association creation</returns>
-        public static bool AssociateAdvisorAndUser(string UserName, int AdvisorID)
+        public static bool AssociateAdvisorAndUser(string username, int advisorId)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                Advisor advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == AdvisorID);
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == advisorId);
                 if (advisor == null) return false;
 
                 user.Advisors.Add(advisor);
@@ -315,20 +311,20 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Remove an association between a user and an advisor
         /// </summary>
-        /// <param name="UserName">UserName of user to remove the association with</param>
-        /// <param name="AdvisorID">AdvisorID of the advisor to remove the association with</param>
+        /// <param name="username">Username of user to remove the association with</param>
+        /// <param name="advisorId">AdvisorID of the advisor to remove the association with</param>
         /// <returns>Success state of the association deletion</returns>
-        public static bool DisassociateAdvisorAndUser(string UserName, int AdvisorID)
+        public static bool DisassociateAdvisorAndUser(string username, int advisorId)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                Advisor advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == AdvisorID);
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == advisorId);
                 if (advisor == null) return false;
 
-                bool success = user.Advisors.Remove(advisor);
+                var success = user.Advisors.Remove(advisor);
                 if (success) entities.SaveChanges();
                 return success;
             }
@@ -337,31 +333,32 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Adds a new course to the Unapplied Courses RequirementSet for a specified user
         /// </summary>
-        /// <param name="UserName">UserName for user to add new course for</param>
-        /// <param name="NewCourse">CourseModel containing information about the new course</param>
+        /// <param name="username">Username for user to add new course for</param>
+        /// <param name="newCourse">CourseModel containing information about the new course</param>
+        /// <param name="requirementSetName">Name of the requirement set to retrieve</param>
         /// <returns>Success state of the course addition</returns>
-        public static bool AddNewCourse(string UserName, CourseModel NewCourse, string RequirementSetName)
+        public static bool AddNewCourse(string username, CourseModel newCourse, string requirementSetName)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                RequirementSet reqSet = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSetName);
+                var reqSet = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSetName);
                 if (reqSet == null) return false;
 
                 reqSet.Courses.Add(new Course
                 {
-                    Credits = NewCourse.Credits,
-                    Department = NewCourse.DepartmentCode,
-                    Grade = NewCourse.Grade,
-                    Number = NewCourse.CourseNumber,
-                    PassNC = NewCourse.PassNoCredit,
-                    Semester = NewCourse.Semester,
-                    CommunicationIntensive = NewCourse.CommIntensive
+                    Credits = newCourse.Credits,
+                    Department = newCourse.DepartmentCode,
+                    Grade = newCourse.Grade,
+                    Number = newCourse.CourseNumber,
+                    PassNC = newCourse.PassNoCredit,
+                    Semester = newCourse.Semester,
+                    CommunicationIntensive = newCourse.CommIntensive
                 });
                 entities.SaveChanges();
                 return true;
@@ -371,31 +368,29 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Remove a course for a specified user
         /// </summary>
-        /// <param name="UserName">UserName of user to remove course for</param>
-        /// <param name="OldCourse">CourseModel containing information about course to remove</param>
+        /// <param name="username">Username of user to remove course for</param>
+        /// <param name="oldCourse">CourseModel containing information about course to remove</param>
         /// <returns>Success state of course removal</returns>
-        public static bool RemoveCourse(string UserName, CourseModel OldCourse)
+        public static bool RemoveCourse(string username, CourseModel oldCourse)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                foreach (RequirementSet reqSet in report.RequirementSets)
+                foreach (var reqSet in report.RequirementSets)
                 {
-                    Course remover =
+                    var remover =
                         reqSet.Courses.FirstOrDefault(
                             course =>
-                                course.Department == OldCourse.DepartmentCode && course.Number == OldCourse.CourseNumber);
-                    if (remover != null)
-                    {
-                        reqSet.Courses.Remove(remover);
-                        entities.SaveChanges();
-                        return true;
-                    }
+                                course.Department == oldCourse.DepartmentCode && course.Number == oldCourse.CourseNumber);
+                    if (remover == null) continue;
+                    reqSet.Courses.Remove(remover);
+                    entities.SaveChanges();
+                    return true;
                 }
 
                 return false;
@@ -405,58 +400,56 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Gets a RequirementSet for a user
         /// </summary>
-        /// <param name="UserName">UserName of user to get RequirementSet for</param>
-        /// <param name="RequirementSetName">Name of the requirement set to retrieve</param>
+        /// <param name="username">Username of user to get RequirementSet for</param>
+        /// <param name="requirementSetName">Name of the requirement set to retrieve</param>
         /// <returns>RequirementSet desired or null if no such RequirementSet exists</returns>
-        public static RequirementSetModel GetRequirementSet(string UserName, string RequirementSetName)
+        public static RequirementSetModel GetRequirementSet(string username, string requirementSetName)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return null;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return null;
 
-                RequirementSet dbset = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSetName);
-                if (dbset == null) return null;
-
-                return dbset.ToRequirementSetModel();
+                var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSetName);
+                return dbset == null ? null : dbset.ToRequirementSetModel();
             }
         }
 
         /// <summary>
         ///     Apply a course to a requirement set for a user
         /// </summary>
-        /// <param name="UserName">UserName of user to move course for</param>
-        /// <param name="Course">CourseModel for course to move</param>
-        /// <param name="RequirementSet">RequirementSetModel to move course into</param>
+        /// <param name="username">Username of user to move course for</param>
+        /// <param name="course">CourseModel for course to move</param>
+        /// <param name="requirementSet">RequirementSetModel to move course into</param>
         /// <returns>Success status of move</returns>
-        public static bool ApplyCourse(string UserName, CourseModel Course, RequirementSetModel RequirementSet)
+        public static bool ApplyCourse(string username, CourseModel course, RequirementSetModel requirementSet)
         {
             using (JustinEntities entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                RequirementSet dbset = report.RequirementSets.FirstOrDefault(set => set.Name == RequirementSet.Name);
+                var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSet.Name);
                 if (dbset == null) return false;
 
-                Course course = entities.Courses.FirstOrDefault(c => c.CommunicationIntensive == Course.CommIntensive &&
-                                                                     c.Credits == Course.Credits &&
-                                                                     c.Department == Course.DepartmentCode &&
-                                                                     c.Grade == Course.Grade &&
-                                                                     c.Number == Course.CourseNumber &&
-                                                                     c.PassNC == Course.PassNoCredit &&
-                                                                     c.Semester == Course.Semester &&
+                var newCourse = entities.Courses.FirstOrDefault(c => c.CommunicationIntensive == course.CommIntensive &&
+                                                                     c.Credits == course.Credits &&
+                                                                     c.Department == course.DepartmentCode &&
+                                                                     c.Grade == course.Grade &&
+                                                                     c.Number == course.CourseNumber &&
+                                                                     c.PassNC == course.PassNoCredit &&
+                                                                     c.Semester == course.Semester &&
                                                                      c.RequirementSet.CAPPReport.ApplicationUser
-                                                                         .UserName == UserName);
-                if (course == null) return false;
+                                                                         .Username == username);
+                if (newCourse == null) return false;
 
-                course.RequirementSet = dbset;
+                newCourse.RequirementSet = dbset;
                 entities.SaveChanges();
                 return true;
             }
@@ -465,19 +458,19 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Gets all the RequirementSets for a user
         /// </summary>
-        /// <param name="UserName">UserName for user to get all the RequirementSets for</param>
-        /// <returns>List<RequirementSet> of all RequirementSets</returns>
-        public static CAPPReportModel GetCAPPReport(string UserName)
+        /// <param name="username">Username for user to get all the RequirementSets for</param>
+        /// <returns>List of all RequirementSets</returns>
+        public static CappReportModel GetCappReport(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.UserName == UserName);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return null;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return null;
 
-                return report.ToCAPPReportModel();
+                return report.ToCappReportModel();
             }
         }
 

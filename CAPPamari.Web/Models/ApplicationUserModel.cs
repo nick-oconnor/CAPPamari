@@ -6,16 +6,16 @@ namespace CAPPamari.Web.Models
     public class ApplicationUserModel
     {
         [JsonConstructor]
-        public ApplicationUserModel(string UserName, string Major, List<AdvisorModel> Advisors, int SessionID)
+        public ApplicationUserModel(string username, string major, List<AdvisorModel> advisors, int sessionId)
         {
-            this.UserName = UserName;
-            this.Major = Major;
-            this.Advisors = Advisors;
-            this.SessionID = SessionID;
+            Username = username;
+            Major = major;
+            Advisors = advisors;
+            SessionId = sessionId;
         }
 
-        public int SessionID { get; private set; }
-        public string UserName { get; private set; }
+        public int SessionId { get; private set; }
+        public string Username { get; private set; }
         public string Major { get; private set; }
         public List<AdvisorModel> Advisors { get; private set; }
 

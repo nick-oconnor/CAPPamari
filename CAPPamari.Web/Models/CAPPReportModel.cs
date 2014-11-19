@@ -3,7 +3,7 @@ using CAPPamari.Web.Models.Requirements;
 
 namespace CAPPamari.Web.Models
 {
-    public class CAPPReportModel
+    public class CappReportModel
     {
         public string Name { get; set; }
         public List<RequirementSetModel> RequirementSets { get; set; }

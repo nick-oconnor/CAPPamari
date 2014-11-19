@@ -9,7 +9,7 @@ namespace CAPPamari.Web.Helpers
     public static class AutopopulationHelper
     {
         //function to autopopulate the HASS requirement set
-        public static void FillHASS(RequirementSetModel HASSreqset, List<CourseModel> CoursesTaken)
+        public static void FillHass(RequirementSetModel hassReqSet, List<CourseModel> coursesTaken)
 
         {
             var humDepts = new List<string>
@@ -34,111 +34,109 @@ namespace CAPPamari.Web.Helpers
 
             //create sorted lists of humanities and ssci courses
             //sorted with highest code first
-            var HumCourses = new SortedDictionary<int, List<CourseModel>>();
-            var SsciCourses = new SortedDictionary<int, List<CourseModel>>();
+            var humCourses = new SortedDictionary<int, List<CourseModel>>();
+            var ssciCourses = new SortedDictionary<int, List<CourseModel>>();
 
-            for (int i = 0; i < CoursesTaken.Count; i++)
+            foreach (var courseTaken in coursesTaken)
             {
-                if (humDepts.Contains(CoursesTaken[i].DepartmentCode))
+                if (humDepts.Contains(courseTaken.DepartmentCode))
                 {
-                    int courseNum = Convert.ToInt32(CoursesTaken[i].CourseNumber);
-                    if (HumCourses.ContainsKey(courseNum))
+                    var courseNum = Convert.ToInt32(courseTaken.CourseNumber);
+                    if (humCourses.ContainsKey(courseNum))
                     {
-                        HumCourses[courseNum].Add(CoursesTaken[i]);
+                        humCourses[courseNum].Add(courseTaken);
                     }
                     else
                     {
                         var tempCourse = new List<CourseModel>
                         {
-                            CoursesTaken[i],
+                            courseTaken,
                         };
-                        HumCourses[courseNum] = tempCourse;
+                        humCourses[courseNum] = tempCourse;
                     }
                 }
-                else if (ssciDepts.Contains(CoursesTaken[i].DepartmentCode))
+                else if (ssciDepts.Contains(courseTaken.DepartmentCode))
                 {
-                    int courseNum = Convert.ToInt32(CoursesTaken[i].CourseNumber);
-                    if (SsciCourses.ContainsKey(courseNum))
+                    var courseNum = Convert.ToInt32(courseTaken.CourseNumber);
+                    if (ssciCourses.ContainsKey(courseNum))
                     {
-                        SsciCourses[courseNum].Add(CoursesTaken[i]);
+                        ssciCourses[courseNum].Add(courseTaken);
                     }
                     else
                     {
                         var tempCourse = new List<CourseModel>
                         {
-                            CoursesTaken[i],
+                            courseTaken,
                         };
-                        SsciCourses[courseNum] = tempCourse;
+                        ssciCourses[courseNum] = tempCourse;
                     }
                 }
             }
 
             //alternate between adding hum and ssci to HASS 
             //until full (or run out of courses, caught below)
-            while (!HASSreqset.IsFulfilled())
+            while (!hassReqSet.IsFulfilled())
             {
-                if (HumCourses.Count > 0)
+                if (humCourses.Count > 0)
                 {
                     //find the largest course number (last b/c ascending order)
-                    List<CourseModel> maxCourseList = HumCourses.Last().Value;
+                    var maxCourseList = humCourses.Last().Value;
                     if (maxCourseList.Count == 1)
                     {
-                        HASSreqset.CanApplyCourse(maxCourseList[0]);
+                        hassReqSet.CanApplyCourse(maxCourseList[0]);
                         //remove the key from the list of remaining courses
-                        HumCourses.Remove(HumCourses.Last().Key);
+                        humCourses.Remove(humCourses.Last().Key);
                     }
                     else
                     {
                         //apply the first course in the list
-                        HASSreqset.CanApplyCourse(maxCourseList[0]);
+                        hassReqSet.CanApplyCourse(maxCourseList[0]);
                         //remove the course from list of remaining courses
                         maxCourseList.RemoveAt(0);
-                        HumCourses[HumCourses.Count - 1] = maxCourseList;
+                        humCourses[humCourses.Count - 1] = maxCourseList;
                     }
                 }
-                if (SsciCourses.Count > 0)
+                if (ssciCourses.Count > 0)
                 {
                     //find the largest course number (last b/c ascending order)
-                    List<CourseModel> maxCourseList = SsciCourses.Last().Value;
+                    var maxCourseList = ssciCourses.Last().Value;
                     if (maxCourseList.Count == 1)
                     {
-                        HASSreqset.CanApplyCourse(maxCourseList[0]);
+                        hassReqSet.CanApplyCourse(maxCourseList[0]);
                         //remove the key from the list of remaining courses
-                        SsciCourses.Remove(SsciCourses.Last().Key);
+                        ssciCourses.Remove(ssciCourses.Last().Key);
                     }
                     else
                     {
                         //apply the first course in the list
-                        HASSreqset.CanApplyCourse(maxCourseList[0]);
+                        hassReqSet.CanApplyCourse(maxCourseList[0]);
                         //remove the course from list of remaining courses
                         maxCourseList.RemoveAt(0);
-                        SsciCourses[HumCourses.Count - 1] = maxCourseList;
+                        ssciCourses[humCourses.Count - 1] = maxCourseList;
                     }
                 }
 
                 //no more courses to add, you're done
-                if (HumCourses.Count == 0 && SsciCourses.Count == 0)
+                if (humCourses.Count == 0 && ssciCourses.Count == 0)
                 {
                     return;
                 }
             }
         }
 
-        public static void fillNamedRequirements(List<RequirementSetModel> allSets, List<CourseModel> courses)
+        public static void FillNamedRequirements(List<RequirementSetModel> allSets, List<CourseModel> courses)
         {
             // We need to find another way to do this because we don't have SingleRequirements anymore
 
-            foreach (RequirementSetModel reqset in allSets)
+            foreach (var reqset in allSets)
             {
-                foreach (CourseModel course in courses)
+                RequirementSetModel reqset1 = reqset;
+                foreach (var course in courses.Where(reqset1.CanApplyCourse))
                 {
-                    if (reqset.CanApplyCourse(course))
-                    {
-                        reqset.ApplyCourse(course);
-                        courses.Remove(course);
-                        course.RequirementSetName = reqset.Name;
-                        break;
-                    }
+                    reqset.ApplyCourse(course);
+                    courses.Remove(course);
+                    course.RequirementSetName = reqset.Name;
+                    break;
                 }
             }
         }
@@ -149,17 +147,14 @@ namespace CAPPamari.Web.Helpers
         /// </summary>
         /// <param name="requirementSets"></param>
         /// <param name="courses"></param>
-        public static void autopopulate(List<RequirementSetModel> requirementSets, List<CourseModel> courses)
+        public static void AutoPopulate(List<RequirementSetModel> requirementSets, List<CourseModel> courses)
         {
-            fillNamedRequirements(requirementSets, courses);
+            FillNamedRequirements(requirementSets, courses);
 
             //find and check HASS
-            foreach (RequirementSetModel reqset in requirementSets)
+            foreach (var reqset in requirementSets.Where(reqset => reqset.Name == "HASS"))
             {
-                if (reqset.Name == "HASS")
-                {
-                    FillHASS(reqset, courses);
-                }
+                FillHass(reqset, courses);
             }
         }
     }

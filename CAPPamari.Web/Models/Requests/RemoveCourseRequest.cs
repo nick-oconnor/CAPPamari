@@ -2,7 +2,11 @@
 {
     public class RemoveCourseRequest
     {
-        public string UserName { get; set; }
+        #region Properties
+
+        public string Username { get; set; }
         public CourseModel CourseToRemove { get; set; }
+
+        #endregion
     }
 }

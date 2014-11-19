@@ -8,125 +8,120 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Create a new user
         /// </summary>
-        /// <param name="UserName">UserName of new user.</param>
-        /// <param name="Password">Password for new user.</param>
-        /// <param name="Major">Major for new user.</param>
+        /// <param name="username">Username of new user.</param>
+        /// <param name="password">Password for new user.</param>
+        /// <param name="major">Major for new user.</param>
         /// <returns>ApplicationUserModel of new user.</returns>
-        public static ApplicationUserModel CreateNewUser(string UserName, string Password, string Major)
+        public static ApplicationUserModel CreateNewUser(string username, string password, string major)
         {
-            EntitiesHelper.CreateNewUser(UserName, Password, Major);
-            return GetApplicationUser(UserName);
+            EntitiesHelper.CreateNewUser(username, password, major);
+            return GetApplicationUser(username);
         }
 
         /// <summary>
-        ///     Get application user for UserName
+        ///     Get application user for Username
         /// </summary>
-        /// <param name="UserName">UserName of user to get model</param>
-        /// <returns>ApplicationUserModel for UserName</returns>
-        public static ApplicationUserModel GetApplicationUser(string UserName)
+        /// <param name="username">Username of user to get model</param>
+        /// <returns>ApplicationUserModel for Username</returns>
+        public static ApplicationUserModel GetApplicationUser(string username)
         {
-            int sessionID = EntitiesHelper.GetSessionID(UserName);
-            string major = EntitiesHelper.GetMajor(UserName);
-            List<Advisor> dbAdvisors = EntitiesHelper.GetAdvisors(UserName);
+            var sessionId = EntitiesHelper.GetSessionId(username);
+            var major = EntitiesHelper.GetMajor(username);
+            var dbAdvisors = EntitiesHelper.GetAdvisors(username);
             var advisors = new List<AdvisorModel>();
             dbAdvisors.ForEach(dbAd => advisors.Add(new AdvisorModel
             {
                 Name = dbAd.Name,
-                EMail = dbAd.EMailAddress
+                Email = dbAd.EmailAddress
             }));
 
-            return new ApplicationUserModel(UserName, major, advisors, sessionID);
+            return new ApplicationUserModel(username, major, advisors, sessionId);
         }
 
         /// <summary>
-        ///     Creates a new session for UserName user
+        ///     Creates a new session for Username user
         /// </summary>
-        /// <param name="UserName">UserName for user to create new session</param>
-        /// <returns>SessionID of new session for UserName</returns>
-        public static int CreateUserSession(string UserName)
+        /// <param name="username">Username for user to create new session</param>
+        /// <returns>SessionID of new session for Username</returns>
+        public static int CreateUserSession(string username)
         {
-            int sessionID = EntitiesHelper.CreateNewSession(UserName);
-            return sessionID;
+            var sessionId = EntitiesHelper.CreateNewSession(username);
+            return sessionId;
         }
 
         /// <summary>
-        ///     Destorys the current session for UserName
+        ///     Destorys the current session for Username
         /// </summary>
-        /// <param name="UserName">UserName for user to destory current session</param>
-        public static void DestroySession(string UserName)
+        /// <param name="username">Username for user to destory current session</param>
+        public static void DestroySession(string username)
         {
-            int sessionID = EntitiesHelper.GetSessionID(UserName);
-            EntitiesHelper.RemoveSession(sessionID, UserName);
+            var sessionId = EntitiesHelper.GetSessionId(username);
+            EntitiesHelper.RemoveSession(sessionId, username);
         }
 
         /// <summary>
         ///     Update user if there is a session active
         /// </summary>
-        /// <param name="UserName">UserName for user to update</param>
-        /// <param name="Password">Password to update to</param>
-        /// <param name="Major">Major to update to</param>
+        /// <param name="username">Username for user to update</param>
+        /// <param name="password">Password to update to</param>
+        /// <param name="major">Major to update to</param>
         /// <returns>True if the user was updated, false otherwise</returns>
-        public static bool UpdateUser(string UserName, string Password, string Major)
+        public static bool UpdateUser(string username, string password, string major)
         {
-            if (EntitiesHelper.GetSessionID(UserName) == -1) return false;
-            return EntitiesHelper.UpdateUser(UserName, Password, Major);
+            return EntitiesHelper.GetSessionId(username) != -1 && EntitiesHelper.UpdateUser(username, password, major);
         }
 
         /// <summary>
         ///     Add an advisor to a user
         /// </summary>
-        /// <param name="UserName">UserName of user to add an advisor to</param>
-        /// <param name="NewAdvisor">AdvisorModel of advisor to add to the user</param>
+        /// <param name="username">Username of user to add an advisor to</param>
+        /// <param name="newAdvisor">AdvisorModel of advisor to add to the user</param>
         /// <returns>Success status of advisor add</returns>
-        public static bool AddAdvisor(string UserName, AdvisorModel NewAdvisor)
+        public static bool AddAdvisor(string username, AdvisorModel newAdvisor)
         {
-            int advisorID = EntitiesHelper.GetAdvisorID(NewAdvisor.Name, NewAdvisor.EMail);
-            if (advisorID == -1)
+            var advisorId = EntitiesHelper.GetAdvisorId(newAdvisor.Name, newAdvisor.Email);
+            if (advisorId == -1)
             {
-                advisorID = EntitiesHelper.AddAdvisor(NewAdvisor.Name, NewAdvisor.EMail);
+                advisorId = EntitiesHelper.AddAdvisor(newAdvisor.Name, newAdvisor.Email);
             }
-            return EntitiesHelper.AssociateAdvisorAndUser(UserName, advisorID);
+            return EntitiesHelper.AssociateAdvisorAndUser(username, advisorId);
         }
 
         /// <summary>
         ///     Update an advisor for a user
         /// </summary>
-        /// <param name="UserName">UserName for user to update an advisor for</param>
-        /// <param name="AdvisorToUpdate">AdvisorModel containing data to update into the advisor</param>
+        /// <param name="advisor">AdvisorModel containing data to update into the advisor</param>
         /// <returns>Success status of the update</returns>
-        public static bool UpdateAdvisor(AdvisorModel AdvisorToUpdate)
+        public static bool UpdateAdvisor(AdvisorModel advisor)
         {
-            return EntitiesHelper.UpdateAdvisor(AdvisorToUpdate.Name, AdvisorToUpdate.EMail);
+            return EntitiesHelper.UpdateAdvisor(advisor.Name, advisor.Email);
         }
 
         /// <summary>
         ///     Remove an advisor from the user
         /// </summary>
-        /// <param name="UserName">UserName of the user to remove the advisor from</param>
-        /// <param name="OldAdvisor">AdvisorModel of advisor to remove from the user</param>
+        /// <param name="username">Username of the user to remove the advisor from</param>
+        /// <param name="oldAdvisor">AdvisorModel of advisor to remove from the user</param>
         /// <returns>Success status of the addvisor remove</returns>
-        public static bool RemoveAdvisor(string UserName, AdvisorModel OldAdvisor)
+        public static bool RemoveAdvisor(string username, AdvisorModel oldAdvisor)
         {
-            int advisorID = EntitiesHelper.GetAdvisorID(OldAdvisor.Name, OldAdvisor.EMail);
-            if (advisorID == -1) return false;
-            return EntitiesHelper.DisassociateAdvisorAndUser(UserName, advisorID);
+            var advisorId = EntitiesHelper.GetAdvisorId(oldAdvisor.Name, oldAdvisor.Email);
+            return advisorId != -1 && EntitiesHelper.DisassociateAdvisorAndUser(username, advisorId);
         }
 
         /// <summary>
         ///     Gets user from session cookie
         /// </summary>
-        /// <param name="UserCookie">string stored in Javascript to store the user's state</param>
+        /// <param name="userCookie">string stored in Javascript to store the user's state</param>
         /// <returns>ApplicationUserModel extracted from the cookie or null if the session is old or nonexistent</returns>
-        public static ApplicationUserModel GetUserFromCookie(string UserCookie)
+        public static ApplicationUserModel GetUserFromCookie(string userCookie)
         {
-            string[] fields = UserCookie.Split('#');
+            var fields = userCookie.Split('#');
             if (fields.Length != 2) return null;
 
-            int sessionID;
-            if (!int.TryParse(fields[0], out sessionID)) return null;
-            if (EntitiesHelper.GetSessionID(fields[1]) != sessionID) return null;
-
-            return GetApplicationUser(fields[1]);
+            int sessionId;
+            if (!int.TryParse(fields[0], out sessionId)) return null;
+            return EntitiesHelper.GetSessionId(fields[1]) != sessionId ? null : GetApplicationUser(fields[1]);
         }
     }
 }

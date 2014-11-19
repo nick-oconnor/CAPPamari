@@ -16,16 +16,16 @@ namespace CAPPamari.Web.Models.Requirements
             Exclusion = false;
         }
 
-        public RequirementModel(List<CourseFulfillmentModel> CourseFullfillments, int CreditsNeeded, int CreditsApplied,
-            int MaxPassNoCreditCredits, int PassNoCreditsApplied, bool CommunicationIntensive, bool Exclusion)
+        public RequirementModel(List<CourseFulfillmentModel> courseFullfillments, int creditsNeeded, int creditsApplied,
+            int maxPassNoCreditCredits, int passNoCreditsApplied, bool communicationIntensive, bool exclusion)
         {
-            this.CourseFullfillments = CourseFullfillments;
-            this.CreditsNeeded = CreditsNeeded;
-            this.CreditsApplied = CreditsApplied;
-            this.MaxPassNoCreditCredits = MaxPassNoCreditCredits;
-            this.PassNoCreditsApplied = PassNoCreditsApplied;
-            this.CommunicationIntensive = CommunicationIntensive;
-            this.Exclusion = Exclusion;
+            CourseFullfillments = courseFullfillments;
+            CreditsNeeded = creditsNeeded;
+            CreditsApplied = creditsApplied;
+            MaxPassNoCreditCredits = maxPassNoCreditCredits;
+            PassNoCreditsApplied = passNoCreditsApplied;
+            CommunicationIntensive = communicationIntensive;
+            Exclusion = exclusion;
         }
 
         public List<CourseFulfillmentModel> CourseFullfillments { get; set; }
@@ -36,27 +36,27 @@ namespace CAPPamari.Web.Models.Requirements
         public bool CommunicationIntensive { get; set; }
         public bool Exclusion { get; set; }
 
-        public bool Match(CourseModel Course)
+        public bool Match(CourseModel course)
         {
-            if (CommunicationIntensive && !Course.CommIntensive) return false;
-            return CourseFullfillments.Any(fulfillment => fulfillment.Match(Course));
+            if (CommunicationIntensive && !course.CommIntensive) return false;
+            return CourseFullfillments.Any(fulfillment => fulfillment.Match(course));
         }
 
-        public bool Apply(CourseModel Course)
+        public bool Apply(CourseModel course)
         {
-            if (Match(Course))
+            if (Match(course))
             {
                 if (Exclusion) return false;
-                if (Course.PassNoCredit)
+                if (course.PassNoCredit)
                 {
-                    if (PassNoCreditsApplied + Course.Credits <= MaxPassNoCreditCredits)
+                    if (PassNoCreditsApplied + course.Credits <= MaxPassNoCreditCredits)
                     {
-                        PassNoCreditsApplied += Course.Credits;
+                        PassNoCreditsApplied += course.Credits;
                     }
                 }
                 else
                 {
-                    CreditsApplied += Course.Credits;
+                    CreditsApplied += course.Credits;
                 }
             }
             return IsFulfilled();

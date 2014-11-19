@@ -2,8 +2,12 @@
 {
     public class RegistrationRequest
     {
-        public string UserName { get; set; }
+        #region Properties
+
+        public string Username { get; set; }
         public string Password { get; set; }
         public string Major { get; set; }
+
+        #endregion
     }
 }

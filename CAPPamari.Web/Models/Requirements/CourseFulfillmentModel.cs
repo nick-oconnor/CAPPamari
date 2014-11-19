@@ -2,10 +2,10 @@
 {
     public class CourseFulfillmentModel
     {
-        public CourseFulfillmentModel(string DepartmentCode, string CourseNumber)
+        public CourseFulfillmentModel(string departmentCode, string courseNumber)
         {
-            this.DepartmentCode = DepartmentCode;
-            this.CourseNumber = CourseNumber;
+            DepartmentCode = departmentCode;
+            CourseNumber = courseNumber;
         }
 
         public CourseFulfillmentModel()
@@ -17,13 +17,13 @@
         public string DepartmentCode { get; set; }
         public string CourseNumber { get; set; }
 
-        public bool Match(CourseModel Course)
+        public bool Match(CourseModel course)
         {
-            if (DepartmentCode != Course.DepartmentCode) return false;
-            for (int i = 0; i < 4; i++)
+            if (DepartmentCode != course.DepartmentCode) return false;
+            for (var i = 0; i < 4; i++)
             {
-                if (CourseNumber[i] == 'x' || Course.CourseNumber[i] == 'x') continue;
-                if (CourseNumber[i] != Course.CourseNumber[i]) return false;
+                if (CourseNumber[i] == 'x' || course.CourseNumber[i] == 'x') continue;
+                if (CourseNumber[i] != course.CourseNumber[i]) return false;
             }
             return true;
         }

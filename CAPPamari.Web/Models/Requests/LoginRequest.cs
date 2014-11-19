@@ -2,7 +2,11 @@
 {
     public class LoginRequest
     {
-        public string UserName { get; set; }
+        #region Properties
+
+        public string Username { get; set; }
         public string Password { get; set; }
+
+        #endregion
     }
 }

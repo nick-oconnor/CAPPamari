@@ -13,37 +13,37 @@ namespace CAPPamari.Web.Controllers
         /// <summary>
         ///     Adds a new course for the user
         /// </summary>
-        /// <param name="Request">The NewCourseRequest object denoting the new course attributes</param>
-        /// <returns>ApiResponse<bool> telling the client whether or not the course was added</returns>
+        /// <param name="request">The NewCourseRequest object denoting the new course attributes</param>
+        /// <returns>Bool telling the client whether or not the course was added</returns>
         [HttpPost]
-        public ApiResponse<bool> AddNewCourse([FromBody] NewCourseRequest Request)
+        public ApiResponse<bool> AddNewCourse([FromBody] NewCourseRequest request)
         {
-            if (!EntitiesHelper.UpdateSession(Request.UserName))
+            if (!EntitiesHelper.UpdateSession(request.Username))
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = CourseHelper.AddNewCourse(Request.UserName, Request.NewCourse);
-            string message = success ? "Course added successfully" : "Could not add course";
+            var success = CourseHelper.AddNewCourse(request.Username, request.NewCourse);
+            var message = success ? "Course added successfully" : "Could not add course";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
         ///     Moves a course for the user to the new requirement set
         /// </summary>
-        /// <param name="Request">The MoveCourseRequest object denoting which course to move to which RequirementSet</param>
-        /// <returns>ApiResponse<bool> telling the client whether or not the operation is valid</returns>
+        /// <param name="request">The MoveCourseRequest object denoting which course to move to which RequirementSet</param>
+        /// <returns>Bool telling the client whether or not the operation is valid</returns>
         [HttpPost]
-        public ApiResponse<bool> MoveCourse([FromBody] MoveCourseRequest Request)
+        public ApiResponse<bool> MoveCourse([FromBody] MoveCourseRequest request)
         {
-            if (!EntitiesHelper.UpdateSession(Request.UserName))
+            if (!EntitiesHelper.UpdateSession(request.Username))
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            RequirementSetModel reqSet = CourseHelper.GetRequirementSet(Request.UserName, Request.RequirementSetName);
-            bool success = reqSet.CanApplyCourse(Request.CourseToMove);
+            var reqSet = CourseHelper.GetRequirementSet(request.Username, request.RequirementSetName);
+            var success = reqSet.CanApplyCourse(request.CourseToMove);
             if (success)
             {
-                success &= CourseHelper.ApplyCourse(Request.UserName, Request.CourseToMove, reqSet);
+                success &= CourseHelper.ApplyCourse(request.Username, request.CourseToMove, reqSet);
             }
             string message = success
                 ? "Moved course successfully"
@@ -54,81 +54,82 @@ namespace CAPPamari.Web.Controllers
         /// <summary>
         ///     Removes a course for a user
         /// </summary>
-        /// <param name="Request">The RemoveCourseRequest object denoting which course to remove</param>
-        /// <returns>ApiResponse<bool> telling the client whether or not the course was removed</returns>
+        /// <param name="request">The RemoveCourseRequest object denoting which course to remove</param>
+        /// <returns>Bool telling the client whether or not the course was removed</returns>
         [HttpPost]
-        public ApiResponse<bool> RemoveCourse([FromBody] RemoveCourseRequest Request)
+        public ApiResponse<bool> RemoveCourse([FromBody] RemoveCourseRequest request)
         {
-            if (!EntitiesHelper.UpdateSession(Request.UserName))
+            if (!EntitiesHelper.UpdateSession(request.Username))
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = CourseHelper.RemoveCourse(Request.UserName, Request.CourseToRemove);
-            string message = success ? "Course removed successfully" : "Could not remove course";
+            var success = CourseHelper.RemoveCourse(request.Username, request.CourseToRemove);
+            var message = success ? "Course removed successfully" : "Could not remove course";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
         ///     Upload a csv file with many courses
         /// </summary>
-        /// <param name="Request">CsvImportRequest containing course and user information</param>
-        /// <returns>ApiResponse<CAPPReportModel> representing the new CAPP Report for the user</returns>
+        /// <param name="request">CsvImportRequest containing course and user information</param>
+        /// <returns>CAPPReportModel representing the new CAPP Report for the user</returns>
         [HttpPost]
-        public ApiResponse<CAPPReportModel> AddCsvFile([FromBody] CsvImportRequest Request)
+        public ApiResponse<CappReportModel> AddCsvFile([FromBody] CsvImportRequest request)
         {
-            if (!EntitiesHelper.UpdateSession(Request.UserName))
+            if (!EntitiesHelper.UpdateSession(request.Username))
             {
                 return
-                    ApiResponse<CAPPReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
+                    ApiResponse<CappReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            IEnumerable<CourseModel> courses = CSVParserHelper.parse(Request.CsvData);
-            CAPPReportModel cappReport;
-            if (Request.Autopopulate)
+            var courses = CsvParserHelper.Parse(request.CsvData);
+            CappReportModel cappReport;
+            var courseModels = courses as IList<CourseModel> ?? courses.ToList();
+            if (request.Autopopulate)
             {
-                cappReport = CourseHelper.GetCAPPReport(Request.UserName);
-                AutopopulationHelper.autopopulate(cappReport.RequirementSets, courses.ToList());
+                cappReport = CourseHelper.GetCappReport(request.Username);
+                AutopopulationHelper.AutoPopulate(cappReport.RequirementSets, courseModels.ToList());
             }
-            bool success = true;
-            foreach (CourseModel course in courses)
+            var success = true;
+            foreach (var course in courseModels)
             {
-                string reqSetName = string.IsNullOrEmpty(course.RequirementSetName)
+                var reqSetName = string.IsNullOrEmpty(course.RequirementSetName)
                     ? "Unapplied Courses"
                     : course.RequirementSetName;
-                success &= CourseHelper.AddNewCourse(Request.UserName, course, reqSetName);
+                success &= CourseHelper.AddNewCourse(request.Username, course, reqSetName);
             }
-            string message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
-            cappReport = CourseHelper.GetCAPPReport(Request.UserName);
-            return ApiResponse<CAPPReportModel>.From(success, message, cappReport);
+            var message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
+            cappReport = CourseHelper.GetCappReport(request.Username);
+            return ApiResponse<CappReportModel>.From(success, message, cappReport);
         }
 
         /// <summary>
         ///     Find a place to put all unapplied courses
         /// </summary>
-        /// <param name="UserName">UserName of user to autopopulate for</param>
-        /// <returns>ApiResponse<CAPPReportModel> reporesenting the new CAPP Report for the user</returns>
+        /// <param name="username">Username of user to autopopulate for</param>
+        /// <returns>CAPPReportModel reporesenting the new CAPP Report for the user</returns>
         [HttpPost]
-        public ApiResponse<CAPPReportModel> AutopopulateUnappliedCourses([FromBody] string UserName)
+        public ApiResponse<CappReportModel> AutopopulateUnappliedCourses([FromBody] string username)
         {
-            if (!EntitiesHelper.UpdateSession(UserName))
+            if (!EntitiesHelper.UpdateSession(username))
             {
                 return
-                    ApiResponse<CAPPReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
+                    ApiResponse<CappReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            List<CourseModel> courses = CourseHelper.GetRequirementSet(UserName, "Unapplied Courses").AppliedCourses;
-            CAPPReportModel cappReport = CourseHelper.GetCAPPReport(UserName);
-            AutopopulationHelper.autopopulate(cappReport.RequirementSets, courses);
-            bool success = true;
-            foreach (CourseModel course in courses)
+            var courses = CourseHelper.GetRequirementSet(username, "Unapplied Courses").AppliedCourses;
+            var cappReport = CourseHelper.GetCappReport(username);
+            AutopopulationHelper.AutoPopulate(cappReport.RequirementSets, courses);
+            var success = true;
+            foreach (var course in courses)
             {
-                string reqSetName = string.IsNullOrEmpty(course.RequirementSetName)
+                var reqSetName = string.IsNullOrEmpty(course.RequirementSetName)
                     ? "Unapplied Courses"
                     : course.RequirementSetName;
-                RequirementSetModel reqSet = CourseHelper.GetRequirementSet(UserName, reqSetName);
-                success &= CourseHelper.ApplyCourse(UserName, course, reqSet);
+                var reqSet = CourseHelper.GetRequirementSet(username, reqSetName);
+                success &= CourseHelper.ApplyCourse(username, course, reqSet);
             }
-            string message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
-            cappReport = CourseHelper.GetCAPPReport(UserName);
-            return ApiResponse<CAPPReportModel>.From(success, message, cappReport);
+            var message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
+            cappReport = CourseHelper.GetCappReport(username);
+            return ApiResponse<CappReportModel>.From(success, message, cappReport);
         }
     }
 }

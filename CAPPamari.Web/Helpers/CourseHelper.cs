@@ -8,58 +8,58 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Add a new course for the user
         /// </summary>
-        /// <param name="UserName">UserName for user to add new course for</param>
-        /// <param name="NewCourse">CourseModel contianing new course information</param>
+        /// <param name="username">Username for user to add new course for</param>
+        /// <param name="newCourse">CourseModel contianing new course information</param>
+        /// <param name="requirementSetName">Name of the requirement set to get</param>
         /// <returns>Success state of the course addition</returns>
-        public static bool AddNewCourse(string UserName, CourseModel NewCourse,
-            string RequirementSetName = "Unapplied Courses")
+        public static bool AddNewCourse(string username, CourseModel newCourse,
+            string requirementSetName = "Unapplied Courses")
         {
-            return EntitiesHelper.AddNewCourse(UserName, NewCourse, RequirementSetName);
+            return EntitiesHelper.AddNewCourse(username, newCourse, requirementSetName);
         }
 
         /// <summary>
         ///     Remove course from the database
         /// </summary>
-        /// <param name="Username">UserName for user to remove course for</param>
-        /// <param name="OldCourse">CourseModel conataining information about the course to remove</param>
+        /// <param name="username">Username for user to remove course for</param>
+        /// <param name="oldCourse">CourseModel conataining information about the course to remove</param>
         /// <returns>Success state of course removal</returns>
-        public static bool RemoveCourse(string UserName, CourseModel OldCourse)
+        public static bool RemoveCourse(string username, CourseModel oldCourse)
         {
-            return EntitiesHelper.RemoveCourse(UserName, OldCourse);
+            return EntitiesHelper.RemoveCourse(username, oldCourse);
         }
 
         /// <summary>
         ///     Gets a RequirementSet for the user
         /// </summary>
-        /// <param name="UserName">UserName of user to get the RequirementSet for</param>
-        /// <param name="RequirementSetName">Name of the requirement set to get</param>
+        /// <param name="username">Username of user to get the RequirementSet for</param>
+        /// <param name="requirementSetName">Name of the requirement set to get</param>
         /// <returns>RequirementSet or null if no such RequirementSet exists for user</returns>
-        public static RequirementSetModel GetRequirementSet(string UserName, string RequirementSetName)
+        public static RequirementSetModel GetRequirementSet(string username, string requirementSetName)
         {
-            return EntitiesHelper.GetRequirementSet(UserName, RequirementSetName);
+            return EntitiesHelper.GetRequirementSet(username, requirementSetName);
         }
 
         /// <summary>
         ///     Gets CAPPReport for the user
         /// </summary>
-        /// <param name="UserName">UserName for user to get CAPP Report for</param>
+        /// <param name="username">Username for user to get CAPP Report for</param>
         /// <returns>CAPPReportModel or null if no CAPP Report exists</returns>
-        public static CAPPReportModel GetCAPPReport(string UserName)
+        public static CappReportModel GetCappReport(string username)
         {
-            return EntitiesHelper.GetCAPPReport(UserName);
+            return EntitiesHelper.GetCappReport(username);
         }
 
         /// <summary>
         ///     Apply a course to a requirement set for a user
         /// </summary>
-        /// <param name="UserName">UserName of user to move course for</param>
-        /// <param name="Course">CourseModel to move</param>
-        /// <param name="RequirementSet">RequirementSetModel to move course into</param>
+        /// <param name="username">Username of user to move course for</param>
+        /// <param name="course">CourseModel to move</param>
+        /// <param name="requirementSet">RequirementSetModel to move course into</param>
         /// <returns>Success status of move</returns>
-        public static bool ApplyCourse(string UserName, CourseModel Course, RequirementSetModel RequirementSet)
+        public static bool ApplyCourse(string username, CourseModel course, RequirementSetModel requirementSet)
         {
-            if (!RequirementSet.CanApplyCourse(Course)) return false;
-            return EntitiesHelper.ApplyCourse(UserName, Course, RequirementSet);
+            return requirementSet.CanApplyCourse(course) && EntitiesHelper.ApplyCourse(username, course, requirementSet);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Web.Mvc;
 using CAPPamari.Web.Helpers;
-using Spire.Pdf;
 
 namespace CAPPamari.Web.Controllers
 {
@@ -12,9 +11,9 @@ namespace CAPPamari.Web.Controllers
             return View();
         }
 
-        public ActionResult Print(string UserName)
+        public ActionResult Print(string username)
         {
-            PdfDocument document = PrintingHelper.PrintCAPPReport(UserName);
+            var document = PrintingHelper.PrintCappReport(username);
             if (document == null) return View("Error");
             using (var pdfStream = new MemoryStream())
             {

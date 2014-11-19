@@ -20,7 +20,7 @@ public partial class UserSession
 
     public int SessionID { get; set; }
 
-    public string UserName { get; set; }
+    public string Username { get; set; }
 
     public System.DateTime Expiration { get; set; }
 

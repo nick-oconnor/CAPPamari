@@ -2,8 +2,12 @@
 {
     public class CsvImportRequest
     {
-        public string UserName { get; set; }
+        #region Properties
+
+        public string Username { get; set; }
         public string CsvData { get; set; }
         public bool Autopopulate { get; set; }
+
+        #endregion
     }
 }

@@ -30,7 +30,7 @@ public partial class Advisor
 
     public string Name { get; set; }
 
-    public string EMailAddress { get; set; }
+    public string EmailAddress { get; set; }
 
 
 

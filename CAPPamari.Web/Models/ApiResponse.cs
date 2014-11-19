@@ -5,35 +5,35 @@ namespace CAPPamari.Web.Models
     public class ApiResponse<TPayload>
     {
         [JsonConstructor]
-        private ApiResponse(bool Success, string Message, TPayload Payload)
+        private ApiResponse(bool success, string message, TPayload payload)
         {
-            this.Success = Success;
-            this.Message = Message;
-            this.Payload = Payload;
+            Success = success;
+            Message = message;
+            Payload = payload;
         }
 
         public bool Success { get; private set; }
         public string Message { get; private set; }
         public TPayload Payload { get; private set; }
 
-        public static ApiResponse<TPayload> From(bool Success, string Message, TPayload Payload)
+        public static ApiResponse<TPayload> From(bool success, string message, TPayload payload)
         {
-            return new ApiResponse<TPayload>(Success, Message, Payload);
+            return new ApiResponse<TPayload>(success, message, payload);
         }
 
-        public static ApiResponse<TPayload> FailureResponse(string Message, TPayload Payload)
+        public static ApiResponse<TPayload> FailureResponse(string message, TPayload payload)
         {
-            return new ApiResponse<TPayload>(false, Message, Payload);
+            return new ApiResponse<TPayload>(false, message, payload);
         }
 
-        public static ApiResponse<TPayload> FailureResponse(string Message)
+        public static ApiResponse<TPayload> FailureResponse(string message)
         {
-            return new ApiResponse<TPayload>(false, Message, default(TPayload));
+            return new ApiResponse<TPayload>(false, message, default(TPayload));
         }
 
-        public static ApiResponse<TPayload> SuccessResponse(string Message, TPayload Payload)
+        public static ApiResponse<TPayload> SuccessResponse(string message, TPayload payload)
         {
-            return new ApiResponse<TPayload>(true, Message, Payload);
+            return new ApiResponse<TPayload>(true, message, payload);
         }
     }
 }

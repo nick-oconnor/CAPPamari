@@ -30,7 +30,7 @@ public partial class CAPPReport
 
     public int ReportID { get; set; }
 
-    public string UserName { get; set; }
+    public string Username { get; set; }
 
     public string Name { get; set; }
 

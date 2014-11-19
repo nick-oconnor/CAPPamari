@@ -8,10 +8,10 @@
         <EntityType Name="Advises">
           <Key>
             <PropertyRef Name="AdvisorID" />
-            <PropertyRef Name="UserName" />
+            <PropertyRef Name="Username" />
           </Key>
           <Property Name="AdvisorID" Type="int" Nullable="false" />
-          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="Advisor">
           <Key>
@@ -19,13 +19,13 @@
           </Key>
           <Property Name="AdvisorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="EMailAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="ApplicationUser">
           <Key>
-            <PropertyRef Name="UserName" />
+            <PropertyRef Name="Username" />
           </Key>
-          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Major" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
@@ -34,7 +34,7 @@
             <PropertyRef Name="ReportID" />
           </Key>
           <Property Name="ReportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="CAPPReportRequirement">
@@ -118,7 +118,7 @@
             <PropertyRef Name="SessionID" />
           </Key>
           <Property Name="SessionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Expiration" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK__CAPPRepor__CAPPR__0E6E26BF">
@@ -234,10 +234,10 @@
           <End Role="Advises" Type="Self.Advises" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationUser">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Principal>
             <Dependent Role="Advises">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -246,10 +246,10 @@
           <End Role="CAPPReport" Type="Self.CAPPReport" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationUser">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Principal>
             <Dependent Role="CAPPReport">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -282,10 +282,10 @@
           <End Role="UserSession" Type="Self.UserSession" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationUser">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Principal>
             <Dependent Role="UserSession">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -416,14 +416,14 @@
           </Key>
           <Property Type="Int32" Name="AdvisorID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="EMailAddress" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ApplicationUsers" Relationship="JustinModel.Advises" FromRole="Advisor" ToRole="ApplicationUser" />
         </EntityType>
         <EntityType Name="ApplicationUser">
           <Key>
-            <PropertyRef Name="UserName" />
+            <PropertyRef Name="Username" />
           </Key>
-          <Property Type="String" Name="UserName" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Password" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Major" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CAPPReports" Relationship="JustinModel.FK_CAPPReport_ApplicationUser" FromRole="ApplicationUser" ToRole="CAPPReport" />
@@ -435,7 +435,7 @@
             <PropertyRef Name="ReportID" />
           </Key>
           <Property Type="Int32" Name="ReportID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="UserName" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ApplicationUser" Relationship="JustinModel.FK_CAPPReport_ApplicationUser" FromRole="CAPPReport" ToRole="ApplicationUser" />
           <NavigationProperty Name="Requirements" Relationship="JustinModel.CAPPReportRequirement" FromRole="CAPPReport" ToRole="Requirement" />
@@ -484,7 +484,7 @@
             <PropertyRef Name="SessionID" />
           </Key>
           <Property Type="Int32" Name="SessionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="UserName" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="Expiration" Nullable="false" Precision="3" />
           <NavigationProperty Name="ApplicationUser" Relationship="JustinModel.FK_UserSession_ApplicationUser" FromRole="UserSession" ToRole="ApplicationUser" />
         </EntityType>
@@ -493,10 +493,10 @@
           <End Type="JustinModel.CAPPReport" Role="CAPPReport" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationUser">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Principal>
             <Dependent Role="CAPPReport">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -505,10 +505,10 @@
           <End Type="JustinModel.UserSession" Role="UserSession" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationUser">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Principal>
             <Dependent Role="UserSession">
-              <PropertyRef Name="UserName" />
+              <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -581,7 +581,7 @@
           <EntitySetMapping Name="Advisors">
             <EntityTypeMapping TypeName="JustinModel.Advisor">
               <MappingFragment StoreEntitySet="Advisor">
-                <ScalarProperty Name="EMailAddress" ColumnName="EMailAddress" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
               </MappingFragment>
@@ -592,7 +592,7 @@
               <MappingFragment StoreEntitySet="ApplicationUser">
                 <ScalarProperty Name="Major" ColumnName="Major" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -600,7 +600,7 @@
             <EntityTypeMapping TypeName="JustinModel.CAPPReport">
               <MappingFragment StoreEntitySet="CAPPReport">
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="ReportID" ColumnName="ReportID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -644,7 +644,7 @@
             <EntityTypeMapping TypeName="JustinModel.UserSession">
               <MappingFragment StoreEntitySet="UserSession">
                 <ScalarProperty Name="Expiration" ColumnName="Expiration" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="SessionID" ColumnName="SessionID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -696,7 +696,7 @@
           </AssociationSetMapping>
           <AssociationSetMapping Name="Advises" TypeName="JustinModel.Advises" StoreEntitySet="Advises">
             <EndProperty Name="ApplicationUser">
-              <ScalarProperty Name="UserName" ColumnName="UserName" />
+              <ScalarProperty Name="Username" ColumnName="Username" />
             </EndProperty>
             <EndProperty Name="Advisor">
               <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
