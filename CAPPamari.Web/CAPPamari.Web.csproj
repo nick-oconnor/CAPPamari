@@ -179,20 +179,33 @@
   <ItemGroup>
     <Content Include="Content\themes\font-awesome\font-awesome.css" />
     <Content Include="Content\themes\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\themes\jquery-ui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\jquery-ui\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Images\background.png" />
-    <Content Include="Content\themes\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\jquery-ui\jquery-ui.css" />
     <Content Include="Content\themes\jquery-ui\jquery-ui.theme.css" />
     <Content Include="favicon.ico" />
@@ -243,9 +256,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

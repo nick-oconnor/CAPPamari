@@ -114,39 +114,45 @@
                 <div id="userHeader" style="display: none; min-height: 75px; position: relative; width: 100%;">
                     <div style="float: left; position: relative;">
                         <div style="margin: 20px; vertical-align: middle;">
-                            <span id="userHeaderStudentName" style="position: relative" data-bind="text: user() === null ? 'NO USER' : user().username"></span>
-                            <span onclick=" EditUserInfo() " style="cursor: pointer; margin-left: 2px; position: relative;">edit</span>
-                            <span id="userHeaderMajor" style="position: relative;" data-bind="text: user() === null ? 'NO MAJOR' : user().major"></span>
+                            <span id="userHeaderStudentName" data-bind="text: user() === null ? 'NO USER' : user().username"></span> - 
+                            <span id="userHeaderMajor" data-bind="text: user() === null ? 'NO MAJOR' : user().major"></span>
+                            <span class="fa fa-pencil" title="Edit account info" onclick=" EditUserInfo() "></span>
                             <div data-bind="if: user()">
                                 <div data-bind="foreach: user().advisors">
-                                    <span data-bind="text: name, click: EmailToAdvisor"></span>
-                                    <span style="cursor: pointer; margin-left: 2px" data-bind="click: EditAdvisorInfo">edit</span>
-                                    <span style="cursor: pointer; margin-left: 2px" data-bind="click: DeleteAdvisor">delete</span><br />
+                                    <span data-bind="text: name"></span>
+                                    <span class="fa fa-send-o" title="Email report to advisor" data-bind="click: EmailToAdvisor"></span>
+                                    <span class="fa fa-pencil" title="Edit advisor info"data-bind="click: EditAdvisorInfo"></span>
+                                    <span class="fa fa-trash-o" title="Delete this advisor" data-bind="click: DeleteAdvisor"></span>
+                                    <!-- ko if: ($index() === ($parent.user().advisors().length - 1)) -->
+                                        <span class="fa fa-plus" title="Add a new advisor" data-bind="click: AddNewAdvisor"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: ($index() !== ($parent.user().advisors().length - 1)) -->
+                                        <br />
+                                    <!-- /ko -->
                                 </div>
                             </div>
-                            <span style="cursor: pointer;" data-bind="click: AddNewAdvisor">Add Advisor</span>
                         </div>
                     </div>
                     <div style="float: right; position: relative;">
                         <div style="margin: 20px; vertical-align: middle;">
-                            <span style="cursor: pointer; position: relative;" onclick=" viewModel.user().signOut() ">Logout</span><br />
-                            <span style="cursor: pointer; position: relative;" onclick=" viewModel.print() ">Print</span><br />
+                            <span style="cursor: pointer;" onclick=" viewModel.user().signOut() ">Logout</span><br />
+                            <span style="cursor: pointer;" onclick=" viewModel.print() ">Print <span class="fa fa-print"></span></span><br />
                         </div>
                     </div>
                 </div>
-                <div id="loginHeader" style="min-height: 59px; position: relative; width: 100%;">
+                <div id="loginHeader" style="position: relative; width: 100%;">
                     <div style="float: left; position: relative;">
                         <div style="margin: 20px; vertical-align: middle;">
-                            <span style="cursor: pointer; position: relative;" onclick=" ShowRegistrationDialog() ">Register</span>
+                            <span style="cursor: pointer;" onclick=" ShowRegistrationDialog() ">Register</span>
                         </div>
                     </div>
                     <div style="float: right; position: relative;">
                         <div style="margin: 20px; vertical-align: middle;">
-                            <span style="position: relative;">Username:</span>
-                            <input id="loginHeaderUsername" style="position: relative;" type="text" />
-                            <span style="position: relative;">Password:</span>
-                            <input id="loginHeaderPassword" style="position: relative;" type="password" />
-                            <input id="loginHeaderSignInButton" style="position: relative;" type="button" onclick=" SignInButtonClick() " value="Login" />
+                            <span>Username:</span>
+                            <input id="loginHeaderUsername" type="text" />
+                            <span>Password:</span>
+                            <input id="loginHeaderPassword" type="password" />
+                            <input id="loginHeaderSignInButton" type="button" onclick=" SignInButtonClick() " value="Login" />
                         </div>
                     </div>
                 </div>
@@ -158,7 +164,7 @@
                     <div id="addClassButton" onclick=" ShowSingletonClassAddDialog() ">
                         <span>Add Course</span>
                     </div>
-                    <div id="autopopButton" onclick=" AutopopulateUnappliedCourses() ">
+                    <div id="autopopButton" onclick=" AutoPopulateUnappliedCourses() ">
                         <span>Auto-populate</span>
                     </div>
                     <div id="courses" data-bind="foreach: unassignedCourses">
@@ -169,7 +175,7 @@
                             <span>(</span>
                             <span data-bind="text: semester"></span>
                             <span>)</span>
-                            <span class="fa fa-trash-o" data-bind="click: DeleteCourse"></span><br />
+                            <span class="fa fa-trash-o" title="Delete this course" data-bind="click: DeleteCourse"></span><br />
                             <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJSONCourse($data)) }"></div>
                         </div>
                     </div>

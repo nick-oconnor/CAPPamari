@@ -84,7 +84,7 @@ namespace CAPPamari.Web.Controllers
             IEnumerable<CourseModel> courses = CsvParserHelper.Parse(request.CsvData);
             CappReportModel cappReport;
             IList<CourseModel> courseModels = courses as IList<CourseModel> ?? courses.ToList();
-            if (request.Autopopulate)
+            if (request.AutoPopulate)
             {
                 cappReport = CourseHelper.GetCappReport(request.Username);
                 AutopopulationHelper.AutoPopulate(cappReport.RequirementSets, courseModels.ToList());
@@ -108,7 +108,7 @@ namespace CAPPamari.Web.Controllers
         /// <param name="username">Username of user to autopopulate for</param>
         /// <returns>CAPPReportModel reporesenting the new CAPP Report for the user</returns>
         [HttpPost]
-        public ApiResponse<CappReportModel> AutopopulateUnappliedCourses([FromBody] string username)
+        public ApiResponse<CappReportModel> AutoPopulateUnappliedCourses([FromBody] string username)
         {
             if (!EntitiesHelper.UpdateSession(username))
             {

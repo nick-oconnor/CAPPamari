@@ -6,7 +6,7 @@
 
         public string Username { get; set; }
         public string CsvData { get; set; }
-        public bool Autopopulate { get; set; }
+        public bool AutoPopulate { get; set; }
 
         #endregion
     }

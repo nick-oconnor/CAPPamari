@@ -18,9 +18,10 @@ $(window).load(function() {
 
     ko.applyBindings(viewModel);
 
+    $(document).tooltip();
     SetupAlertDialog();
     SetupDragAndDrop();
-    ResizeDisplay();
+    RedisplayHeader();
 });
 
 Alert = function(text) {
@@ -46,9 +47,9 @@ SetupAlertDialog = function() {
         }
     });
 };
-AutopopulateUnappliedCourses = function() {
+AutoPopulateUnappliedCourses = function() {
     $.ajax({
-        url: window.location.origin + '/api/Course/AutopopulateUnappliedCourses',
+        url: window.location.origin + '/api/Course/AutoPopulateUnappliedCourses',
         data: JSON.stringify(viewModel.user().username()),
         type: 'POST',
         contentType: 'application/json',
@@ -82,7 +83,7 @@ DeleteCourse = function(course) {
             Semester: course.semester(),
             PassNoCredit: course.passNoCredit,
             CommIntensive: course.commIntensive,
-            RequirementSetName: 'Unapplied Courses'
+            RequirementSetName: ''
         }
     };
     $.ajax({
@@ -91,9 +92,12 @@ DeleteCourse = function(course) {
         type: 'POST',
         contentType: 'application/json',
         success: function (data) {
+            if (!data.Success) {
+                Alert(data.Message);
+                return;
+            }
+            viewModel.removeCourse(course);
             Alert(data.Message);
-            if (!data.Success) return;
-            viewModel.unassignedCourses.remove(course);
         },
         error: function () {
             Alert('There is an issue with the server, please try again later');
@@ -152,16 +156,13 @@ DeleteAdvisor = function(advisor) {
 
             viewModel.user().advisors.pop(advisor);
             RedisplayHeader();
-            $('#blockingDiv').hide();
             Alert(data.Message);
         },
         error: function() {
-            $('#blockingDiv').hide();
             Alert('There is an issue with the server, please try again later');
         }
     });
-    $('#blockingDivSpan').text('Deleting advisor...');
-    $('#blockingDiv').show();
+    Alert('Deleting advisor...');
 };
 EditAdvisorInfo = function(advisor) {
     editMode = 'edit';
@@ -192,7 +193,6 @@ SubmitAdvisorInformation = function() {
             contentType: 'application/json',
             success: function (data) {
                 if (!data.Success || !data.Payload) {
-                    $('#blockingDiv').hide();
                     Alert(data.Message);
                     return;
                 }
@@ -203,12 +203,10 @@ SubmitAdvisorInformation = function() {
                 Alert(data.Message);
             },
             error: function() {
-                $('#blockingDiv').hide();
                 Alert('There is something wrong with the server, please try again later');
             }
         });
-        $('#blockingDivSpan').text('Adding advisor...');
-        $('#blockingDiv').show();
+        Alert('Adding advisor...');
     } else if (editMode === 'edit') {
         var editAdvisorRequest = { Name: name, Email: email };
         $.ajax({
@@ -218,7 +216,6 @@ SubmitAdvisorInformation = function() {
             contentType: 'application/json',
             success: function(data) {
                 if (!data.Success || !data.Payload) {
-                    $('#blockingDiv').hide();
                     Alert(data.Message);
                     return;
                 }
@@ -230,16 +227,13 @@ SubmitAdvisorInformation = function() {
                 });
 
                 RedisplayHeader();
-                $('#blockingDiv').hide();
                 Alert(data.Message);
             },
             error: function () {
-                $('#blockingDiv').hide();
                 Alert('There is something wrong with the server, please try again later');
             }
         });
-        $('#blockingDivSpan').text('Updating advisor...');
-        $('#blockingDiv').show();
+        Alert('Updating advisor...');
     }
     $('#advisorDialogRoot').hide();
 };
@@ -353,7 +347,7 @@ ImportCSVFile = function() {
     reader.readAsText(fileToRead);
     reader.onload = function(event) {
         var csvData = event.target.result;
-        var csvImportRequest = { Username: viewModel.user().username(), CsvData: csvData, Autopopulate: autopop };
+        var csvImportRequest = { Username: viewModel.user().username(), CsvData: csvData, AutoPopulate: autopop };
         $.ajax({
             url: window.location.origin + '/api/Course/AddCsvFile',
             data: JSON.stringify(csvImportRequest),
@@ -436,7 +430,7 @@ SubmitSingletonClassAddInformation = function() {
             }
 
             var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits, commIntensive);
-            viewModel.addNewCouse(course);
+            viewModel.addNewCourse(course);
             $('#singletonDepartment').val('');
             $('#singletonCourseNumber').val('');
             $('#singletonSemesterCode').val('');
@@ -445,16 +439,14 @@ SubmitSingletonClassAddInformation = function() {
             $('#singletonGrade').val('');
             $('#singletonCredits').val('');
             $('#blockingDiv').hide();
-            Alert(data.Message)
+            Alert(data.Message);
         },
         error: function() {
             Alert('There is an issue with the server, please try again later');
-            $('#blockingDiv').hide();
         }
     });
-    $('#blockingDivSpan').text('Adding your course...');
-    $('#blockingDiv').show();
     $('#singletonClassAddDialogRoot').hide();
+    Alert('Adding your course...');
 };
 CancelSingletonClassAdd = function() {
     $('#singletonDepartment').val('');
@@ -576,7 +568,6 @@ SubmitRegistrationInformation = function() {
             contentType: 'application/json',
             success: function(data) {
                 if (!data.Success) {
-                    $('#blockingDiv').hide();
                     Alert(data.Message);
                     return;
                 }
@@ -591,16 +582,13 @@ SubmitRegistrationInformation = function() {
 
                 $('#registrationDialogRoot').hide();
                 RedisplayHeader();
-                $('#blockingDiv').hide();
                 Alert(data.Message);
             },
             error: function() {
-                $('#blockingDiv').hide();
                 Alert('There is an issue with the server, please try again later');
             }
         });
-        $('#blockingDivSpan').text('Updating...');
-        $('#blockingDiv').show();
+        Alert('Updating account...');
     }
 };
 CancelRegistration = function() {
@@ -651,11 +639,14 @@ ToggleSidebar = function() {
 RedisplayHeader = function() {
     var userHeader = $('#userHeader');
     var loginHeader = $('#loginHeader');
+    var fontSize = parseInt(loginHeader.css('font-size'), 10);
     if (viewModel.user() === null) {
         userHeader.hide();
+        loginHeader.css('min-height', fontSize * 4);
         loginHeader.show();
     } else {
         loginHeader.hide();
+        userHeader.css('min-height', fontSize * 4 + viewModel.user().advisors().length * fontSize);
         userHeader.show();
     }
     ResizeDisplay();
@@ -823,10 +814,17 @@ ViewModel = function() {
     self.user = ko.observable(null);
 
     /* Functions */
-    self.addNewCouse = function(course) {
+    self.addNewCourse = function(course) {
         self.unassignedCourses.push(course);
         MakeCoursesDraggable();
     };
+    self.removeCourse = function(course) {
+        self.unassignedCourses.remove(course);
+        ko.utils.arrayForEach(self.requirementSets(), function (requirementSet) {
+            requirementSet.removeCourse(course);
+        });
+        $(".requirementBox").accordion("refresh");
+    }
     self.print = function() {
         var url = window.location.origin + '/Home/Print?Username=' + self.user().username();
         window.open(url, '_blank');
