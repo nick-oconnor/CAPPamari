@@ -41,7 +41,7 @@
 }
 
 #mainScreen::after {
-    background-image: url("/Content/background.png");
+    background-image: url("/Images/background.png");
     background-position: center;
     background-repeat: no-repeat;
     bottom: 0;
