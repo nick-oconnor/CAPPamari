@@ -701,7 +701,7 @@ CheckForCSVFile = function() {
     }
 };
 
-User = function (sessionId, userName, major) {
+User = function (sessionId, username, major) {
     /* Properties */
     var self = this;
     self.username = ko.observable(username);
