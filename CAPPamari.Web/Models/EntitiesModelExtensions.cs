@@ -10,15 +10,20 @@ namespace CAPPamari.Web.Models
     {
         public static CAPPReportModel ToCAPPReportModel(this CAPPReport EntitiyCAPPReport)
         {
+            var reqsets = EntitiyCAPPReport.RequirementSets.Count > 0 ? EntitiyCAPPReport.RequirementSets.Select(reqset => reqset.ToRequirementSetModel()).ToList() : new List<RequirementSetModel>();
+            var reqs = EntitiyCAPPReport.Requirements.Count > 0 ? EntitiyCAPPReport.Requirements.Select(req => req.ToRequirementModel()).ToList() : new List<RequirementModel>();
             return new CAPPReportModel()
             {
                 Name = EntitiyCAPPReport.Name,
-                RequirementSets = EntitiyCAPPReport.RequirementSets.Select(reqset => reqset.ToRequirementSetModel()).ToList(),
-                Requirements = EntitiyCAPPReport.Requirements.Select(req => req.ToRequirementModel()).ToList()
+                RequirementSets = reqsets,
+                Requirements = reqs 
             };
         }
         public static RequirementSetModel ToRequirementSetModel(this RequirementSet EntityRequirementSet)
         {
+            var reqs = EntityRequirementSet.Requirements.Count > 0 ? EntityRequirementSet.Requirements.Select(req => req.ToRequirementModel()).ToList() : new List<RequirementModel>();
+            var reqReqs = EntityRequirementSet.RequirementSetRequirements.Count > 0 ? EntityRequirementSet.RequirementSetRequirements.Select(req => req.ToRequirementModel()).ToList() : new List<RequirementModel>();
+            var courses = EntityRequirementSet.Courses.Count > 0 ? EntityRequirementSet.Courses.Select(course => course.ToCourseModel()).ToList() : new List<CourseModel>();
             return new RequirementSetModel()
             {
                 CreditsNeeded = EntityRequirementSet.Credits,
@@ -26,17 +31,18 @@ namespace CAPPamari.Web.Models
                 Description = EntityRequirementSet.Description,
                 MaxPassNoCreditCredits = EntityRequirementSet.PassNCCredits,
                 Name = EntityRequirementSet.Name,
-                Requirements = EntityRequirementSet.Requirements.Select(req => req.ToRequirementModel()).ToList(),
-                RequirementSetRequirements = EntityRequirementSet.RequirementSetRequirements.Select(req => req.ToRequirementModel()).ToList(),
-                AppliedCourses = EntityRequirementSet.Courses.Select(course => course.ToCourseModel()).ToList() 
+                Requirements = reqs, 
+                RequirementSetRequirements = reqReqs,
+                AppliedCourses = courses 
             };
         }
         public static RequirementModel ToRequirementModel(this Requirement EntityRequirement)
         {
+            var fulfillments = EntityRequirement.CourseFulfillments.Count > 0 ? EntityRequirement.CourseFulfillments.Select(cf => cf.ToCourseFulfillmentModel()).ToList() : new List<CourseFulfillmentModel>();
             return new RequirementModel()
             {
                 CommunicationIntensive = EntityRequirement.CommunicationIntensive,
-                CourseFullfillments = EntityRequirement.CourseFulfillments.Select(cf => cf.ToCourseFulfillmentModel()).ToList(), 
+                CourseFullfillments = fulfillments, 
                 CreditsNeeded = EntityRequirement.CreditsNeeded,
                 Exclusion = EntityRequirement.Exclusion,
                 MaxPassNoCreditCredits = EntityRequirement.PassNoCreditCreditsAllowed

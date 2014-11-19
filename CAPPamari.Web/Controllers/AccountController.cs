@@ -66,6 +66,7 @@ namespace CAPPamari.Web.Controllers
         {
             UserHelper.CreateNewUser(Request.UserName, Request.Password, Request.Major);
             UserHelper.CreateUserSession(Request.UserName);
+            CourseHelper.CreateNewCAPPReport(Request.UserName, SupportedMajors.CSCI);
             var user = UserHelper.GetApplicationUser(Request.UserName);
             return Json(ApiResponse<ApplicationUserModel>.SuccessResponse("Registered successfully", user)); 
         }

@@ -82,8 +82,52 @@ namespace CAPPamari.Web.Helpers
         private static void CreateComputerScienceCAPPReport(string UserName)
         {
             var cappreport = EntitiesHelper.CreateNewCAPPReport(UserName, "Computer Science");
-            // put in capp report requirements
-            //    add course fulfillments to each requirement
+            EntitiesHelper.CreateCAPPReportRequirement(UserName, cappreport.Name, 4, 0, true, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","4440")
+            });
+            EntitiesHelper.CreateCAPPReportRequirement(UserName, cappreport.Name, 4, 0, true, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","4xxx")
+            });
             EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "Unapplied Courses", false, 0, 0);
             EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "Free Electives", false, 33, 33);
             var mathReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "Math", false, 16, 0);
@@ -107,21 +151,207 @@ namespace CAPPamari.Web.Helpers
                 EntitiesHelper.GetCourseFulfillmentID("PHIL","4140"),
                 EntitiesHelper.GetCourseFulfillmentID("PHIL","4420")
             });
-            //    add Math requirements
-            //       add course fulfillments to each requirement
             var scienceReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name,"Science", false, 12, 0);
-            //    add Science requirements
-            //       add course fulfillments to each requirement
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, scienceReqset.Name, 4, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("BIOL","1010"),
+                EntitiesHelper.GetCourseFulfillmentID("BIOL","1015")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, scienceReqset.Name, 4, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("PHYS","1100")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, scienceReqset.Name, 4, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("ASTR","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("BIOL","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ERTH","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("CHEM","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHYS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ASTR","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("BIOL","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ERTH","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("CHEM","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHYS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ASTR","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("BIOL","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ERTH","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("CHEM","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHYS","4xxx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, scienceReqset.Name, 0, 10, false, true, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("ERTH","1030"),
+            });
             var cscireqReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "CSCI Required", false, 32, 0);
-            //    add CSCI Required requirements
-            //       add course fulfillments to each requirement
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, cscireqReqset.Name, 3, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","1100"), 
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","4xxx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, cscireqReqset.Name, 3, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","1200") 
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, cscireqReqset.Name, 3, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","2500"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","2610")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, cscireqReqset.Name, 3, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","2200"),
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","2400")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, cscireqReqset.Name, 3, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","4430")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, cscireqReqset.Name, 3, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","4440")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, cscireqReqset.Name, 3, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","4210")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, cscireqReqset.Name, 3, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","2300")
+            });
             var csciOpReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "CSCI Options", false, 11, 0);
-            //    add CSCI Options requirements
-            //       add course fulfillments to each requirement
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, csciOpReqset.Name, 1, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","6xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","46xx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","47xx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, csciOpReqset.Name, 1, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","6xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","46xx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","47xx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, csciOpReqset.Name, 1, 0, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("CSCI","6xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","46xx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","47xx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, csciOpReqset.Name, 0, 10, false, true, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4630"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4640"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4720")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, csciOpReqset.Name, 0, 10, false, true, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4630"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4640"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4720")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, csciOpReqset.Name, 0, 10, false, true, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4630"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4640"),
+                EntitiesHelper.GetCourseFulfillmentID("ECSE","4720")
+            });
             var hassReqset = EntitiesHelper.CreateRequirementSet(UserName, cappreport.Name, "HASS", true, 24, 6);
-            //    add HASS requirements
-            //    add HASS requirement set requirements
-            //       add course fulfillments to each requirement
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, hassReqset.Name, 4, 4, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","4xxx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, hassReqset.Name, 4, 4, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ARTS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LANG","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("LITR","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COMM","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("WRIT","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSH","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PHIL","4xxx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, hassReqset.Name, 4, 4, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","4xxx")
+            });
+            EntitiesHelper.CreateRequirementInRequirementSet(UserName, cappreport.Name, hassReqset.Name, 4, 4, false, false, new List<int>()
+            {
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","1xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","2xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("IHSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("COGS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("STSS","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("ECON","4xxx"),
+                EntitiesHelper.GetCourseFulfillmentID("PSYC","4xxx")
+            });
+            EntitiesHelper.CreateRequirementSetRequirement(UserName, cappreport.Name, hassReqset.Name, 0, 9, false, true, new List<int>());
         }
     }
 }
