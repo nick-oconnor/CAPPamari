@@ -57,46 +57,46 @@
             </table>
         </div>
         <div id="singletonClassAddDialogRoot">
-            <table style="table-layout: fixed; width: 100%;">
-                <tr>
-                    <td style="text-align: right;">Department:</td>
-                    <td style="text-align: left;"><input id="singletonDepartment" type="text" /></td>
+            <table style="width:100%;table-layout:fixed;">
+                <tr class="singletonForm">
+                    <td style="text-align:right;">Department:</td>
+                    <td style="text-align:left;"><input id="singletonDepartment" type="text" /></td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;">Course Number:</td>
-                    <td style="text-align: left;"><input id="singletonCourseNumber" type="text" /></td>
+                <tr class="singletonForm">
+                    <td style="text-align:right;">Course Number:</td>
+                    <td style="text-align:left;"><input id="singletonCourseNumber" type="text" /></td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;">Semester Code (e.g. F14):</td>
-                    <td style="text-align: left;"><input id="singletonSemesterCode" type="text" /></td>
+                <tr class="singletonForm">
+                    <td style="text-align:right;">Semester Code (e.g. F14):</td>
+                    <td style="text-align:left;"><input id="singletonSemesterCode" type="text" /></td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;">Pass No Credit:</td>
-                    <td style="text-align: left;"><input id="singletonPassNoCredit" type="checkbox" /></td>
+                <tr class="singletonForm">
+                    <td style="text-align:right;">Pass No Credit:</td>
+                    <td style="text-align:left;"><input id="singletonPassNoCredit" type="checkbox" onchange="CheckForPNCCheck()" /></td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;">Communication Intensive:</td>
-                    <td style="text-align: left;"><input id="singletonCommIntensive" type="checkbox" /></td>
+                <tr class="singletonForm">
+                    <td style="text-align:right;">Communication Intensive:</td>
+                    <td style="text-align:left;"><input id="singletonCommIntensive" type="checkbox" /></td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;">Grade (e.g. 4.00):</td>
-                    <td style="text-align: left;"><input id="singletonGrade" type="text" /></td>
+                <tr id="singletonGradeRow" class="singletonForm">
+                    <td style="text-align:right;">Grade (e.g. 4.00):</td>
+                    <td style="text-align:left;"><input id="singletonGrade" type="text" /></td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;">Credits:</td>
-                    <td style="text-align: left;"><input id="singletonCredits" type="number" /></td>
+                <tr class="singletonForm">
+                    <td style="text-align:right;">Credits:</td>
+                    <td style="text-align:left;"><input id="singletonCredits" type="number" /></td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;"><input id="singletonSumbit" type="button" onclick=" SubmitSingletonClassAddInformation() " value="Submit" /></td>
-                    <td style="text-align: left;"><input id="singletonCancel" type="button" onclick=" CancelSingletonClassAdd() " value="Cancel" /></td>
+                <tr class="singletonForm">
+                    <td style="text-align:right;"><input id="singletonSumbit" type="button" onclick="SubmitSingletonClassAddInformation()" value="Submit" /></td>
+                    <td style="text-align:left;"><input id="singletonCancel" type="button" onclick="CancelSingletonClassAdd()" value="Cancel" /></td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;">O</td>
-                    <td style="text-align: left;">R</td>
+                <tr class="singletonForm">
+                    <td style="text-align:right;">O</td>
+                    <td style="text-align:left;">R</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="text-align: left;"><input id="csvFileInput" type="file" accept=".csv" /></td>
+                    <td style="text-align:left;"><input id="csvFileInput" type="file" accept=".csv" onchange="CheckForCSVFile()" /></td>
                 </tr>
                 <tr>
                     <td style="text-align: right;"><input id="csvAutoPopulateCheckbox" type="checkbox" checked="checked" /></td>
