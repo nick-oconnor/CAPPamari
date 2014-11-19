@@ -136,7 +136,7 @@ AddNewAdvisor = function() {
     editMode = 'new';
     $('#registrationUsername').val('');
     $('#registrationMajor').val('');
-    $('#registrationUsername').prop('readonly', 'false');
+    $('#registrationUserName').removeAttr('readonly');
     ShowAdvisorDialog();
 };
 SubmitAdvisorInformation = function() {

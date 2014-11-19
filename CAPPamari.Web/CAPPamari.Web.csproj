@@ -112,6 +112,7 @@
     <Compile Include="Helpers\EntitiesHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PrintingHelper.cs" />
+    <Compile Include="Helpers\SupportedMajors.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
     <Compile Include="Models\AccountModels.cs" />
