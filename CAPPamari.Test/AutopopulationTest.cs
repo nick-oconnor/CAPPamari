@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using CAPPamari.Web.Models.Requirements;
-using CAPPamari.Web.Helpers;
 using System.IO;
+using System.Linq;
+using CAPPamari.Web.Helpers;
+using CAPPamari.Web.Models;
+using CAPPamari.Web.Models.Requirements;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CAPPamari.Test
 {
@@ -15,14 +16,14 @@ namespace CAPPamari.Test
         public void autopopTest1()
         {
             //make a mock requirement set
-            List<RequirementSetModel> reqSets = new List<RequirementSetModel>();
-            RequirementSetModel csciSet = new RequirementSetModel();
-            List<String> departmentCodes = new List<String>();
+            var reqSets = new List<RequirementSetModel>();
+            var csciSet = new RequirementSetModel();
+            var departmentCodes = new List<String>();
             departmentCodes.Add("CSCI");
 
-            RequirementModel CSCI4440 = new RequirementModel();
+            var CSCI4440 = new RequirementModel();
             CSCI4440.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "4440"));
-            RequirementModel CSCI1XXX = new RequirementModel();
+            var CSCI1XXX = new RequirementModel();
             CSCI1XXX.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "1xxx"));
 
             csciSet.Requirements.Add(CSCI4440);
@@ -39,9 +40,9 @@ namespace CAPPamari.Test
             }
             reader.Close();
 
-            List<CAPPamari.Web.Models.CourseModel> courses = CSVParserHelper.parse(input).ToList();
+            List<CourseModel> courses = CSVParserHelper.parse(input).ToList();
 
-            CAPPamari.Web.Helpers.AutopopulationHelper.autopopulate(reqSets, courses);
+            AutopopulationHelper.autopopulate(reqSets, courses);
 
             //check results
             Assert.IsTrue(csciSet.AppliedCourses.ElementAt(0).CourseNumber == "4440");

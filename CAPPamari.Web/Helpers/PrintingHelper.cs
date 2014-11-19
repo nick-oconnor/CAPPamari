@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Web;
+﻿using System.Drawing;
+using CAPPamari.Web.Models;
+using CAPPamari.Web.Models.Requirements;
 using Spire.Pdf;
 using Spire.Pdf.Graphics;
 
@@ -13,25 +11,25 @@ namespace CAPPamari.Web.Helpers
         public static PdfDocument PrintCAPPReport(string UserName)
         {
             if (EntitiesHelper.GetSessionID(UserName) == -1) return null;
-            var userData = UserHelper.GetApplicationUser(UserName);
-            var courseData = CourseHelper.GetCAPPReport(UserName);
+            ApplicationUserModel userData = UserHelper.GetApplicationUser(UserName);
+            CAPPReportModel courseData = CourseHelper.GetCAPPReport(UserName);
             var pdf = new PdfDocument();
-            var cappSection = pdf.Sections.Add();
-            var page = cappSection.Pages.Add();
+            PdfSection cappSection = pdf.Sections.Add();
+            PdfNewPage page = cappSection.Pages.Add();
             var font = new PdfFont(PdfFontFamily.TimesRoman, 11);
-            var format = new PdfStringFormat() { LineSpacing = 20f };
-            var brush = PdfBrushes.Black;
-            var stringData = "\n";
+            var format = new PdfStringFormat {LineSpacing = 20f};
+            PdfBrush brush = PdfBrushes.Black;
+            string stringData = "\n";
             stringData += userData.UserName + "\t" + userData.Major + "\n";
-            foreach (var adivsor in userData.Advisors)
+            foreach (AdvisorModel adivsor in userData.Advisors)
             {
                 stringData += adivsor.Name + ": " + adivsor.EMail + "\n";
             }
             stringData += "\n\n";
-            foreach (var reqSet in courseData.RequirementSets)
+            foreach (RequirementSetModel reqSet in courseData.RequirementSets)
             {
                 stringData += reqSet.Name + "\n";
-                foreach (var course in reqSet.AppliedCourses)
+                foreach (CourseModel course in reqSet.AppliedCourses)
                 {
                     stringData += course.DepartmentCode + "-" + course.CourseNumber + "\n";
                 }
@@ -42,7 +40,7 @@ namespace CAPPamari.Web.Helpers
             //      put requirementset name in the header
             //          list all of the classes applied to it
             var textWidget = new PdfTextWidget(stringData, font, brush);
-            var textLayout = new PdfTextLayout()
+            var textLayout = new PdfTextLayout
             {
                 Break = PdfLayoutBreakType.FitPage,
                 Layout = PdfLayoutType.Paginate

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Web;
+using System.IO;
 using System.Net.Mail;
 using System.Net.Mime;
-using Spire.Pdf;
-using System.IO;
+using System.Web;
 using CAPPamari.Web.Models;
+using Spire.Pdf;
 
 namespace CAPPamari.Web.Helpers
 {
@@ -15,19 +12,19 @@ namespace CAPPamari.Web.Helpers
     {
         public static bool EmailToAdvisor(string UserName, AdvisorModel Advisor)
         {
-            var document = PrintingHelper.PrintCAPPReport(UserName);
+            PdfDocument document = PrintingHelper.PrintCAPPReport(UserName);
             if (document == null) return false;
             Attachment attachment;
-            MailMessage email = new MailMessage("do-not-reply@iecfusor.com", Advisor.EMail);
+            var email = new MailMessage("do-not-reply@iecfusor.com", Advisor.EMail);
             email.Subject = "CAPPamari - Please review " + UserName + "'s CAPP report";
             email.Body = "Dear " + Advisor.Name + ",\n" +
-                    "\n" +
-                    "Please review my latest plan for fulfulling my graduation requirements.\n" +
-                    "\n" +
-                    "Sincerely,\n" +
-                    UserName + "\n" +
-                    "--\n" +
-                    HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+                         "\n" +
+                         "Please review my latest plan for fulfulling my graduation requirements.\n" +
+                         "\n" +
+                         "Sincerely,\n" +
+                         UserName + "\n" +
+                         "--\n" +
+                         HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
             using (var pdfStream = new MemoryStream())
             {
                 document.SaveToStream(pdfStream);
@@ -37,7 +34,7 @@ namespace CAPPamari.Web.Helpers
                 email.Attachments.Add(attachment);
                 try
                 {
-                    SmtpClient SMTPServer = new SmtpClient("localhost");
+                    var SMTPServer = new SmtpClient("localhost");
                     SMTPServer.Send(email);
                 }
                 catch

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace CAPPamari.Web.Models.Requirements
+﻿namespace CAPPamari.Web.Models.Requirements
 {
     public class CourseFulfillmentModel
     {
-        public string DepartmentCode { get; set; }
-        public string CourseNumber { get; set; }
-
         public CourseFulfillmentModel(string DepartmentCode, string CourseNumber)
         {
             this.DepartmentCode = DepartmentCode;
@@ -18,9 +10,12 @@ namespace CAPPamari.Web.Models.Requirements
 
         public CourseFulfillmentModel()
         {
-            this.DepartmentCode = "";
-            this.CourseNumber = "";
+            DepartmentCode = "";
+            CourseNumber = "";
         }
+
+        public string DepartmentCode { get; set; }
+        public string CourseNumber { get; set; }
 
         public bool Match(CourseModel Course)
         {

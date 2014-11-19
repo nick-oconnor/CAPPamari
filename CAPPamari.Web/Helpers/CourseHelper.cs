@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using CAPPamari.Web.Models;
+﻿using CAPPamari.Web.Models;
 using CAPPamari.Web.Models.Requirements;
 
 namespace CAPPamari.Web.Helpers
@@ -10,17 +6,19 @@ namespace CAPPamari.Web.Helpers
     public static class CourseHelper
     {
         /// <summary>
-        /// Add a new course for the user
+        ///     Add a new course for the user
         /// </summary>
         /// <param name="UserName">UserName for user to add new course for</param>
         /// <param name="NewCourse">CourseModel contianing new course information</param>
         /// <returns>Success state of the course addition</returns>
-        public static bool AddNewCourse(string UserName, CourseModel NewCourse, string RequirementSetName = "Unapplied Courses")
+        public static bool AddNewCourse(string UserName, CourseModel NewCourse,
+            string RequirementSetName = "Unapplied Courses")
         {
             return EntitiesHelper.AddNewCourse(UserName, NewCourse, RequirementSetName);
         }
+
         /// <summary>
-        /// Remove course from the database
+        ///     Remove course from the database
         /// </summary>
         /// <param name="Username">UserName for user to remove course for</param>
         /// <param name="OldCourse">CourseModel conataining information about the course to remove</param>
@@ -29,8 +27,9 @@ namespace CAPPamari.Web.Helpers
         {
             return EntitiesHelper.RemoveCourse(UserName, OldCourse);
         }
+
         /// <summary>
-        /// Gets a RequirementSet for the user
+        ///     Gets a RequirementSet for the user
         /// </summary>
         /// <param name="UserName">UserName of user to get the RequirementSet for</param>
         /// <param name="RequirementSetName">Name of the requirement set to get</param>
@@ -39,8 +38,9 @@ namespace CAPPamari.Web.Helpers
         {
             return EntitiesHelper.GetRequirementSet(UserName, RequirementSetName);
         }
+
         /// <summary>
-        /// Gets CAPPReport for the user
+        ///     Gets CAPPReport for the user
         /// </summary>
         /// <param name="UserName">UserName for user to get CAPP Report for</param>
         /// <returns>CAPPReportModel or null if no CAPP Report exists</returns>
@@ -48,8 +48,9 @@ namespace CAPPamari.Web.Helpers
         {
             return EntitiesHelper.GetCAPPReport(UserName);
         }
+
         /// <summary>
-        /// Apply a course to a requirement set for a user
+        ///     Apply a course to a requirement set for a user
         /// </summary>
         /// <param name="UserName">UserName of user to move course for</param>
         /// <param name="Course">CourseModel to move</param>

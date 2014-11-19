@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
+﻿using System.IO;
 using System.Web.Mvc;
 using CAPPamari.Web.Helpers;
+using Spire.Pdf;
 
 namespace CAPPamari.Web.Controllers
 {
@@ -17,7 +14,7 @@ namespace CAPPamari.Web.Controllers
 
         public ActionResult Print(string UserName)
         {
-            var document = PrintingHelper.PrintCAPPReport(UserName);
+            PdfDocument document = PrintingHelper.PrintCAPPReport(UserName);
             if (document == null) return View("Error");
             using (var pdfStream = new MemoryStream())
             {
