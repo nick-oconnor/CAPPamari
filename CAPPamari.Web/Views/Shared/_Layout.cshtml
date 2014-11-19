@@ -111,26 +111,29 @@
         </div>
         <div id="headerBarRoot">
             <div id="headerBarWrapper">
+                <div style="position: absolute; width: 100%; text-align: center; font-size: 40px;">
+                    <span style="font-family: 'Brush Script MT', cursive;">CAPPamari</span>
+                </div>
                 <div id="userHeader" style="display: none; min-height: 75px; position: relative; width: 100%;">
                     <div style="float: left; position: relative;">
                         <div style="margin: 20px; vertical-align: middle;">
                             <span id="userHeaderStudentName" data-bind="text: user() === null ? 'NO USER' : user().username"></span> - 
                             <span id="userHeaderMajor" data-bind="text: user() === null ? 'NO MAJOR' : user().major"></span>
                             <span class="fa fa-pencil" title="Edit account info" onclick=" EditUserInfo() "></span>
-                            <div data-bind="if: user()">
-                                <div data-bind="foreach: user().advisors">
-                                    <span data-bind="text: name"></span>
-                                    <span class="fa fa-send-o" title="Email report to advisor" data-bind="click: EmailToAdvisor"></span>
-                                    <span class="fa fa-pencil" title="Edit advisor info"data-bind="click: EditAdvisorInfo"></span>
-                                    <span class="fa fa-trash-o" title="Delete this advisor" data-bind="click: DeleteAdvisor"></span>
-                                    <!-- ko if: ($index() === ($parent.user().advisors().length - 1)) -->
-                                        <span class="fa fa-plus" title="Add a new advisor" data-bind="click: AddNewAdvisor"></span>
-                                    <!-- /ko -->
-                                    <!-- ko if: ($index() !== ($parent.user().advisors().length - 1)) -->
-                                        <br />
-                                    <!-- /ko -->
-                                </div>
+                            <!-- ko if: user() -->
+                            <div data-bind="foreach: user().advisors">
+                                <span data-bind="text: name"></span>
+                                <span class="fa fa-send-o" title="Email report to advisor" data-bind="click: EmailToAdvisor"></span>
+                                <span class="fa fa-pencil" title="Edit advisor info"data-bind="click: EditAdvisorInfo"></span>
+                                <span class="fa fa-trash-o" title="Delete this advisor" data-bind="click: DeleteAdvisor"></span>
+                                <!-- ko if: ($index() === ($parent.user().advisors().length - 1)) -->
+                                <span class="fa fa-plus" title="Add a new advisor" data-bind="click: AddNewAdvisor"></span>
+                                <!-- /ko -->
+                                <!-- ko if: ($index() !== ($parent.user().advisors().length - 1)) -->
+                                <br />
+                                <!-- /ko -->
                             </div>
+                            <!-- /ko -->
                         </div>
                     </div>
                     <div style="float: right; position: relative;">
