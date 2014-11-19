@@ -46,7 +46,7 @@ namespace CAPPamari.Web.Helpers
         }
 
         /// <summary>
-        ///     Gets the password for the user name given.
+        ///     Gets the password for the username given.
         /// </summary>
         /// <param name="username">Username of user to get password for</param>
         /// <returns>Password for user with Username or string.Empty if no user is found</returns>

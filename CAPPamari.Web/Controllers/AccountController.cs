@@ -27,7 +27,7 @@ namespace CAPPamari.Web.Controllers
                 case ValidationStatus.InvalidSession:
                     return Json(ApiResponse<ApplicationUserModel>.FailureResponse("Invalid session", badUser));
                 case ValidationStatus.NoSuchUsername:
-                    return Json(ApiResponse<ApplicationUserModel>.FailureResponse("No such user name exists", badUser));
+                    return Json(ApiResponse<ApplicationUserModel>.FailureResponse("No such username exists", badUser));
                 case ValidationStatus.Validated:
                     UserHelper.CreateUserSession(request.Username);
                     ApplicationUserModel user = UserHelper.GetApplicationUser(request.Username);

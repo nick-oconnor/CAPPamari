@@ -347,6 +347,7 @@ ImportCsvFile = function() {
             contentType: 'application/json',
             success: function(data) {
                 viewModel.setCAPPReport(data.Payload);
+                $('#singletonClassAddDialogRoot').hide();
                 $('#blockingDiv').hide();
                 Alert(true, data.Message);
             },
@@ -355,7 +356,6 @@ ImportCsvFile = function() {
                 Alert(false, 'There is an error with the server.  Please try again later');
             }
         });
-        $('#singletonClassAddDialogRoot').hide();
         $('#blockingDivSpan').text('Uploading courses...');
         $('#blockingDiv').show();
     };
@@ -525,6 +525,7 @@ SubmitRegistrationInformation = function() {
                         $('#sidebarRoot').show();
                         SetupDragAndDrop();
                         RedisplayHeader();
+                        viewModel.loadCappReport();
                         $('#blockingDiv').hide();
                         Alert(true, data.Message);
                     },
@@ -533,7 +534,7 @@ SubmitRegistrationInformation = function() {
                         Alert(false, 'There is an issue with the server, please try again later');
                     }
                 });
-                $('#blockingDivSpan').text('Registering...');
+                $('#blockingDivSpan').text('Registering, this may take a sec...');
                 $('#blockingDiv').show();
             },
             error: function() {
@@ -635,7 +636,7 @@ RedisplayHeader = function() {
         loginHeader.show();
     } else {
         loginHeader.hide();
-        userHeader.css('min-height', fontSize * 4 + viewModel.user().advisors().length * fontSize);
+        userHeader.css('min-height', fontSize * 4 + (viewModel.user().advisors().length === 0 ? 1 : viewModel.user().advisors().length) * fontSize);
         userHeader.show();
     }
     ResizeDisplay();
@@ -863,7 +864,6 @@ ViewModel = function() {
                     return;
                 }
                 var cappReport = data.Payload;
-                self.requirementSets.push(new RequirementSet('CAPP Report Requirements'));
                 ko.utils.arrayForEach(cappReport.RequirementSets, function(requirementSetModel) {
                     if (requirementSetModel.Name === 'Unapplied Courses') {
                         ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {

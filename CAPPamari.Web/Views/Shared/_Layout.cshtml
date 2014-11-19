@@ -133,6 +133,11 @@
                                 <br />
                                 <!-- /ko -->
                             </div>
+                            <!-- ko if: !user().advisors().length -->
+                            <div>
+                                <span class="fa fa-plus" title="Add a new advisor" data-bind="click: AddNewAdvisor"></span>
+                            </div>
+                            <!-- /ko -->
                             <!-- /ko -->
                         </div>
                     </div>
