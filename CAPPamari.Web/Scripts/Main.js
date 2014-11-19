@@ -53,7 +53,7 @@ AutopopulateUnappliedCourses = function() {
         data: JSON.stringify(viewModel.user().userName()),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textStatus, jqXHR) {
+        success: function(data, textStatus) {
             if (!data.Success) {
                 Alert(data.Message);
             }
@@ -88,7 +88,7 @@ EmailToAdvisor = function(advisor) {
         data: JSON.stringify(emailRequest),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textSuccess, jqXHR) {
+        success: function(data, textSuccess) {
             Alert(data.Message);
         },
         error: function() {
@@ -104,7 +104,7 @@ DeleteAdvisor = function(advisor) {
         data: JSON.stringify(removeAdvisorRequest),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textStatus, jqXHR) {
+        success: function(data, textStatus) {
             if (!data.Success || !data.Payload) {
                 Alert(data.Message);
                 $('#blockingDiv').hide();
@@ -150,7 +150,7 @@ SubmitAdvisorInformation = function() {
             data: JSON.stringify(newAdvisorRequest),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (!data.Success || !data.Payload) {
                     Alert(data.Message);
                     $('#blockingDiv').hide();
@@ -176,7 +176,7 @@ SubmitAdvisorInformation = function() {
             data: JSON.stringify(editAdvisorRequest),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (!data.Success || !data.Payload) {
                     Alert(data.Message);
                     $('#blockingDiv').hide();
@@ -241,7 +241,7 @@ SetupDragAndDrop = function() {
                 data: JSON.stringify(moveCourseRequest),
                 type: 'POST',
                 contentType: 'application/json',
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     if (!data.Success || !data.Payload) {
                         Alert(data.Message);
                         return;
@@ -282,7 +282,7 @@ SetupDragAndDrop = function() {
                 data: JSON.stringify(moveCourseRequest),
                 type: 'POST',
                 contentType: 'application/json',
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     if (!data.Success || !data.Payload) {
                         Alert(data.Message);
                         return;
@@ -318,7 +318,7 @@ ImportCSVFile = function() {
             data: JSON.stringify(csvImportRequest),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (!data.Success) {
                     Alert(data.Message);
                 }
@@ -391,7 +391,7 @@ SubmitSingletonClassAddInformation = function() {
         data: JSON.stringify(newCourseRequest),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textSuccess, jqXHR) {
+        success: function(data) {
             if (!data.Success) {
                 Alert(data.Message);
                 return;
@@ -444,7 +444,7 @@ SubmitRegistrationInformation = function() {
             data: JSON.stringify({ UserName: userName }),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (!data.Success) {
                     Alert(data.Message);
                     return;
@@ -473,7 +473,7 @@ SubmitRegistrationInformation = function() {
                     data: JSON.stringify(registrationRequest),
                     type: 'POST',
                     contentType: 'application/json',
-                    success: function(data, textStatus, jqXHR) {
+                    success: function(data) {
                         if (!data.Success) {
                             Alert(data.Message);
                             $('#blockingDiv').hide();
@@ -519,7 +519,7 @@ SubmitRegistrationInformation = function() {
             data: JSON.stringify(registrationRequest),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (!data.Success) {
                     Alert(data.Message);
                     $('#blockingDiv').hide();
@@ -615,7 +615,7 @@ LoadUserFromCookie = function() {
         data: JSON.stringify(userCookie),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textStatus, jqXHR) {
+        success: function(data) {
             if (data.Success) {
                 var appUser = data.Payload;
                 viewModel.user(new User(appUser.SessionID, appUser.UserName, appUser.Major));
@@ -642,7 +642,7 @@ SignInUser = function(userName, password) {
         data: JSON.stringify(jsonData),
         type: 'POST',
         contentType: 'application/json',
-        success: function(data, textStatus, jqXHR) {
+        success: function(data) {
             if (!data.Success) {
                 Alert(data.Message);
                 $('#blockingDiv').hide();
@@ -694,7 +694,7 @@ User = function(sessionID, userName, major) {
             data: JSON.stringify(jsonData),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 $('#blockingDiv').hide();
             },
             error: function() {
@@ -797,7 +797,7 @@ ViewModel = function() {
             data: JSON.stringify(self.user().userName()),
             type: 'POST',
             contentType: 'application/json',
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (!data.Success) {
                     Alert(data.Message);
                     $('#blockingDiv').hide();
