@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.WebPages;
 using CAPPamari.Web.Models;
 using CAPPamari.Web.Models.Requirements;
 
@@ -74,8 +75,11 @@ namespace CAPPamari.Web.Helpers
                 ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
                 if (user == null) return false;
+                if (string.IsNullOrEmpty(password))
+                {
+                    user.Password = password;
+                }
 
-                user.Password = password;
                 user.Major = major;
                 entities.SaveChanges();
 
