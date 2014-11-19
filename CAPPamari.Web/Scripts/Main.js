@@ -498,8 +498,10 @@ SubmitRegistrationInformation = function() {
 
                         $('#registrationDialogRoot').hide();
 
-                        $('#blockingDiv').hide();
+                        $('#sidebarRoot').show();
+                        SetupDragAndDrop();
                         RedisplayHeader();
+                        $('#blockingDiv').hide();
                     }
                 });
                 $('#blockingDivSpan').text('Registering...');
