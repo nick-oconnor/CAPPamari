@@ -80,10 +80,11 @@ namespace CAPPamari.Web.Controllers
                 return ApiResponse<CAPPReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
             var courses = CSVParserHelper.parse(Request.CsvData);
+            CAPPReportModel cappReport;
             if (Request.Autopopulate)
             {
-                // var cappReport = CourseHelper.GetCAPPReport(Request.UserName);
-                // AutopopulationHelper.autopopulate(cappReport, courses); 
+                cappReport = CourseHelper.GetCAPPReport(Request.UserName);
+                AutopopulationHelper.autopopulate(cappReport.RequirementSets, courses.ToList()); 
             }
             var success = true;
             foreach (var course in courses)
@@ -92,7 +93,7 @@ namespace CAPPamari.Web.Controllers
                 success &= CourseHelper.AddNewCourse(Request.UserName, course, reqSetName);
             }
             var message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
-            var cappReport = CourseHelper.GetCAPPReport(Request.UserName);
+            cappReport = CourseHelper.GetCAPPReport(Request.UserName);
             return ApiResponse<CAPPReportModel>.From(success, message, cappReport);
         }
         /// <summary>
@@ -108,8 +109,8 @@ namespace CAPPamari.Web.Controllers
                 return ApiResponse<CAPPReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
             var courses = CourseHelper.GetRequirementSet(UserName, "Unapplied Courses").AppliedCourses;
-            // var cappReport = CourseHelper.GetCAPPReport(UserName);
-            // AutopopulationHelper.autopopulate(cappReport, courses);
+            var cappReport = CourseHelper.GetCAPPReport(UserName);
+            AutopopulationHelper.autopopulate(cappReport.RequirementSets, courses);
             var success = true;
             foreach (var course in courses)
             {
@@ -118,7 +119,7 @@ namespace CAPPamari.Web.Controllers
                 success &= CourseHelper.ApplyCourse(UserName, course, reqSet); 
             }
             var message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
-            var cappReport = CourseHelper.GetCAPPReport(UserName);
+            cappReport = CourseHelper.GetCAPPReport(UserName);
             return ApiResponse<CAPPReportModel>.From(success, message, cappReport);
         }
     }

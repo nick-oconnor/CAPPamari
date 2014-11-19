@@ -247,12 +247,12 @@ SetupDragAndDrop = function () {
                         return;
                     }
                     ui.draggable.appendTo($(event.target).find(".courses"));
-                    ui.helper.remove();
                     $(".requirementBox").accordion("resize");
                     if ($(this).accordion("option", "active") === false)
                     {
                         $(this).accordion("option", "active", 0);
                     }
+                    Alert(data.Message);
                     $('#blockingDiv').hide();
                 },
                 error: function () {
@@ -260,6 +260,7 @@ SetupDragAndDrop = function () {
                     $('#blockingDiv').hide();
                 }
             });
+            ui.helper.remove();
             Alert('Moving course...');
         }
     });
