@@ -279,9 +279,9 @@ SetupDragAndDrop = function() {
                         requirementBox.accordion("option", "active", 0);
                     }
                     if (data.Payload.RequirementSetFulfilled) {
-                        requirementBox.find('.ui-accordion-header').color('green');
+                        requirementBox.find('a').css('color', 'green');
                     } else {
-                        requirementBox.find('.ui-accordion-header').color('red');
+                        requirementBox.find('a').css('color', 'red');
                     }
                     Alert(true, data.Message);
                 },
