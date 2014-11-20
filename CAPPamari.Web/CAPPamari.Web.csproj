@@ -162,7 +162,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Requests\MoveCourseRequest.cs" />
-    <Compile Include="Models\Requests\MoveCourseResponse.cs" />
     <Compile Include="Models\Requests\NewCourseRequest.cs" />
     <Compile Include="Models\Requests\RegistrationRequest.cs" />
     <Compile Include="Models\Requests\RemoveCourseRequest.cs" />

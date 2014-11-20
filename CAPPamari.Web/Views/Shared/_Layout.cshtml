@@ -57,41 +57,41 @@
                 </tr>
             </table>
         </div>
-        <div id="singletonClassAddDialogRoot">
+        <div id="addClassClassAddDialogRoot">
             <table style="table-layout: fixed; width: 100%;">
-                <tr class="singletonForm">
+                <tr class="addClassForm">
                     <td style="text-align: right;">Department:</td>
-                    <td style="text-align: left;"><input id="singletonDepartment" type="text" /></td>
+                    <td style="text-align: left;"><input id="addClassDepartment" type="text" /></td>
                 </tr>
-                <tr class="singletonForm">
+                <tr class="addClassForm">
                     <td style="text-align: right;">Course Number:</td>
-                    <td style="text-align: left;"><input id="singletonCourseNumber" type="text" /></td>
+                    <td style="text-align: left;"><input id="addClassCourseNumber" type="text" /></td>
                 </tr>
-                <tr class="singletonForm">
+                <tr class="addClassForm">
                     <td style="text-align: right;">Semester Code (e.g. F14):</td>
-                    <td style="text-align: left;"><input id="singletonSemesterCode" type="text" /></td>
+                    <td style="text-align: left;"><input id="addClassSemesterCode" type="text" /></td>
                 </tr>
-                <tr class="singletonForm">
+                <tr class="addClassForm">
                     <td style="text-align: right;">Pass No Credit:</td>
-                    <td style="text-align: left;"><input id="singletonPassNoCredit" type="checkbox" onchange=" CheckForCsvFile() " /></td>
+                    <td style="text-align: left;"><input id="addClassPassNoCredit" type="checkbox" onchange=" CheckForCsvFile() " /></td>
                 </tr>
-                <tr class="singletonForm">
+                <tr class="addClassForm">
                     <td style="text-align: right;">Communication Intensive:</td>
-                    <td style="text-align: left;"><input id="singletonCommIntensive" type="checkbox" /></td>
+                    <td style="text-align: left;"><input id="addClassCommIntensive" type="checkbox" /></td>
                 </tr>
-                <tr id="singletonGradeRow" class="singletonForm">
+                <tr id="addClassGradeRow" class="addClassForm">
                     <td style="text-align: right;">Grade (e.g. 4.00):</td>
-                    <td style="text-align: left;"><input id="singletonGrade" type="text" /></td>
+                    <td style="text-align: left;"><input id="addClassGrade" type="text" /></td>
                 </tr>
-                <tr class="singletonForm">
+                <tr class="addClassForm">
                     <td style="text-align: right;">Credits:</td>
-                    <td style="text-align: left;"><input id="singletonCredits" type="number" /></td>
+                    <td style="text-align: left;"><input id="addClassCredits" type="number" /></td>
                 </tr>
-                <tr class="singletonForm">
-                    <td style="text-align: right;"><input id="singletonSumbit" type="button" onclick=" SubmitSingletonClassAddInformation() " value="Submit" /></td>
-                    <td style="text-align: left;"><input id="singletonCancel" type="button" onclick=" CancelSingletonClassAdd() " value="Cancel" /></td>
+                <tr class="addClassForm">
+                    <td style="text-align: right;"><input id="addClassSumbit" type="button" onclick=" SubmitClassAddInformation() " value="Submit" /></td>
+                    <td style="text-align: left;"><input id="addClassCancel" type="button" onclick=" CancelClassAdd() " value="Cancel" /></td>
                 </tr>
-                <tr class="singletonForm">
+                <tr class="addClassForm">
                     <td style="text-align: right;">O</td>
                     <td style="text-align: left;">R</td>
                 </tr>
@@ -105,13 +105,13 @@
                 </tr>
                 <tr>
                     <td style="text-align: right;"><input id="csvImportbutton" type="button" value="Import" onclick=" ImportCsvFile() "/></td>
-                    <td style="text-align: left"><input type="button" value="Cancel" onclick=" CancelSingletonClassAdd() " /></td>
+                    <td style="text-align: left"><input type="button" value="Cancel" onclick=" CancelClassAdd() " /></td>
                 </tr>
             </table>
         </div>
         <div id="headerBarRoot">
             <div id="headerBarWrapper">
-                <div style="position: absolute; width: 100%; text-align: center; font-size: 40px;">
+                <div style="font-size: 40px; position: absolute; text-align: center; width: 100%;">
                     <span style="font-family: 'Brush Script MT', cursive;">CAPPamari</span>
                 </div>
                 <div id="userHeader" style="display: none; position: relative; width: 100%;">
@@ -143,8 +143,8 @@
                     </div>
                     <div style="float: right; position: relative;">
                         <div style="margin: 20px; vertical-align: middle;">
-                            <span style="cursor: pointer;" onclick=" viewModel.user().signOut() ">Logout</span><br />
-                            <span style="cursor: pointer;" onclick=" viewModel.print() ">Print <span class="fa fa-print"></span></span><br />
+                            <span style="cursor: pointer;" onclick=" viewModel.user().SignOut() ">Logout</span><br />
+                            <span style="cursor: pointer;" onclick=" viewModel.Print() ">Print <span class="fa fa-print"></span></span><br />
                         </div>
                     </div>
                 </div>
@@ -169,13 +169,13 @@
         <div id="mainScreen">
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
-                    <div id="addClassButton" onclick=" ShowSingletonClassAddDialog() ">
+                    <div id="addClassButton" onclick=" ShowClassAddDialog() ">
                         <span>Add Course</span>
                     </div>
                     <div id="autopopButton" onclick=" AutoPopulateUnappliedCourses() ">
                         <span>Auto-populate</span>
                     </div>
-                    <div id="courses" data-bind="foreach: unassignedCourses">
+                    <div id="courses" data-bind="foreach: unappliedCourses">
                         <div class="course">
                             <span data-bind="text: department"></span>
                             <span>-</span>
@@ -184,7 +184,6 @@
                             <span data-bind="text: semester"></span>
                             <span>)</span>
                             <span class="fa fa-trash-o" title="Delete this course" data-bind="click: DeleteCourse"></span><br />
-                            <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJsonCourse($data)) }"></div>
                         </div>
                     </div>
                 </div>
