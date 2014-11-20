@@ -40,6 +40,7 @@ namespace CAPPamari.Web.Models.Requirements
         public int MaxPassNoCreditCredits { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool IsFull { get; set; }
 
         public bool CanApplyCourse(CourseModel course)
         {

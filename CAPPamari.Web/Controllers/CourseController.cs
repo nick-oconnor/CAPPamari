@@ -105,6 +105,7 @@ namespace CAPPamari.Web.Controllers
             }
             string message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
             cappReport = CourseHelper.GetCappReport(request.Username);
+            cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(success, message, cappReport);
         }
 
@@ -135,6 +136,7 @@ namespace CAPPamari.Web.Controllers
             }
             string message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
             cappReport = CourseHelper.GetCappReport(username);
+            cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(success, message, cappReport);
         }
     }

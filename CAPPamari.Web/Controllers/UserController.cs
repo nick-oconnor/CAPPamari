@@ -107,6 +107,7 @@ namespace CAPPamari.Web.Controllers
             string message = cappReport == null
                 ? "CAPP Report not found for user " + userName
                 : "CAPP Report loaded successfully";
+            cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(cappReport != null, message, cappReport);
         }
 

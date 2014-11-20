@@ -8,5 +8,13 @@ namespace CAPPamari.Web.Models
         public string Name { get; set; }
         public List<RequirementSetModel> RequirementSets { get; set; }
         public List<RequirementModel> Requirements { get; set; }
+
+        public void CheckRequirementSetFulfillments()
+        {
+            foreach (var reqset in RequirementSets)
+            {
+                reqset.IsFull = reqset.IsFulfilled();
+            }
+        }
     }
 }
