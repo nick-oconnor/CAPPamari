@@ -269,7 +269,7 @@ SetupDragAndDrop = function() {
                 type: 'POST',
                 contentType: 'application/json',
                 success: function(data) {
-                    if (!data.Success || !data.Payload) {
+                    if (!data.Success || !data.Payload.MoveSuccessful) {
                         Alert(false, data.Message);
                         return;
                     }
@@ -277,6 +277,11 @@ SetupDragAndDrop = function() {
                     $(".requirementBox").accordion("refresh");
                     if (requirementBox.accordion("option", "active") === false) {
                         requirementBox.accordion("option", "active", 0);
+                    }
+                    if (data.Payload.RequirementSetFulfilled) {
+                        requirementBox.find('.ui-accordion-header').color('green');
+                    } else {
+                        requirementBox.find('.ui-accordion-header').color('red');
                     }
                     Alert(true, data.Message);
                 },
