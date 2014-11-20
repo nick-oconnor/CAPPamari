@@ -58,6 +58,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.3\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -231,6 +234,7 @@
     <Content Include="Content\themes\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\themes\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\themes\fonts\FontAwesome.otf" />
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Nicholas.pubxml" />
     <None Include="Properties\PublishProfiles\SDD.pubxml" />
     <Content Include="Scripts\jquery.js" />

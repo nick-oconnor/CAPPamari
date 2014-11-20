@@ -8,9 +8,20 @@ namespace CAPPamari.Web.Helpers
 {
     public static class AutopopulationHelper
     {
+        public static int courseNumToInt(string courseNum)
+        {
+            if (courseNum.Contains('x'))
+            {
+                return Convert.ToInt32(courseNum[0]) * 1000;
+            }
+            else
+            {
+                return Convert.ToInt32(courseNum);
+            }
+        }
+
         //function to autopopulate the HASS requirement set
         public static void FillHass(RequirementSetModel hassReqSet, List<CourseModel> coursesTaken)
-
         {
             var humDepts = new List<string>
             {
@@ -41,7 +52,7 @@ namespace CAPPamari.Web.Helpers
             {
                 if (humDepts.Contains(courseTaken.DepartmentCode))
                 {
-                    int courseNum = Convert.ToInt32(courseTaken.CourseNumber);
+                    int courseNum = courseNumToInt(courseTaken.CourseNumber);
                     if (humCourses.ContainsKey(courseNum))
                     {
                         humCourses[courseNum].Add(courseTaken);
@@ -57,7 +68,7 @@ namespace CAPPamari.Web.Helpers
                 }
                 else if (ssciDepts.Contains(courseTaken.DepartmentCode))
                 {
-                    int courseNum = Convert.ToInt32(courseTaken.CourseNumber);
+                    int courseNum = courseNumToInt(courseTaken.CourseNumber);
                     if (ssciCourses.ContainsKey(courseNum))
                     {
                         ssciCourses[courseNum].Add(courseTaken);
@@ -83,17 +94,25 @@ namespace CAPPamari.Web.Helpers
                     List<CourseModel> maxCourseList = humCourses.Last().Value;
                     if (maxCourseList.Count == 1)
                     {
-                        hassReqSet.CanApplyCourse(maxCourseList[0]);
-                        //remove the key from the list of remaining courses
-                        humCourses.Remove(humCourses.Last().Key);
+                        if (hassReqSet.CanApplyCourse(maxCourseList[0]))
+                        {
+                            hassReqSet.ApplyCourse(maxCourseList[0]);
+                            maxCourseList[0].RequirementSetName = "HASS";
+                            //remove the key from the list of remaining courses
+                            humCourses.Remove(humCourses.Last().Key);
+                        }
                     }
                     else
                     {
                         //apply the first course in the list
-                        hassReqSet.CanApplyCourse(maxCourseList[0]);
-                        //remove the course from list of remaining courses
-                        maxCourseList.RemoveAt(0);
-                        humCourses[humCourses.Count - 1] = maxCourseList;
+                        if (hassReqSet.CanApplyCourse(maxCourseList[0]))
+                        {
+                            hassReqSet.ApplyCourse(maxCourseList[0]);
+                            maxCourseList[0].RequirementSetName = "HASS";
+                            //remove the course from list of remaining courses
+                            maxCourseList.RemoveAt(0);
+                            humCourses[humCourses.Count - 1] = maxCourseList;
+                        }
                     }
                 }
                 if (ssciCourses.Count > 0)
@@ -102,17 +121,25 @@ namespace CAPPamari.Web.Helpers
                     List<CourseModel> maxCourseList = ssciCourses.Last().Value;
                     if (maxCourseList.Count == 1)
                     {
-                        hassReqSet.CanApplyCourse(maxCourseList[0]);
-                        //remove the key from the list of remaining courses
-                        ssciCourses.Remove(ssciCourses.Last().Key);
+                        if (hassReqSet.CanApplyCourse(maxCourseList[0]))
+                        {
+                            hassReqSet.ApplyCourse(maxCourseList[0]);
+                            maxCourseList[0].RequirementSetName = "HASS";
+                            //remove the key from the list of remaining courses
+                            ssciCourses.Remove(ssciCourses.Last().Key);
+                        }
                     }
                     else
                     {
                         //apply the first course in the list
-                        hassReqSet.CanApplyCourse(maxCourseList[0]);
-                        //remove the course from list of remaining courses
-                        maxCourseList.RemoveAt(0);
-                        ssciCourses[humCourses.Count - 1] = maxCourseList;
+                        if (hassReqSet.CanApplyCourse(maxCourseList[0]))
+                        {
+                            hassReqSet.ApplyCourse(maxCourseList[0]);
+                            maxCourseList[0].RequirementSetName = "HASS";
+                            //remove the course from list of remaining courses
+                            maxCourseList.RemoveAt(0);
+                            ssciCourses[humCourses.Count - 1] = maxCourseList;
+                        }
                     }
                 }
 
@@ -123,20 +150,25 @@ namespace CAPPamari.Web.Helpers
                 }
             }
         }
-
         public static void FillNamedRequirements(List<RequirementSetModel> allSets, List<CourseModel> courses)
         {
-            // We need to find another way to do this because we don't have SingleRequirements anymore
-
             foreach (RequirementSetModel reqset in allSets)
             {
-                RequirementSetModel reqset1 = reqset;
-                foreach (CourseModel course in courses.Where(reqset1.CanApplyCourse))
+                if (reqset.Name == "Free Electives") continue; 
+                foreach (CourseModel course in courses.Where(reqset.CanApplyCourse))
                 {
                     reqset.ApplyCourse(course);
-                    courses.Remove(course);
                     course.RequirementSetName = reqset.Name;
-                    break;
+                }
+            }
+            var freeElectives = allSets.FirstOrDefault(set => set.Name == "Free Electives");
+            if (freeElectives == null) return;
+            foreach (var course in courses.Where(c => string.IsNullOrEmpty(c.RequirementSetName) || c.RequirementSetName == "Unapplied Courses"))
+            {
+                if (freeElectives.CanApplyCourse(course))
+                {
+                    freeElectives.ApplyCourse(course);
+                    course.RequirementSetName = "Free Electives";
                 }
             }
         }
