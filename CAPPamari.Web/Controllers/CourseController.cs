@@ -139,5 +139,23 @@ namespace CAPPamari.Web.Controllers
             cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(success, message, cappReport);
         }
+        /// <summary>
+        /// Checks whether or not a requirement set is full for a user
+        /// </summary>
+        /// <param name="request">IsFulfilledRequest containing UserName of user and RequirementSetName of set to check fulfillment on</param>
+        /// <returns>ApiResponse<bool> telling the user whether or not the requirement set is full</returns>
+        [HttpPost]
+        public ApiResponse<bool> CheckFulfillment([FromBody]IsFulfilledRequest request)
+        {
+            if (!EntitiesHelper.UpdateSession(request.UserName))
+            {
+                return
+                    ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
+            }
+            var reqset = EntitiesHelper.GetRequirementSet(request.UserName, request.RequirementSetname);
+            var isFull = reqset.IsFulfilled();
+            var message = "Found fulfillment successfully";
+            return ApiResponse<bool>.SuccessResponse(message, isFull);
+        }
     }
 }
