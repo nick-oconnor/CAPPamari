@@ -790,11 +790,12 @@ Course = function(department, number, semester, passNoCredit, grade, credits, co
     self.credits = ko.observable(credits);
     self.commIntensive = commIntensive;
 };
-RequirementSet = function(name) {
+RequirementSet = function(name, full) {
     /* Properties */
     var self = this;
     self.name = ko.observable(name);
     self.appliedCourses = ko.observableArray([]);
+    self.isFull = ko.observable(full);
 
     /* Functions */
     self.addCourse = function(course) {
@@ -847,7 +848,7 @@ ViewModel = function() {
                     self.unassignedCourses.push(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                 });
             } else {
-                var newRequirementSet = new RequirementSet(requirementSetModel.Name);
+                var newRequirementSet = new RequirementSet(requirementSetModel.Name, requirementSetModel.IsFull);
                 ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
                     newRequirementSet.addCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                 });
@@ -875,7 +876,7 @@ ViewModel = function() {
                             self.unassignedCourses.push(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                         });
                     } else {
-                        var newRequirementSet = new RequirementSet(requirementSetModel.Name);
+                        var newRequirementSet = new RequirementSet(requirementSetModel.Name, requirementSetModel.IsFull);
                         ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
                             newRequirementSet.addCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                         });

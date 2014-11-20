@@ -1,9 +1,15 @@
 ﻿<div data-bind="foreach: requirementSets">
     <div class="requirementBox">
-        <h3><a href="#" data-bind="text: name, attr: { 'data-reqSetName': name }"></a></h3>
+        <h3>
+            <!-- ko if: isFull() -->
+            <a href="#" style="color: green;"data-bind="text: name, attr: { 'data-reqSetName': name }"></a>
+            <!-- /ko -->
+            <!-- ko if: !isFull() -->
+            <a href="#" style="color: red;" data-bind="text: name, attr: { 'data-reqSetName': name }"></a>
+            <!-- /ko -->
+        </h3>
         <div class="courses" data-bind="foreach: appliedCourses">
             <div class="course">
-                <!-- when we decide what the course boxes are going to look like we will add that population here -->
                 <span data-bind="text: department"></span>
                 <span>-</span>
                 <span data-bind="text: number"></span>
