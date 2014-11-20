@@ -170,7 +170,6 @@ namespace CAPPamari.Web.Helpers
 
             foreach (RequirementSetModel reqset in orderedSets)
             {
-                if (reqset.Name == "Free Electives") continue;
                 if (reqset.Name == "HASS") continue;
                 foreach (CourseModel course in unappliedCourses.Where(reqset.CanApplyCourse))
                 {
