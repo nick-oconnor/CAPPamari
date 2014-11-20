@@ -307,6 +307,7 @@ SetupDragAndDrop = function() {
                     if (sourceRequirementBox) {
                         UpdateFulfilledStatus(sourceRequirementBox[0]);
                     };
+
                     ui.draggable.appendTo(requirementBox.find('.courses'));
                     course.requirementSetName(requirementBoxData.name());
                     $('.requirementBox').accordion('refresh');
@@ -354,6 +355,7 @@ SetupDragAndDrop = function() {
                         UpdateFulfilledStatus(sourceRequirementBox[0]);
                     }
                     ui.draggable.appendTo(courses);
+                    viewModel.unappliedCourses().push(course);
                     course.requirementSetName('Unapplied Courses');
                     $('.requirementBox').accordion('refresh');
                     Alert(true, data.Message);
@@ -462,7 +464,7 @@ SubmitClassAddInformation = function() {
                 return;
             }
 
-            var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits, commIntensive, 'Unapplied Courses', viewModel.unappliedCourses());
+            var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits, commIntensive, 'Unapplied Courses');
             viewModel.AddNewCourse(course);
             $('#addClassDepartment').val('');
             $('#addClassCourseNumber').val('');
@@ -803,7 +805,7 @@ Advisor = function(name, emailAddress) {
     self.name = ko.observable(name);
     self.emailAddress = ko.observable(emailAddress);
 };
-Course = function(department, number, semester, passNoCredit, grade, credits, commIntensive, requirementSetName, requirementSet) {
+Course = function(department, number, semester, passNoCredit, grade, credits, commIntensive, requirementSetName) {
     /* Properties */
     var self = this;
     self.department = ko.observable(department);
@@ -814,7 +816,6 @@ Course = function(department, number, semester, passNoCredit, grade, credits, co
     self.credits = ko.observable(credits);
     self.commIntensive = commIntensive;
     self.requirementSetName = ko.observable(requirementSetName);
-    self.requirementSet = ko.observableArray(requirementSet);
 };
 RequirementSet = function(name, full) {
     /* Properties */
@@ -843,7 +844,7 @@ ViewModel = function() {
         self.unappliedCourses.push(course);
         MakeCoursesDraggable();
     };
-    self.RemoveCourse = function(course) {
+    self.RemoveCourse = function (course) {
         self.unappliedCourses.remove(course);
         ko.utils.arrayForEach(self.requirementSets(), function(requirementSet) {
             requirementSet.RemoveCourse(course);
@@ -868,12 +869,12 @@ ViewModel = function() {
         ko.utils.arrayForEach(cappReport.RequirementSets, function(requirementSetModel) {
             if (requirementSetModel.Name === 'Unapplied Courses') {
                 ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
-                    self.unappliedCourses.push(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive, requirementSetModel.Name, self.unappliedCourses()));
+                    self.unappliedCourses.push(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive, requirementSetModel.Name));
                 });
             } else {
                 var newRequirementSet = new RequirementSet(requirementSetModel.Name, requirementSetModel.IsFull);
                 ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
-                    newRequirementSet.AddCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive, requirementSetModel.Name, newRequirementSet.appliedCourses()));
+                    newRequirementSet.AddCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive, requirementSetModel.Name));
                 });
                 self.requirementSets.push(newRequirementSet);
             }
@@ -896,12 +897,12 @@ ViewModel = function() {
                 ko.utils.arrayForEach(cappReport.RequirementSets, function(requirementSetModel) {
                     if (requirementSetModel.Name === 'Unapplied Courses') {
                         ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
-                            self.unappliedCourses.push(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive, requirementSetModel.Name, self.unappliedCourses()));
+                            self.unappliedCourses.push(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive, requirementSetModel.Name));
                         });
                     } else {
                         var newRequirementSet = new RequirementSet(requirementSetModel.Name, requirementSetModel.IsFull);
                         ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
-                            newRequirementSet.AddCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive, requirementSetModel.Name, newRequirementSet.appliedCourses()));
+                            newRequirementSet.AddCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive, requirementSetModel.Name));
                         });
                         self.requirementSets.push(newRequirementSet);
                     }
