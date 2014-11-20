@@ -6,6 +6,7 @@
 
         public string Username { get; set; }
         public CourseModel CourseToRemove { get; set; }
+        public string RequirementSetName { get; set; }
 
         #endregion
     }

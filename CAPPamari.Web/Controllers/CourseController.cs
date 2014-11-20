@@ -69,7 +69,7 @@ namespace CAPPamari.Web.Controllers
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = CourseHelper.RemoveCourse(request.Username, request.CourseToRemove);
+            bool success = CourseHelper.RemoveCourse(request.Username, request.CourseToRemove, request.RequirementSetName);
             string message = success ? "Course removed successfully" : "Could not remove course";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
