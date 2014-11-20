@@ -52,7 +52,7 @@ AutoPopulateUnappliedCourses = function() {
                 return;
             }
 
-            viewModel.setCAPPReport(data.Payload);
+            viewModel.setCappReport(data.Payload);
             $('#blockingDiv').hide();
             Alert(true, data.Message);
         },
@@ -240,15 +240,35 @@ MakeCoursesDraggable = function() {
         containment: "#mainScreen"
     });
 };
-SetupDragAndDrop = function() {
-    $(".requirementBox").accordion({
+SetupDragAndDrop = function () {
+    var requirementBoxes = $('.requirementBox');
+    requirementBoxes.accordion({
         collapsible: true,
     });
-    $(".requirementBox").droppable({
+    requirementBoxes.change(function() {
+        var isFulfilledRequest = { Username: viewModel.user().username(), RequirementSetName: $(this).find('h3').find('a').data('reqsetname') };
+        $.ajax({
+            url: window.location.origin + '/api/Course/CheckFulfullment',
+            data: JSON.stringify(isFulfilledRequest),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(data) {
+                if (data.Payload) {
+                    requirementBox.find('h3').find('a').css('color', 'green');
+                } else {
+                    requirementBox.find('h3').find('a').css('color', 'red');
+                }
+            },
+            error: function () {
+                Alert(false, 'There is an error with the server.  Please try again later');
+            }
+        });
+    });
+    requirementBoxes.droppable({
         drop: function(event, ui) {
             var requirementBox = $(this);
-            var course = $(ui.draggable).parent().find('.courseData').data('course');
-            if (course === undefined) course = $(ui.draggable).find('.courseData').data('course');
+            var course = $(ui.draggable).find('.courseData').data('course');
+            if (course === undefined) course = $(ui.draggable).parent().find('.courseData').data('course');
             var requirementSetName = $(event.target).find('h3').find('a').data('reqsetname');
             var moveCourseRequest = {
                 Username: viewModel.user().username(),
@@ -277,11 +297,6 @@ SetupDragAndDrop = function() {
                     $(".requirementBox").accordion("refresh");
                     if (requirementBox.accordion("option", "active") === false) {
                         requirementBox.accordion("option", "active", 0);
-                    }
-                    if (data.Payload.RequirementSetFulfilled) {
-                        requirementBox.find('a').css('color', 'green');
-                    } else {
-                        requirementBox.find('a').css('color', 'red');
                     }
                     Alert(true, data.Message);
                 },
@@ -351,7 +366,7 @@ ImportCsvFile = function() {
             type: 'POST',
             contentType: 'application/json',
             success: function(data) {
-                viewModel.setCAPPReport(data.Payload);
+                viewModel.setCappReport(data.Payload);
                 $('#singletonClassAddDialogRoot').hide();
                 $('#blockingDiv').hide();
                 Alert(true, data.Message);
@@ -530,8 +545,8 @@ SubmitRegistrationInformation = function() {
                         $('#sidebarRoot').show();
                         SetupDragAndDrop();
                         RedisplayHeader();
-                        viewModel.loadCappReport();
                         $('#blockingDiv').hide();
+                        viewModel.loadCappReport();
                         Alert(true, data.Message);
                     },
                     error: function() {
@@ -839,7 +854,7 @@ ViewModel = function() {
         self.clearCAPPReport();
         self.loadCappReport();
     };
-    self.setCAPPReport = function(cappReport) {
+    self.setCappReport = function(cappReport) {
         self.clearCAPPReport();
         self.requirementSets.push(new RequirementSet('CAPP Report Requirements'));
         ko.utils.arrayForEach(cappReport.RequirementSets, function(requirementSetModel) {
