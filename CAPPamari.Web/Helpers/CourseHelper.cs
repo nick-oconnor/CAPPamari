@@ -25,9 +25,9 @@ namespace CAPPamari.Web.Helpers
         /// <param name="username">Username for user to remove course for</param>
         /// <param name="oldCourse">CourseModel conataining information about the course to remove</param>
         /// <returns>Success state of course removal</returns>
-        public static bool RemoveCourse(string username, CourseModel oldCourse)
+        public static bool RemoveCourse(string username, CourseModel oldCourse, string requirementSetName)
         {
-            return EntitiesHelper.RemoveCourse(username, oldCourse);
+            return EntitiesHelper.RemoveCourse(username, oldCourse, requirementSetName);
         }
 
         /// <summary>
@@ -384,6 +384,92 @@ namespace CAPPamari.Web.Helpers
                     EntitiesHelper.GetCourseFulfillmentId("STSS", "4xxx"),
                     EntitiesHelper.GetCourseFulfillmentId("ECON", "4xxx"),
                     EntitiesHelper.GetCourseFulfillmentId("PSYC", "4xxx")
+                });
+            EntitiesHelper.CreateRequirementInRequirementSet(username, cappreport.Name, hassReqset.Name, 4, 4, false,
+                false, new List<int>
+                {
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COGS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ECON", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PSYC", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COGS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ECON", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PSYC", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COGS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ECON", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PSYC", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ARTS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LANG", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LITR", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COMM", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("WRIT", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSH", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PHIL", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ARTS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LANG", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LITR", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COMM", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("WRIT", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSH", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PHIL", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ARTS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LANG", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LITR", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COMM", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("WRIT", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSH", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PHIL", "4xxx")
+                });
+            EntitiesHelper.CreateRequirementInRequirementSet(username, cappreport.Name, hassReqset.Name, 4, 4, false,
+                false, new List<int>
+                {
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COGS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ECON", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PSYC", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COGS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ECON", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PSYC", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COGS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ECON", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PSYC", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ARTS", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LANG", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LITR", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COMM", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("WRIT", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSH", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PHIL", "1xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ARTS", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LANG", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LITR", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COMM", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("WRIT", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSH", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PHIL", "2xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("IHSS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("ARTS", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LANG", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("LITR", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("COMM", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("WRIT", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("STSH", "4xxx"),
+                    EntitiesHelper.GetCourseFulfillmentId("PHIL", "4xxx")
                 });
             EntitiesHelper.CreateRequirementSetRequirement(username, cappreport.Name, hassReqset.Name, 0, 9, false, true,
                 new List<int>());

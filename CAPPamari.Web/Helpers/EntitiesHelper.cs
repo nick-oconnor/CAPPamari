@@ -381,7 +381,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="username">Username of user to remove course for</param>
         /// <param name="oldCourse">CourseModel containing information about course to remove</param>
         /// <returns>Success state of course removal</returns>
-        public static bool RemoveCourse(string username, CourseModel oldCourse)
+        public static bool RemoveCourse(string username, CourseModel oldCourse, string requirementSetName)
         {
             using (JustinEntities entities = GetEntityModel())
             {
@@ -391,19 +391,16 @@ namespace CAPPamari.Web.Helpers
                 CAPPReport report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                foreach (RequirementSet reqSet in report.RequirementSets)
-                {
-                    Course remover =
-                        reqSet.Courses.FirstOrDefault(
-                            course =>
-                                course.Department == oldCourse.DepartmentCode && course.Number == oldCourse.CourseNumber);
-                    if (remover == null) continue;
-                    entities.Courses.Remove(remover);
-                    entities.SaveChanges();
-                    return true;
-                }
+                var reqset = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSetName);
+                if (reqset == null) return false;
 
-                return false;
+                var courseToRemove = reqset.Courses.FirstOrDefault(course => course.Department == oldCourse.DepartmentCode &&
+                                                                            course.Number == oldCourse.CourseNumber);
+                if (courseToRemove == null) return false;
+
+                reqset.Courses.Remove(courseToRemove);
+                entities.SaveChanges();
+                return true;
             }
         }
 
