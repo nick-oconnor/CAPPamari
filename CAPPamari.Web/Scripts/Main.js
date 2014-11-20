@@ -62,10 +62,10 @@ AutoPopulateUnappliedCourses = function() {
             Alert(false, 'There is a problem with the server.  Please try again later');
         }
     });
-    $('#blockingDivSpan').text('Auto-populating courses...');
+    $('#blockingDivSpan').text('Auto-populating courses, this may take a bit...');
     $('#blockingDiv').show();
 };
-DeleteCourse = function (course) {
+DeleteCourse = function(course) {
     var removeCourseRequest = {
         Username: viewModel.user().username(),
         CourseToRemove: {
@@ -90,6 +90,7 @@ DeleteCourse = function (course) {
                 return;
             }
             viewModel.RemoveCourse(course);
+            $('.requirementBox').accordion('refresh');
             Alert(true, data.Message);
         },
         error: function() {
@@ -233,7 +234,7 @@ SubmitAdvisorInformation = function() {
 CancelAdvisorDialog = function() {
     $('#advisorDialogRoot').hide();
 };
-UpdateFulfilledStatus = function (requirementBox) {
+UpdateFulfilledStatus = function(requirementBox) {
     var name = ko.dataFor(requirementBox).name();
     var isFulfilledRequest = { Username: viewModel.user().username(), RequirementSetName: name };
     $.ajax({
@@ -254,7 +255,7 @@ UpdateFulfilledStatus = function (requirementBox) {
         }
     });
 };
-MakeCoursesDraggable = function () {
+MakeCoursesDraggable = function() {
     $('.course').draggable({
         appendTo: 'body',
         helper: 'clone',
@@ -275,10 +276,10 @@ SetupDragAndDrop = function() {
     });
 
     requirementBoxes.droppable({
-        drop: function (event, ui) {
+        drop: function(event, ui) {
             var requirementBox = $(this);
             var course = ko.dataFor(ui.draggable[0]);
-            var requirementBoxData = ko.dataFor(this);
+            var requirementSet = ko.dataFor(this);
             var moveCourseRequest = {
                 Username: viewModel.user().username(),
                 CourseToMove: {
@@ -289,7 +290,7 @@ SetupDragAndDrop = function() {
                     Semester: course.semester(),
                     PassNoCredit: course.passNoCredit,
                     CommIntensive: course.commIntensive,
-                    RequirementSetName: requirementBoxData.name()
+                    RequirementSetName: requirementSet.name()
                 },
             };
             $.ajax({
@@ -306,10 +307,11 @@ SetupDragAndDrop = function() {
                     UpdateFulfilledStatus(requirementBox[0]);
                     if (sourceRequirementBox) {
                         UpdateFulfilledStatus(sourceRequirementBox[0]);
-                    };
+                    }
 
-                    ui.draggable.appendTo(requirementBox.find('.courses'));
-                    course.requirementSetName(requirementBoxData.name());
+                    var courseObj = viewModel.RemoveCourse(course);
+                    courseObj.requirementSetName(requirementSet.name());
+                    requirementSet.AddCourse(courseObj);
                     $('.requirementBox').accordion('refresh');
                     if (requirementBox.accordion('option', 'active') === false) {
                         requirementBox.accordion('option', 'active', 0);
@@ -324,8 +326,7 @@ SetupDragAndDrop = function() {
         }
     });
     $('#sidebarWrapper #courses').droppable({
-        drop: function (event, ui) {
-            var courses = $(this);
+        drop: function(event, ui) {
             var course = ko.dataFor(ui.draggable[0]);
             var moveCourseRequest = {
                 Username: viewModel.user().username(),
@@ -354,9 +355,9 @@ SetupDragAndDrop = function() {
                     if (sourceRequirementBox) {
                         UpdateFulfilledStatus(sourceRequirementBox[0]);
                     }
-                    ui.draggable.appendTo(courses);
-                    viewModel.unappliedCourses().push(course);
-                    course.requirementSetName('Unapplied Courses');
+                    var courseObj = viewModel.RemoveCourse(course);
+                    courseObj.requirementSetName('Unapplied Courses');
+                    viewModel.AddCourse(courseObj);
                     $('.requirementBox').accordion('refresh');
                     Alert(true, data.Message);
                 },
@@ -451,7 +452,7 @@ SubmitClassAddInformation = function() {
             PassNoCredit: passNoCredit,
             CommIntensive: commIntensive,
             RequirementSetName: 'Unapplied Courses'
-}
+        }
     };
     $.ajax({
         url: window.location.origin + '/api/Course/AddNewCourse',
@@ -465,7 +466,7 @@ SubmitClassAddInformation = function() {
             }
 
             var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits, commIntensive, 'Unapplied Courses');
-            viewModel.AddNewCourse(course);
+            viewModel.AddCourse(course);
             $('#addClassDepartment').val('');
             $('#addClassCourseNumber').val('');
             $('#addClassSemesterCode').val('');
@@ -827,9 +828,10 @@ RequirementSet = function(name, full) {
     /* Functions */
     self.AddCourse = function(course) {
         self.appliedCourses.push(course);
+        MakeCoursesDraggable();
     };
     self.RemoveCourse = function(course) {
-        self.appliedCourses.remove(course);
+        return self.appliedCourses.remove(course)[0];
     };
 };
 ViewModel = function() {
@@ -840,16 +842,22 @@ ViewModel = function() {
     self.user = ko.observable(null);
 
     /* Functions */
-    self.AddNewCourse = function(course) {
+    self.AddCourse = function(course) {
         self.unappliedCourses.push(course);
         MakeCoursesDraggable();
     };
-    self.RemoveCourse = function (course) {
-        self.unappliedCourses.remove(course);
-        ko.utils.arrayForEach(self.requirementSets(), function(requirementSet) {
-            requirementSet.RemoveCourse(course);
-        });
-        $('.requirementBox').accordion('refresh');
+    self.RemoveCourse = function(course) {
+        var result = self.unappliedCourses.remove(course)[0];
+        if (result !== undefined) {
+            return result;
+        }
+        for (var i = 0, j = self.requirementSets().length; i < j; i++) {
+            result = self.requirementSets()[i].RemoveCourse(course);
+            if (result !== undefined) {
+                return result;
+            }
+        }
+        return null;
     };
     self.Print = function() {
         var url = window.location.origin + '/Home/Print?Username=' + self.user().username();
