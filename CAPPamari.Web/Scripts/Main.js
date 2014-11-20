@@ -3,6 +3,7 @@ var viewModel = null;
 var draggedCourse = null;
 var requirementBox = null;
 var alertTimer = null;
+var sourceRequirementBox = null;
 
 $(window).resize(function() {
     ResizeDisplay();
@@ -52,7 +53,7 @@ AutoPopulateUnappliedCourses = function() {
                 return;
             }
 
-            viewModel.setCappReport(data.Payload);
+            viewModel.SetCappReport(data.Payload);
             $('#blockingDiv').hide();
             Alert(true, data.Message);
         },
@@ -88,7 +89,7 @@ DeleteCourse = function(course) {
                 Alert(false, data.Message);
                 return;
             }
-            viewModel.removeCourse(course);
+            viewModel.RemoveCourse(course);
             Alert(true, data.Message);
         },
         error: function() {
@@ -232,43 +233,52 @@ SubmitAdvisorInformation = function() {
 CancelAdvisorDialog = function() {
     $('#advisorDialogRoot').hide();
 };
+UpdateFulfilledStatus = function(requirementBox) {
+    var isFulfilledRequest = { Username: viewModel.user().username(), RequirementSetName: requirementBox.find('h3').find('a').data('reqsetname') };
+    $.ajax({
+        url: window.location.origin + '/api/Course/CheckFulfillment',
+        data: JSON.stringify(isFulfilledRequest),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function (data) {
+            var title = requirementBox.find('h3').find('a');
+            if (data.Payload) {
+                title.css('color', 'green').text(title.attr('data-reqSetName') + ' - Fulfilled');
+            } else {
+                title.css('color', 'red').text(title.attr('data-reqSetName') + ' - Not Fulfilled');
+            }
+        },
+        error: function() {
+            Alert(false, 'There is an error with the server.  Please try again later');
+        }
+    });
+};
 MakeCoursesDraggable = function() {
     $(".course").draggable({
         appendTo: "body",
         helper: "clone",
         revert: "invalid",
-        containment: "#mainScreen"
+        containment: "#mainScreen",
+        start: function() {
+            sourceRequirementBox = $(this).parent().parent();
+            if (!sourceRequirementBox.hasClass('requirementBox')) {
+                sourceRequirementBox = null;
+            }
+        }
     });
 };
-SetupDragAndDrop = function () {
+SetupDragAndDrop = function() {
     var requirementBoxes = $('.requirementBox');
     requirementBoxes.accordion({
         collapsible: true,
-    });
-    requirementBoxes.change(function() {
-        var isFulfilledRequest = { Username: viewModel.user().username(), RequirementSetName: $(this).find('h3').find('a').data('reqsetname') };
-        $.ajax({
-            url: window.location.origin + '/api/Course/CheckFulfullment',
-            data: JSON.stringify(isFulfilledRequest),
-            type: 'POST',
-            contentType: 'application/json',
-            success: function(data) {
-                if (data.Payload) {
-                    requirementBox.find('h3').find('a').css('color', 'green');
-                } else {
-                    requirementBox.find('h3').find('a').css('color', 'red');
-                }
-            },
-            error: function () {
-                Alert(false, 'There is an error with the server.  Please try again later');
-            }
-        });
     });
     requirementBoxes.droppable({
         drop: function(event, ui) {
             var requirementBox = $(this);
             var course = $(ui.draggable).find('.courseData').data('course');
-            if (course === undefined) course = $(ui.draggable).parent().find('.courseData').data('course');
+            if (course === undefined) {
+                course = $(ui.draggable).parent().find('.courseData').data('course');
+            }
             var requirementSetName = $(event.target).find('h3').find('a').data('reqsetname');
             var moveCourseRequest = {
                 Username: viewModel.user().username(),
@@ -292,6 +302,11 @@ SetupDragAndDrop = function () {
                     if (!data.Success || !data.Payload.MoveSuccessful) {
                         Alert(false, data.Message);
                         return;
+                    }
+
+                    UpdateFulfilledStatus(requirementBox);
+                    if (sourceRequirementBox) {
+                        UpdateFulfilledStatus(sourceRequirementBox);
                     }
                     ui.draggable.appendTo($(event.target).find(".courses"));
                     $(".requirementBox").accordion("refresh");
@@ -334,6 +349,10 @@ SetupDragAndDrop = function () {
                         Alert(false, data.Message);
                         return;
                     }
+
+                    if (sourceRequirementBox) {
+                        UpdateFulfilledStatus(sourceRequirementBox);
+                    }
                     ui.draggable.appendTo($('#courses'));
                     $(".requirementBox").accordion("refresh");
                     Alert(true, data.Message);
@@ -366,7 +385,7 @@ ImportCsvFile = function() {
             type: 'POST',
             contentType: 'application/json',
             success: function(data) {
-                viewModel.setCappReport(data.Payload);
+                viewModel.SetCappReport(data.Payload);
                 $('#singletonClassAddDialogRoot').hide();
                 $('#blockingDiv').hide();
                 Alert(true, data.Message);
@@ -442,7 +461,7 @@ SubmitSingletonClassAddInformation = function() {
             }
 
             var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits, commIntensive);
-            viewModel.addNewCourse(course);
+            viewModel.AddNewCourse(course);
             $('#singletonDepartment').val('');
             $('#singletonCourseNumber').val('');
             $('#singletonSemesterCode').val('');
@@ -546,7 +565,7 @@ SubmitRegistrationInformation = function() {
                         SetupDragAndDrop();
                         RedisplayHeader();
                         $('#blockingDiv').hide();
-                        viewModel.loadCappReport();
+                        viewModel.LoadCappReport();
                         Alert(true, data.Message);
                     },
                     error: function() {
@@ -687,7 +706,7 @@ LoadUserFromCookie = function() {
                 viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.Email));
             });
             RedisplayHeader();
-            viewModel.loadCappReport();
+            viewModel.LoadCappReport();
         },
         error: function() {
             $('#blockingDiv').hide();
@@ -719,7 +738,7 @@ SignInUser = function(username, password) {
 
             document.cookie = 'CAPPamariCredentials=' + appUser.SessionId + '#' + appUser.Username + ';';
             RedisplayHeader();
-            viewModel.loadCappReport();
+            viewModel.LoadCappReport();
         },
         error: function() {
             $('#blockingDiv').hide();
@@ -764,7 +783,7 @@ User = function(sessionId, username, major) {
     self.advisors = ko.observableArray([]);
 
     /* Functions */
-    self.signOut = function() {
+    self.SignOut = function() {
         var jsonData = { Username: self.username() };
         $.ajax({
             url: window.location.origin + '/Account/Logout',
@@ -783,7 +802,7 @@ User = function(sessionId, username, major) {
         $('#blockingDivSpan').text('Logging you out...');
         $('#blockingDiv').show();
         viewModel.user(null);
-        viewModel.clearCAPPReport();
+        viewModel.ClearCappReport();
         RedisplayHeader();
         $('#sidebarRoot').hide();
     };
@@ -813,14 +832,11 @@ RequirementSet = function(name, full) {
     self.isFull = ko.observable(full);
 
     /* Functions */
-    self.addCourse = function(course) {
+    self.AddCourse = function(course) {
         self.appliedCourses.push(course);
     };
-    self.removeCourse = function(course) {
+    self.RemoveCourse = function(course) {
         self.appliedCourses.remove(course);
-    };
-    self.checkCourse = function(course) {
-        return self.appliedCourses.indexOf(course);
     };
 };
 ViewModel = function() {
@@ -831,31 +847,31 @@ ViewModel = function() {
     self.user = ko.observable(null);
 
     /* Functions */
-    self.addNewCourse = function(course) {
+    self.AddNewCourse = function(course) {
         self.unassignedCourses.push(course);
         MakeCoursesDraggable();
     };
-    self.removeCourse = function(course) {
+    self.RemoveCourse = function(course) {
         self.unassignedCourses.remove(course);
         ko.utils.arrayForEach(self.requirementSets(), function(requirementSet) {
-            requirementSet.removeCourse(course);
+            requirementSet.RemoveCourse(course);
         });
         $(".requirementBox").accordion("refresh");
     };
-    self.print = function() {
+    self.Print = function() {
         var url = window.location.origin + '/Home/Print?Username=' + self.user().username();
         window.open(url, '_blank');
     };
-    self.clearCAPPReport = function() {
+    self.ClearCappReport = function() {
         self.unassignedCourses([]);
         self.requirementSets([]);
     };
-    self.reloadCappReport = function() {
-        self.clearCAPPReport();
-        self.loadCappReport();
+    self.ReloadCappReport = function() {
+        self.ClearCappReport();
+        self.LoadCappReport();
     };
-    self.setCappReport = function(cappReport) {
-        self.clearCAPPReport();
+    self.SetCappReport = function(cappReport) {
+        self.ClearCappReport();
         self.requirementSets.push(new RequirementSet('CAPP Report Requirements'));
         ko.utils.arrayForEach(cappReport.RequirementSets, function(requirementSetModel) {
             if (requirementSetModel.Name === 'Unapplied Courses') {
@@ -865,14 +881,14 @@ ViewModel = function() {
             } else {
                 var newRequirementSet = new RequirementSet(requirementSetModel.Name, requirementSetModel.IsFull);
                 ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
-                    newRequirementSet.addCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
+                    newRequirementSet.AddCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                 });
                 self.requirementSets.push(newRequirementSet);
             }
         });
         SetupDragAndDrop();
     };
-    self.loadCappReport = function() {
+    self.LoadCappReport = function() {
         $.ajax({
             url: window.location.origin + '/api/User/GetCappReport',
             data: JSON.stringify(self.user().username()),
@@ -893,7 +909,7 @@ ViewModel = function() {
                     } else {
                         var newRequirementSet = new RequirementSet(requirementSetModel.Name, requirementSetModel.IsFull);
                         ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {
-                            newRequirementSet.addCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
+                            newRequirementSet.AddCourse(new Course(courseModel.DepartmentCode, courseModel.CourseNumber, courseModel.Semester, courseModel.PassNoCredit, courseModel.Grade, courseModel.Credits, courseModel.CommIntensive));
                         });
                         self.requirementSets.push(newRequirementSet);
                     }

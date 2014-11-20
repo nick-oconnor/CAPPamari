@@ -2,10 +2,10 @@
     <div class="requirementBox">
         <h3>
             <!-- ko if: isFull() -->
-            <a href="#" style="color: green;"data-bind="text: name, attr: { 'data-reqSetName': name }"></a>
+            <a href="#" style="color: green;" data-bind="text: name() + ' - Fulfilled', attr: { 'data-reqSetName': name }"></a>
             <!-- /ko -->
             <!-- ko if: !isFull() -->
-            <a href="#" style="color: red;" data-bind="text: name, attr: { 'data-reqSetName': name }"></a>
+            <a href="#" style="color: red;" data-bind="text: name() + ' - Not Fulfilled', attr: { 'data-reqSetName': name }"></a>
             <!-- /ko -->
         </h3>
         <div class="courses" data-bind="foreach: appliedCourses">
