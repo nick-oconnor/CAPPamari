@@ -25,9 +25,9 @@ namespace CAPPamari.Web.Helpers
         /// <param name="username">Username for user to remove course for</param>
         /// <param name="oldCourse">CourseModel conataining information about the course to remove</param>
         /// <returns>Success state of course removal</returns>
-        public static bool RemoveCourse(string username, CourseModel oldCourse, string requirementSetName)
+        public static bool RemoveCourse(string username, CourseModel oldCourse)
         {
-            return EntitiesHelper.RemoveCourse(username, oldCourse, requirementSetName);
+            return EntitiesHelper.RemoveCourse(username, oldCourse);
         }
 
         /// <summary>

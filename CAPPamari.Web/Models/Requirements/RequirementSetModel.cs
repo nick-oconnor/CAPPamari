@@ -75,7 +75,7 @@ namespace CAPPamari.Web.Models.Requirements
                 int mostSelectiveClass = courseCounts.Min(cc => cc.Count);
 
                 CourseModel weakestCourse = courseCounts.First(cc => cc.Count == mostSelectiveClass).Course;
-                RemoveCourseFromFulfillments(weakestCourse, workingSet);
+                DeleteCourseFromFulfillments(weakestCourse, workingSet);
                 if (weakestLink.Requirement.Apply(weakestCourse))
                 {
                     workingSet.Remove(weakestLink);
@@ -148,7 +148,7 @@ namespace CAPPamari.Web.Models.Requirements
             };
         }
 
-        private static void RemoveCourseFromFulfillments(CourseModel course, IEnumerable<Fulfillment> fulfillments)
+        private static void DeleteCourseFromFulfillments(CourseModel course, IEnumerable<Fulfillment> fulfillments)
         {
             foreach (Fulfillment fulfillment in fulfillments)
             {

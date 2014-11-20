@@ -33,28 +33,23 @@ namespace CAPPamari.Web.Controllers
         /// <param name="request">The MoveCourseRequest object denoting which course to move to which RequirementSet</param>
         /// <returns>Bool telling the client whether or not the operation is valid</returns>
         [HttpPost]
-        public ApiResponse<MoveCourseResponse> MoveCourse([FromBody] MoveCourseRequest request)
+        public ApiResponse<bool> MoveCourse([FromBody] MoveCourseRequest request)
         {
             if (!EntitiesHelper.UpdateSession(request.Username))
             {
-                return ApiResponse<MoveCourseResponse>.FailureResponse("Your session is bad, please refresh and sign back in.");
+                return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            RequirementSetModel reqSet = CourseHelper.GetRequirementSet(request.Username, request.RequirementSetName);
+            RequirementSetModel reqSet = CourseHelper.GetRequirementSet(request.Username, request.CourseToMove.RequirementSetName);
             bool success = reqSet.CanApplyCourse(request.CourseToMove);
             if (success)
             {
                 success &= CourseHelper.ApplyCourse(request.Username, request.CourseToMove, reqSet);
-                reqSet.ApplyCourse(request.CourseToMove);
             }
             string message = success
                 ? "Moved course successfully"
                 : "You cannot apply this course to this requirement set";
-            var fulfillment = reqSet.IsFulfilled();
-            return ApiResponse<MoveCourseResponse>.SuccessResponse(message, new MoveCourseResponse()
-                {
-                    MoveSuccessful = success,
-                    RequirementSetFulfilled = fulfillment
-                });
+            bool fulfillment = reqSet.IsFulfilled();
+            return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
@@ -69,7 +64,7 @@ namespace CAPPamari.Web.Controllers
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = CourseHelper.RemoveCourse(request.Username, request.CourseToRemove, request.RequirementSetName);
+            bool success = CourseHelper.RemoveCourse(request.Username, request.CourseToRemove);
             string message = success ? "Course removed successfully" : "Could not remove course";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
@@ -103,7 +98,7 @@ namespace CAPPamari.Web.Controllers
                     : course.RequirementSetName;
                 success &= CourseHelper.AddNewCourse(request.Username, course, reqSetName);
             }
-            string message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
+            string message = success ? "All courses were processed successfully" : "One or more courses were skipped while processing";
             cappReport = CourseHelper.GetCappReport(request.Username);
             cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(success, message, cappReport);
@@ -134,27 +129,31 @@ namespace CAPPamari.Web.Controllers
                 RequirementSetModel reqSet = CourseHelper.GetRequirementSet(username, reqSetName);
                 success &= CourseHelper.ApplyCourse(username, course, reqSet);
             }
-            string message = success ? "All courses uploaded successfully" : "One or more courses were missed in upload";
+            string message = success ? "All courses were processed successfully" : "One or more courses were skipped while processing";
             cappReport = CourseHelper.GetCappReport(username);
             cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(success, message, cappReport);
         }
+
         /// <summary>
-        /// Checks whether or not a requirement set is full for a user
+        ///     Checks whether or not a requirement set is full for a user
         /// </summary>
-        /// <param name="request">IsFulfilledRequest containing UserName of user and RequirementSetName of set to check fulfillment on</param>
+        /// <param name="request">
+        ///     IsFulfilledRequest containing UserName of user and RequirementSetName of set to check fulfillment
+        ///     on
+        /// </param>
         /// <returns>ApiResponse<bool> telling the user whether or not the requirement set is full</returns>
         [HttpPost]
-        public ApiResponse<bool> CheckFulfillment([FromBody]IsFulfilledRequest request)
+        public ApiResponse<bool> CheckFulfillment([FromBody] IsFulfilledRequest request)
         {
             if (!EntitiesHelper.UpdateSession(request.UserName))
             {
                 return
                     ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            var reqset = EntitiesHelper.GetRequirementSet(request.UserName, request.RequirementSetname);
-            var isFull = reqset.IsFulfilled();
-            var message = "Found fulfillment successfully";
+            RequirementSetModel reqset = EntitiesHelper.GetRequirementSet(request.UserName, request.RequirementSetname);
+            bool isFull = reqset.IsFulfilled();
+            string message = "Found fulfillment successfully";
             return ApiResponse<bool>.SuccessResponse(message, isFull);
         }
     }

@@ -2,10 +2,10 @@
     <div class="requirementBox">
         <h3>
             <!-- ko if: isFull() -->
-            <a href="#" style="color: green;" data-bind="text: name() + ' - Fulfilled', attr: { 'data-reqSetName': name }"></a>
+            <a href="#" style="color: green;" data-bind="text: name() + ' - Fulfilled'"></a>
             <!-- /ko -->
             <!-- ko if: !isFull() -->
-            <a href="#" style="color: red;" data-bind="text: name() + ' - Not Fulfilled', attr: { 'data-reqSetName': name }"></a>
+            <a href="#" style="color: red;" data-bind="text: name() + ' - Not Fulfilled'"></a>
             <!-- /ko -->
         </h3>
         <div class="courses" data-bind="foreach: appliedCourses">
@@ -17,7 +17,6 @@
                 <span data-bind="text: semester"></span>
                 <span>)</span>
                 <span class="fa fa-trash-o" title="Delete this course" data-bind="click: DeleteCourse"></span><br />
-                <div class="courseData" data-bind="attr: { 'data-course': JSON.stringify(ToJsonCourse($data)) }" ></div>
             </div>
         </div>
     </div>
