@@ -33,22 +33,28 @@ namespace CAPPamari.Web.Controllers
         /// <param name="request">The MoveCourseRequest object denoting which course to move to which RequirementSet</param>
         /// <returns>Bool telling the client whether or not the operation is valid</returns>
         [HttpPost]
-        public ApiResponse<bool> MoveCourse([FromBody] MoveCourseRequest request)
+        public ApiResponse<MoveCourseResponse> MoveCourse([FromBody] MoveCourseRequest request)
         {
             if (!EntitiesHelper.UpdateSession(request.Username))
             {
-                return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
+                return ApiResponse<MoveCourseResponse>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
             RequirementSetModel reqSet = CourseHelper.GetRequirementSet(request.Username, request.RequirementSetName);
             bool success = reqSet.CanApplyCourse(request.CourseToMove);
             if (success)
             {
                 success &= CourseHelper.ApplyCourse(request.Username, request.CourseToMove, reqSet);
+                reqSet.ApplyCourse(request.CourseToMove);
             }
             string message = success
                 ? "Moved course successfully"
                 : "You cannot apply this course to this requirement set";
-            return ApiResponse<bool>.SuccessResponse(message, success);
+            var fulfillment = reqSet.IsFulfilled();
+            return ApiResponse<MoveCourseResponse>.SuccessResponse(message, new MoveCourseResponse()
+                {
+                    MoveSuccessful = success,
+                    RequirementSetFulfilled = fulfillment
+                });
         }
 
         /// <summary>
