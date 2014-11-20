@@ -237,7 +237,7 @@
     <Content Include="Content\themes\fonts\FontAwesome.otf" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Nicholas.pubxml" />
-    <None Include="Properties\PublishProfiles\SDD.pubxml" />
+    <None Include="Properties\PublishProfiles\Caroline.pubxml" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\knockout.js" />
@@ -258,6 +258,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <None Include="Properties\PublishProfiles\SDD.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
