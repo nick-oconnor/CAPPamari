@@ -23,7 +23,7 @@ namespace CAPPamari.Web.Controllers
             }
             bool success = UserHelper.UpdateUser(request.Username, request.Password, request.Major);
             ApplicationUserModel userData = success ? UserHelper.GetApplicationUser(request.Username) : null;
-            string message = success ? "Major changed successfully" : "Could not change major";
+            string message = success ? "Account updated successfully" : "Could not update account";
             return ApiResponse<ApplicationUserModel>.From(success, message, userData);
         }
 
@@ -69,7 +69,7 @@ namespace CAPPamari.Web.Controllers
         public ApiResponse<bool> UpdateAdvisor([FromBody] AdvisorModel request)
         {
             bool success = UserHelper.UpdateAdvisor(request);
-            string message = success ? "Advisor updated successfully" : "Could not update advisor email";
+            string message = success ? "Advisor updated successfully" : "Could not update advisor";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
