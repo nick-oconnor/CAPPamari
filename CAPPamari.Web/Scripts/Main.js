@@ -790,6 +790,13 @@ ViewModel = function() {
     self.user = ko.observable(null);
 
     /* Functions */
+    self.AddCourse = function(course) {
+        for (var i = 0, j = self.requirementSets().length; i < j; i++) {
+            if (self.requirementSets()[i].name() === 'Unapplied Courses') {
+                self.requirementSets()[i].AddCourse(course);
+            }
+        }
+    };
     self.GetRequirementSet = function(course) {
         for (var i = 0, j = self.requirementSets().length; i < j; i++) {
             if (self.requirementSets()[i].name() === course.requirementSetName()) {
@@ -811,7 +818,6 @@ ViewModel = function() {
     };
     self.SetCappReport = function(cappReport) {
         self.ClearCappReport();
-        self.requirementSets.push(new RequirementSet('CAPP Report Requirements'));
         ko.utils.arrayForEach(cappReport.RequirementSets, function(requirementSetModel) {
             var newRequirementSet = new RequirementSet(requirementSetModel.Name, requirementSetModel.IsFull);
             ko.utils.arrayForEach(requirementSetModel.AppliedCourses, function(courseModel) {

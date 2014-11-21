@@ -396,7 +396,12 @@ namespace CAPPamari.Web.Helpers
 
                 Course courseToRemove =
                     reqset.Courses.FirstOrDefault(course => course.Department == oldCourse.DepartmentCode &&
-                                                            course.Number == oldCourse.CourseNumber);
+                                                            course.Number == oldCourse.CourseNumber &&
+                                                            course.Grade == oldCourse.Grade &&
+                                                            course.Credits == oldCourse.Credits &&
+                                                            course.Semester == oldCourse.Semester &&
+                                                            course.PassNC == oldCourse.PassNoCredit &&
+                                                            course.CommunicationIntensive == oldCourse.CommIntensive);
                 if (courseToRemove == null) return false;
 
                 entities.Courses.Remove(courseToRemove);
