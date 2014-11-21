@@ -15,7 +15,7 @@
         <AssociationConnector Association="JustinModel.FK_CAPPReport_ApplicationUser" />
         <AssociationConnector Association="JustinModel.FK_UserSession_ApplicationUser" />
         <AssociationConnector Association="JustinModel.CAPPReportRequirement" />
-        <AssociationConnector Association="JustinModel.RequirementFullfillment" />
+        <AssociationConnector Association="JustinModel.RequirementFulfillment" />
         <EntityTypeShape EntityType="JustinModel.RequirementSet" Width="1.5" PointX="5.125" PointY="0.625" />
         <AssociationConnector Association="JustinModel.FK_RequirementSet_CAPPRerport" />
         <AssociationConnector Association="JustinModel.FK_Course_RequirementSet" />

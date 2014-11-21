@@ -39,7 +39,8 @@ namespace CAPPamari.Web.Controllers
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            RequirementSetModel reqSet = CourseHelper.GetRequirementSet(request.Username, request.CourseToMove.RequirementSetName);
+            RequirementSetModel reqSet = CourseHelper.GetRequirementSet(request.Username,
+                request.CourseToMove.RequirementSetName);
             bool success = reqSet.CanApplyCourse(request.CourseToMove);
             if (success)
             {
@@ -48,7 +49,6 @@ namespace CAPPamari.Web.Controllers
             string message = success
                 ? "Moved course successfully"
                 : "You cannot apply this course to this requirement set";
-            bool fulfillment = reqSet.IsFulfilled();
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
@@ -88,7 +88,7 @@ namespace CAPPamari.Web.Controllers
             if (request.AutoPopulate)
             {
                 cappReport = CourseHelper.GetCappReport(request.Username);
-                AutopopulationHelper.AutoPopulate(cappReport.RequirementSets, courseModels.ToList());
+                AutoPopulationHelper.AutoPopulate(cappReport.RequirementSets, courseModels.ToList());
             }
             bool success = true;
             foreach (CourseModel course in courseModels)
@@ -98,7 +98,9 @@ namespace CAPPamari.Web.Controllers
                     : course.RequirementSetName;
                 success &= CourseHelper.AddNewCourse(request.Username, course, reqSetName);
             }
-            string message = success ? "All courses were processed successfully" : "One or more courses were skipped while processing";
+            string message = success
+                ? "All courses were processed successfully"
+                : "One or more courses were skipped while processing";
             cappReport = CourseHelper.GetCappReport(request.Username);
             cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(success, message, cappReport);
@@ -107,7 +109,7 @@ namespace CAPPamari.Web.Controllers
         /// <summary>
         ///     Find a place to put all unapplied courses
         /// </summary>
-        /// <param name="username">Username of user to autopopulate for</param>
+        /// <param name="username">Username of user to auto-populate for</param>
         /// <returns>CAPPReportModel reporesenting the new CAPP Report for the user</returns>
         [HttpPost]
         public ApiResponse<CappReportModel> AutoPopulateUnappliedCourses([FromBody] string username)
@@ -119,7 +121,7 @@ namespace CAPPamari.Web.Controllers
             }
             List<CourseModel> courses = CourseHelper.GetRequirementSet(username, "Unapplied Courses").AppliedCourses;
             CappReportModel cappReport = CourseHelper.GetCappReport(username);
-            AutopopulationHelper.AutoPopulate(cappReport.RequirementSets, courses);
+            AutoPopulationHelper.AutoPopulate(cappReport.RequirementSets, courses);
             bool success = true;
             foreach (CourseModel course in courses)
             {
@@ -129,7 +131,9 @@ namespace CAPPamari.Web.Controllers
                 RequirementSetModel reqSet = CourseHelper.GetRequirementSet(username, reqSetName);
                 success &= CourseHelper.ApplyCourse(username, course, reqSet);
             }
-            string message = success ? "All courses were processed successfully" : "One or more courses were skipped while processing";
+            string message = success
+                ? "All courses were processed successfully"
+                : "One or more courses were skipped while processing";
             cappReport = CourseHelper.GetCappReport(username);
             cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(success, message, cappReport);
@@ -142,7 +146,7 @@ namespace CAPPamari.Web.Controllers
         ///     IsFulfilledRequest containing UserName of user and RequirementSetName of set to check fulfillment
         ///     on
         /// </param>
-        /// <returns>ApiResponse<bool> telling the user whether or not the requirement set is full</returns>
+        /// <returns>Bool telling the user whether or not the requirement set is full</returns>
         [HttpPost]
         public ApiResponse<bool> CheckFulfillment([FromBody] IsFulfilledRequest request)
         {

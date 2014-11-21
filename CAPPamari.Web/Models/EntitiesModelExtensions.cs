@@ -54,7 +54,7 @@ namespace CAPPamari.Web.Models
             return new RequirementModel
             {
                 CommunicationIntensive = entityRequirement.CommunicationIntensive,
-                CourseFullfillments = fulfillments,
+                CourseFulfillments = fulfillments,
                 CreditsNeeded = entityRequirement.CreditsNeeded,
                 Exclusion = entityRequirement.Exclusion,
                 MaxPassNoCreditCredits = entityRequirement.PassNoCreditCreditsAllowed

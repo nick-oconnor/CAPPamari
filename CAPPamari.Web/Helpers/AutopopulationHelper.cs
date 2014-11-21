@@ -6,21 +6,18 @@ using CAPPamari.Web.Models.Requirements;
 
 namespace CAPPamari.Web.Helpers
 {
-    public static class AutopopulationHelper
+    public static class AutoPopulationHelper
     {
-        public static int courseNumToInt(string courseNum)
+        public static int CourseNumToInt(string courseNum)
         {
             if (courseNum.Contains('x'))
             {
-                return Convert.ToInt32(courseNum[0]) * 1000;
+                return Convert.ToInt32(courseNum[0])*1000;
             }
-            else
-            {
-                return Convert.ToInt32(courseNum);
-            }
+            return Convert.ToInt32(courseNum);
         }
 
-        //function to autopopulate the HASS requirement set
+        //function to autoPopulationulate the HASS requirement set
         public static void FillHass(RequirementSetModel hassReqSet, List<CourseModel> coursesTaken)
         {
             var humDepts = new List<string>
@@ -52,7 +49,7 @@ namespace CAPPamari.Web.Helpers
             {
                 if (humDepts.Contains(courseTaken.DepartmentCode))
                 {
-                    int courseNum = courseNumToInt(courseTaken.CourseNumber);
+                    int courseNum = CourseNumToInt(courseTaken.CourseNumber);
                     if (humCourses.ContainsKey(courseNum))
                     {
                         humCourses[courseNum].Add(courseTaken);
@@ -68,7 +65,7 @@ namespace CAPPamari.Web.Helpers
                 }
                 else if (ssciDepts.Contains(courseTaken.DepartmentCode))
                 {
-                    int courseNum = courseNumToInt(courseTaken.CourseNumber);
+                    int courseNum = CourseNumToInt(courseTaken.CourseNumber);
                     if (ssciCourses.ContainsKey(courseNum))
                     {
                         ssciCourses[courseNum].Add(courseTaken);
@@ -151,15 +148,16 @@ namespace CAPPamari.Web.Helpers
                 }
             }
         }
+
         public static void FillNamedRequirements(List<RequirementSetModel> allSets, List<CourseModel> courses)
         {
             var unappliedCourses = new List<CourseModel>(courses);
 
-            var csciRequired = allSets.FirstOrDefault(set => set.Name == "CSCI Required");
-            var csciOption = allSets.FirstOrDefault(set => set.Name == "CSCI Options");
-            var math = allSets.FirstOrDefault(set => set.Name == "Math");
-            var science = allSets.FirstOrDefault(set => set.Name == "Science");
-            var freeElectives = allSets.FirstOrDefault(set => set.Name == "Free Electives");
+            RequirementSetModel csciRequired = allSets.FirstOrDefault(set => set.Name == "CSCI Required");
+            RequirementSetModel csciOption = allSets.FirstOrDefault(set => set.Name == "CSCI Options");
+            RequirementSetModel math = allSets.FirstOrDefault(set => set.Name == "Math");
+            RequirementSetModel science = allSets.FirstOrDefault(set => set.Name == "Science");
+            RequirementSetModel freeElectives = allSets.FirstOrDefault(set => set.Name == "Free Electives");
 
             var orderedSets = new List<RequirementSetModel>();
             orderedSets.Add(csciRequired);
@@ -176,23 +174,23 @@ namespace CAPPamari.Web.Helpers
                     reqset.ApplyCourse(course);
                     course.RequirementSetName = reqset.Name;
                 }
-                foreach (var course in reqset.AppliedCourses)
+                foreach (CourseModel course in reqset.AppliedCourses)
                 {
                     unappliedCourses.Remove(course);
                 }
             }
 
-            var unappliedCoursesReqSet = allSets.FirstOrDefault(set => set.Name == "Unapplied Courses");
+            RequirementSetModel unappliedCoursesReqSet = allSets.FirstOrDefault(set => set.Name == "Unapplied Courses");
             unappliedCoursesReqSet.AppliedCourses.AddRange(unappliedCourses);
-            
+
             //if (freeElectives == null) return;
             //foreach (var course in courses.Where(c => string.IsNullOrEmpty(c.RequirementSetName) || c.RequirementSetName == "Unapplied Courses"))
             //{
-               // if (freeElectives.CanApplyCourse(course))
-                //{
-                  //  freeElectives.ApplyCourse(course);
-                    //course.RequirementSetName = "Free Electives";
-               // }
+            // if (freeElectives.CanApplyCourse(course))
+            //{
+            //  freeElectives.ApplyCourse(course);
+            //course.RequirementSetName = "Free Electives";
+            // }
             //}
         }
 

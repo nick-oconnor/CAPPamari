@@ -8,10 +8,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CAPPamari.Test
 {
     [TestClass]
-    public class CSVParserHelperTests
+    public class CsvParserHelperTests
     {
         [TestMethod]
-        public void csvTest1()
+        public void CsvTest1()
         {
             //take a sample csv file and convert it to a string- this part works
             var reader = new StreamReader(File.OpenRead(@"testParser.csv"));

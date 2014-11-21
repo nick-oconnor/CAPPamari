@@ -7,7 +7,7 @@ namespace CAPPamari.Web.Models.Requirements
     {
         public RequirementModel()
         {
-            CourseFullfillments = new List<CourseFulfillmentModel>();
+            CourseFulfillments = new List<CourseFulfillmentModel>();
             CreditsNeeded = 0;
             CreditsApplied = 0;
             MaxPassNoCreditCredits = 0;
@@ -16,10 +16,10 @@ namespace CAPPamari.Web.Models.Requirements
             Exclusion = false;
         }
 
-        public RequirementModel(List<CourseFulfillmentModel> courseFullfillments, int creditsNeeded, int creditsApplied,
+        public RequirementModel(List<CourseFulfillmentModel> courseFulfillments, int creditsNeeded, int creditsApplied,
             int maxPassNoCreditCredits, int passNoCreditsApplied, bool communicationIntensive, bool exclusion)
         {
-            CourseFullfillments = courseFullfillments;
+            CourseFulfillments = courseFulfillments;
             CreditsNeeded = creditsNeeded;
             CreditsApplied = creditsApplied;
             MaxPassNoCreditCredits = maxPassNoCreditCredits;
@@ -28,7 +28,7 @@ namespace CAPPamari.Web.Models.Requirements
             Exclusion = exclusion;
         }
 
-        public List<CourseFulfillmentModel> CourseFullfillments { get; set; }
+        public List<CourseFulfillmentModel> CourseFulfillments { get; set; }
         public int CreditsNeeded { get; set; }
         private int CreditsApplied { get; set; }
         public int MaxPassNoCreditCredits { get; set; }
@@ -39,7 +39,7 @@ namespace CAPPamari.Web.Models.Requirements
         public bool Match(CourseModel course)
         {
             if (CommunicationIntensive && !course.CommIntensive) return false;
-            return CourseFullfillments.Any(fulfillment => fulfillment.Match(course));
+            return CourseFulfillments.Any(fulfillment => fulfillment.Match(course));
         }
 
         public bool Apply(CourseModel course)
