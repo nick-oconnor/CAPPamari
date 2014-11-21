@@ -100,9 +100,9 @@ namespace CAPPamari.Web.Models.Requirements
                 return false;
 
             // check requirement set requirements
-            foreach (RequirementModel req in RequirementSetRequirements)
+            if (RequirementSetRequirements.Any(req => !req.IsFulfilled()))
             {
-                if (!req.IsFulfilled()) return false;
+                return false;
             }
 
             // check requirements
