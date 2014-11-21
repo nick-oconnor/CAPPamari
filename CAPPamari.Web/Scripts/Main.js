@@ -822,6 +822,7 @@ ViewModel = function() {
             self.requirementSets.push(newRequirementSet);
         });
         SetupDragAndDrop();
+        ResizeDisplay();
     };
     self.LoadCappReport = function() {
         $.ajax({
