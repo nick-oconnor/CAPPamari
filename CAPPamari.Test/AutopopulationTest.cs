@@ -10,24 +10,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CAPPamari.Test
 {
     [TestClass]
-    public class AutopopulationTest
+    public class AutoPopulationTest
     {
         [TestMethod]
-        public void autopopTest1()
+        public void AutoPopulationTest1()
         {
             //make a mock requirement set
             var reqSets = new List<RequirementSetModel>();
             var csciSet = new RequirementSetModel();
-            var departmentCodes = new List<String>();
-            departmentCodes.Add("CSCI");
 
-            var CSCI4440 = new RequirementModel();
-            CSCI4440.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "4440"));
-            var CSCI1XXX = new RequirementModel();
-            CSCI1XXX.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "1xxx"));
+            var csci4440 = new RequirementModel();
+            csci4440.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "4440"));
+            var csci1XXX = new RequirementModel();
+            csci1XXX.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "1xxx"));
 
-            csciSet.Requirements.Add(CSCI4440);
-            csciSet.Requirements.Add(CSCI1XXX);
+            csciSet.Requirements.Add(csci4440);
+            csciSet.Requirements.Add(csci1XXX);
 
             reqSets.Add(csciSet);
 
@@ -42,7 +40,7 @@ namespace CAPPamari.Test
 
             List<CourseModel> courses = CsvParserHelper.Parse(input).ToList();
 
-            AutopopulationHelper.AutoPopulate(reqSets, courses);
+            AutoPopulationHelper.AutoPopulate(reqSets, courses);
 
             //check results
             Assert.IsTrue(csciSet.AppliedCourses.ElementAt(0).CourseNumber == "4440");

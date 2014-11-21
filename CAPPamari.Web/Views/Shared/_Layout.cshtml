@@ -57,41 +57,41 @@
                 </tr>
             </table>
         </div>
-        <div id="addClassClassAddDialogRoot">
+        <div id="addCourseDialogRoot">
             <table style="table-layout: fixed; width: 100%;">
-                <tr class="addClassForm">
+                <tr class="addCourseForm">
                     <td style="text-align: right;">Department:</td>
-                    <td style="text-align: left;"><input id="addClassDepartment" type="text" /></td>
+                    <td style="text-align: left;"><input id="addCourseDepartment" type="text" /></td>
                 </tr>
-                <tr class="addClassForm">
+                <tr class="addCourseForm">
                     <td style="text-align: right;">Course Number:</td>
-                    <td style="text-align: left;"><input id="addClassCourseNumber" type="text" /></td>
+                    <td style="text-align: left;"><input id="addCourseCourseNumber" type="text" /></td>
                 </tr>
-                <tr class="addClassForm">
+                <tr class="addCourseForm">
                     <td style="text-align: right;">Semester Code (e.g. F14):</td>
-                    <td style="text-align: left;"><input id="addClassSemesterCode" type="text" /></td>
+                    <td style="text-align: left;"><input id="addCourseSemesterCode" type="text" /></td>
                 </tr>
-                <tr class="addClassForm">
+                <tr class="addCourseForm">
                     <td style="text-align: right;">Pass No Credit:</td>
-                    <td style="text-align: left;"><input id="addClassPassNoCredit" type="checkbox" onchange=" CheckForCsvFile() " /></td>
+                    <td style="text-align: left;"><input id="addCoursePassNoCredit" type="checkbox" onchange=" CheckForCsvFile() " /></td>
                 </tr>
-                <tr class="addClassForm">
+                <tr class="addCourseForm">
                     <td style="text-align: right;">Communication Intensive:</td>
-                    <td style="text-align: left;"><input id="addClassCommIntensive" type="checkbox" /></td>
+                    <td style="text-align: left;"><input id="addCourseCommIntensive" type="checkbox" /></td>
                 </tr>
-                <tr id="addClassGradeRow" class="addClassForm">
+                <tr id="addCourseGradeRow" class="addCourseForm">
                     <td style="text-align: right;">Grade (e.g. 4.00):</td>
-                    <td style="text-align: left;"><input id="addClassGrade" type="text" /></td>
+                    <td style="text-align: left;"><input id="addCourseGrade" type="text" /></td>
                 </tr>
-                <tr class="addClassForm">
+                <tr class="addCourseForm">
                     <td style="text-align: right;">Credits:</td>
-                    <td style="text-align: left;"><input id="addClassCredits" type="number" /></td>
+                    <td style="text-align: left;"><input id="addCourseCredits" type="number" /></td>
                 </tr>
-                <tr class="addClassForm">
-                    <td style="text-align: right;"><input id="addClassSumbit" type="button" onclick=" SubmitClassAddInformation() " value="Submit" /></td>
-                    <td style="text-align: left;"><input id="addClassCancel" type="button" onclick=" CancelClassAdd() " value="Cancel" /></td>
+                <tr class="addCourseForm">
+                    <td style="text-align: right;"><input id="addCourseSumbit" type="button" onclick=" SubmitAddClassInformation() " value="Submit" /></td>
+                    <td style="text-align: left;"><input id="addCourseCancel" type="button" onclick=" CancelAddClass() " value="Cancel" /></td>
                 </tr>
-                <tr class="addClassForm">
+                <tr class="addCourseForm">
                     <td style="text-align: right;">O</td>
                     <td style="text-align: left;">R</td>
                 </tr>
@@ -105,7 +105,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: right;"><input id="csvImportbutton" type="button" value="Import" onclick=" ImportCsvFile() "/></td>
-                    <td style="text-align: left"><input type="button" value="Cancel" onclick=" CancelClassAdd() " /></td>
+                    <td style="text-align: left"><input type="button" value="Cancel" onclick=" CancelAddClass() " /></td>
                 </tr>
             </table>
         </div>
@@ -125,11 +125,11 @@
                                 <span data-bind="text: name"></span>
                                 <span class="fa fa-send-o" title="Email report to advisor" data-bind="click: EmailToAdvisor"></span>
                                 <span class="fa fa-pencil" title="Edit advisor info"data-bind="click: EditAdvisorInfo"></span>
-                                <span class="fa fa-trash-o" title="Delete this advisor" data-bind="click: DeleteAdvisor"></span>
-                                <!-- ko if: ($index() === ($parent.user().advisors().length - 1)) -->
+                                <span class="fa fa-trash-o" title="Remove this advisor" data-bind="click: RemoveAdvisor"></span>
+                                <!-- ko if: $index() === ($parent.user().advisors().length - 1) -->
                                 <span class="fa fa-plus" title="Add a new advisor" data-bind="click: AddNewAdvisor"></span>
                                 <!-- /ko -->
-                                <!-- ko if: ($index() !== ($parent.user().advisors().length - 1)) -->
+                                <!-- ko if: $index() !== ($parent.user().advisors().length - 1) -->
                                 <br />
                                 <!-- /ko -->
                             </div>
@@ -169,13 +169,16 @@
         <div id="mainScreen">
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
-                    <div id="addClassButton" onclick=" ShowClassAddDialog() ">
+                    <div id="addCourseButton" onclick=" ShowAddClassDialog() ">
                         <span>Add Course</span>
                     </div>
-                    <div id="autopopButton" onclick=" AutoPopulateUnappliedCourses() ">
+                    <div id="autoPopulationButton" onclick=" AutoPopulateUnappliedCourses() ">
                         <span>Auto-populate</span>
                     </div>
-                    <div id="courses" data-bind="foreach: unappliedCourses">
+                    <!-- ko foreach: requirementSets -->
+                    <!-- ko if: name() === 'Unapplied Courses' -->
+                    <div id="unappliedCourses" class="requirementBox">
+                        <!-- ko foreach: appliedCourses -->
                         <div class="course">
                             <span data-bind="text: department"></span>
                             <span>-</span>
@@ -183,9 +186,12 @@
                             <span>(</span>
                             <span data-bind="text: semester"></span>
                             <span>)</span>
-                            <span class="fa fa-trash-o" title="Delete this course" data-bind="click: DeleteCourse"></span><br />
+                            <span class="fa fa-trash-o" title="Remove this course" data-bind="click: RemoveCourse"></span><br />
                         </div>
+                        <!-- /ko -->
                     </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
                 </div>
                 <div id="openCloseSidebarDiv" onclick=" ToggleSidebar() ">
                     <span id="arrowSpan"><</span>

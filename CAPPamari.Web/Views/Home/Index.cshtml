@@ -1,23 +1,27 @@
-﻿<div data-bind="foreach: requirementSets">
-    <div class="requirementBox">
-        <h3>
-            <!-- ko if: isFull() -->
-            <a href="#" style="color: green;" data-bind="text: name() + ' - Fulfilled'"></a>
-            <!-- /ko -->
-            <!-- ko if: !isFull() -->
-            <a href="#" style="color: red;" data-bind="text: name() + ' - Not Fulfilled'"></a>
-            <!-- /ko -->
-        </h3>
-        <div class="courses" data-bind="foreach: appliedCourses">
-            <div class="course">
-                <span data-bind="text: department"></span>
-                <span>-</span>
-                <span data-bind="text: number"></span>
-                <span>(</span>
-                <span data-bind="text: semester"></span>
-                <span>)</span>
-                <span class="fa fa-trash-o" title="Delete this course" data-bind="click: DeleteCourse"></span><br />
-            </div>
+﻿<!-- ko foreach: requirementSets -->
+<!-- ko if: name() !== 'Unapplied Courses' -->
+<div class="requirementBox accordion">
+    <h3>
+        <!-- ko if: isFull() -->
+        <a href="#" style="color: green;" data-bind="text: name() + ' - Fulfilled'"></a>
+        <!-- /ko -->
+        <!-- ko if: !isFull() -->
+        <a href="#" style="color: red;" data-bind="text: name() + ' - Not Fulfilled'"></a>
+        <!-- /ko -->
+    </h3>
+    <div class="courses">
+        <!-- ko foreach: appliedCourses -->
+        <div class="course">
+            <span data-bind="text: department"></span>
+            <span>-</span>
+            <span data-bind="text: number"></span>
+            <span>(</span>
+            <span data-bind="text: semester"></span>
+            <span>)</span>
+            <span class="fa fa-trash-o" title="Remove this course" data-bind="click: RemoveCourse"></span><br />
         </div>
+        <!-- /ko -->
     </div>
 </div>
+<!-- /ko -->
+<!-- /ko -->

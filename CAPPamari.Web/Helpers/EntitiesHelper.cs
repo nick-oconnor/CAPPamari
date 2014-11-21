@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web.WebPages;
 using CAPPamari.Web.Models;
 using CAPPamari.Web.Models.Requirements;
 
@@ -391,11 +390,13 @@ namespace CAPPamari.Web.Helpers
                 CAPPReport report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                var reqset = report.RequirementSets.FirstOrDefault(set => set.Name == oldCourse.RequirementSetName);
+                RequirementSet reqset =
+                    report.RequirementSets.FirstOrDefault(set => set.Name == oldCourse.RequirementSetName);
                 if (reqset == null) return false;
 
-                var courseToRemove = reqset.Courses.FirstOrDefault(course => course.Department == oldCourse.DepartmentCode &&
-                                                                            course.Number == oldCourse.CourseNumber);
+                Course courseToRemove =
+                    reqset.Courses.FirstOrDefault(course => course.Department == oldCourse.DepartmentCode &&
+                                                            course.Number == oldCourse.CourseNumber);
                 if (courseToRemove == null) return false;
 
                 entities.Courses.Remove(courseToRemove);
