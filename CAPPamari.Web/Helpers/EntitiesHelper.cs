@@ -74,11 +74,10 @@ namespace CAPPamari.Web.Helpers
                 ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
                 if (user == null) return false;
-                if (string.IsNullOrEmpty(password))
+                if (!string.IsNullOrEmpty(password))
                 {
                     user.Password = password;
                 }
-
                 user.Major = major;
                 entities.SaveChanges();
 
