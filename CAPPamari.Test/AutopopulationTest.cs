@@ -20,9 +20,9 @@ namespace CAPPamari.Test
             var csciSet = new RequirementSetModel();
 
             var csci4440 = new RequirementModel();
-            csci4440.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "4440"));
+            csci4440.CourseFulfillments.Add(new CourseFulfillmentModel("CSCI", "4440"));
             var csci1XXX = new RequirementModel();
-            csci1XXX.CourseFullfillments.Add(new CourseFulfillmentModel("CSCI", "1xxx"));
+            csci1XXX.CourseFulfillments.Add(new CourseFulfillmentModel("CSCI", "1xxx"));
 
             csciSet.Requirements.Add(csci4440);
             csciSet.Requirements.Add(csci1XXX);

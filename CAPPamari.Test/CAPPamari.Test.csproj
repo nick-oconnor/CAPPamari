@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="CSVParserHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AutopopulationTest.cs" />
+    <Compile Include="AutoPopulationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CAPPamari.Web\CAPPamari.Web.csproj">

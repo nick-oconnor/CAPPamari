@@ -85,7 +85,7 @@
           <Property Name="Exclusion" Type="bit" Nullable="false" />
           <Property Name="PassNoCreditCreditsAllowed" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="RequirementFullfillment">
+        <EntityType Name="RequirementFulfillment">
           <Key>
             <PropertyRef Name="RequirementID" />
             <PropertyRef Name="CourseFulfillmentID" />
@@ -171,24 +171,24 @@
         </Association>
         <Association Name="FK__Requireme__Cours__06CD04F7">
           <End Role="CourseFulfillment" Type="Self.CourseFulfillment" Multiplicity="1" />
-          <End Role="RequirementFullfillment" Type="Self.RequirementFullfillment" Multiplicity="*" />
+          <End Role="RequirementFulfillment" Type="Self.RequirementFulfillment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CourseFulfillment">
               <PropertyRef Name="CourseFulfillmentID" />
             </Principal>
-            <Dependent Role="RequirementFullfillment">
+            <Dependent Role="RequirementFulfillment">
               <PropertyRef Name="CourseFulfillmentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Requireme__Requi__05D8E0BE">
           <End Role="Requirement" Type="Self.Requirement" Multiplicity="1" />
-          <End Role="RequirementFullfillment" Type="Self.RequirementFullfillment" Multiplicity="*" />
+          <End Role="RequirementFulfillment" Type="Self.RequirementFulfillment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Requirement">
               <PropertyRef Name="RequirementID" />
             </Principal>
-            <Dependent Role="RequirementFullfillment">
+            <Dependent Role="RequirementFulfillment">
               <PropertyRef Name="RequirementID" />
             </Dependent>
           </ReferentialConstraint>
@@ -299,7 +299,7 @@
           <EntitySet Name="CourseFulfillment" EntityType="Self.CourseFulfillment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Required" EntityType="Self.Required" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Requirement" EntityType="Self.Requirement" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RequirementFullfillment" EntityType="Self.RequirementFullfillment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequirementFulfillment" EntityType="Self.RequirementFulfillment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RequirementSet" EntityType="Self.RequirementSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RequirementSetRequirement" EntityType="Self.RequirementSetRequirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" Schema="dbo" store:Type="Tables" />
@@ -321,11 +321,11 @@
           </AssociationSet>
           <AssociationSet Name="FK__Requireme__Cours__06CD04F7" Association="Self.FK__Requireme__Cours__06CD04F7">
             <End Role="CourseFulfillment" EntitySet="CourseFulfillment" />
-            <End Role="RequirementFullfillment" EntitySet="RequirementFullfillment" />
+            <End Role="RequirementFulfillment" EntitySet="RequirementFulfillment" />
           </AssociationSet>
           <AssociationSet Name="FK__Requireme__Requi__05D8E0BE" Association="Self.FK__Requireme__Requi__05D8E0BE">
             <End Role="Requirement" EntitySet="Requirement" />
-            <End Role="RequirementFullfillment" EntitySet="RequirementFullfillment" />
+            <End Role="RequirementFulfillment" EntitySet="RequirementFulfillment" />
           </AssociationSet>
           <AssociationSet Name="FK__Requireme__Requi__0B91BA14" Association="Self.FK__Requireme__Requi__0B91BA14">
             <End Role="RequirementSet" EntitySet="RequirementSet" />
@@ -384,7 +384,7 @@
             <End Role="CAPPReport" EntitySet="CAPPReports" />
             <End Role="Requirement" EntitySet="Requirements" />
           </AssociationSet>
-          <AssociationSet Name="RequirementFullfillment" Association="JustinModel.RequirementFullfillment">
+          <AssociationSet Name="RequirementFulfillment" Association="JustinModel.RequirementFulfillment">
             <End Role="CourseFulfillment" EntitySet="CourseFulfillments" />
             <End Role="Requirement" EntitySet="Requirements" />
           </AssociationSet>
@@ -463,7 +463,7 @@
           <Property Type="Int32" Name="CourseFulfillmentID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="DepartmentCode" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="CourseNumber" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Requirements" Relationship="JustinModel.RequirementFullfillment" FromRole="CourseFulfillment" ToRole="Requirement" />
+          <NavigationProperty Name="Requirements" Relationship="JustinModel.RequirementFulfillment" FromRole="CourseFulfillment" ToRole="Requirement" />
         </EntityType>
         <EntityType Name="Requirement">
           <Key>
@@ -474,7 +474,7 @@
           <Property Type="Boolean" Name="CommunicationIntensive" Nullable="false" />
           <Property Type="Boolean" Name="Exclusion" Nullable="false" />
           <NavigationProperty Name="CAPPReports" Relationship="JustinModel.CAPPReportRequirement" FromRole="Requirement" ToRole="CAPPReport" />
-          <NavigationProperty Name="CourseFulfillments" Relationship="JustinModel.RequirementFullfillment" FromRole="Requirement" ToRole="CourseFulfillment" />
+          <NavigationProperty Name="CourseFulfillments" Relationship="JustinModel.RequirementFulfillment" FromRole="Requirement" ToRole="CourseFulfillment" />
           <Property Type="Int32" Name="PassNoCreditCreditsAllowed" Nullable="false" />
           <NavigationProperty Name="RequirementSets" Relationship="JustinModel.Required" FromRole="Requirement" ToRole="RequirementSet" />
           <NavigationProperty Name="RequirementSets1" Relationship="JustinModel.RequirementSetRequirement" FromRole="Requirement" ToRole="RequirementSet" />
@@ -516,7 +516,7 @@
           <End Type="JustinModel.CAPPReport" Role="CAPPReport" Multiplicity="*" />
           <End Type="JustinModel.Requirement" Role="Requirement" Multiplicity="*" />
         </Association>
-        <Association Name="RequirementFullfillment">
+        <Association Name="RequirementFulfillment">
           <End Type="JustinModel.CourseFulfillment" Role="CourseFulfillment" Multiplicity="*" />
           <End Type="JustinModel.Requirement" Role="Requirement" Multiplicity="*" />
         </Association>
@@ -657,7 +657,7 @@
               <ScalarProperty Name="ReportID" ColumnName="CAPPReportID" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="RequirementFullfillment" TypeName="JustinModel.RequirementFullfillment" StoreEntitySet="RequirementFullfillment">
+          <AssociationSetMapping Name="RequirementFulfillment" TypeName="JustinModel.RequirementFulfillment" StoreEntitySet="RequirementFulfillment">
             <EndProperty Name="Requirement">
               <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
             </EndProperty>
