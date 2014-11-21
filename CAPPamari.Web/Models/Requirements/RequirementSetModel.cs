@@ -102,10 +102,6 @@ namespace CAPPamari.Web.Models.Requirements
             // check requirement set requirements
             foreach (RequirementModel req in RequirementSetRequirements)
             {
-                RequirementModel req1 = req;
-                IEnumerable<CourseModel> matchingCourses = courses.Where(req1.Match);
-                RequirementModel req2 = req;
-                matchingCourses.Select(req2.Apply);
                 if (!req.IsFulfilled()) return false;
             }
 

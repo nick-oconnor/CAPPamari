@@ -88,6 +88,7 @@ RemoveCourse = function(course) {
                 Alert(false, data.Message);
                 return;
             }
+
             var requirementSet = viewModel.GetRequirementSet(course);
             requirementSet.RemoveCourse(course);
             if (requirementSet.name() !== 'Unapplied Courses') {
@@ -304,9 +305,6 @@ SetupDragAndDrop = function() {
                         UpdateFulfilledStatus(sourceRequirementSet);
                     }
                     $('.accordion').accordion('refresh');
-                    /*if (requirementBox.accordion('option', 'active') === false) {
-                        requirementBox.accordion('option', 'active', 0);
-                    }*/
                     MakeCoursesDraggable();
                     Alert(true, data.Message);
                 },
