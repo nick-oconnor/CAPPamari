@@ -1,4 +1,4 @@
-capp-report-tool
+CAPPamari
 ================
 
 CAPP Report drag-and-drop Tool
