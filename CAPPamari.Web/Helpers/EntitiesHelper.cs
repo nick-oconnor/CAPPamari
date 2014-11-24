@@ -286,7 +286,7 @@ namespace CAPPamari.Web.Helpers
             {
                 Advisor advisor =
                     entities.Advisors.FirstOrDefault(
-                        dbadvisor => dbadvisor.Name == name && dbadvisor.EmailAddress == email);
+                        dbadvisor => dbadvisor.Name == name);
                 if (advisor == null) return -1;
 
                 return advisor.AdvisorID;
