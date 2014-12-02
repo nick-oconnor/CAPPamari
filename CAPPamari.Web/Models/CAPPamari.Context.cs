@@ -16,10 +16,10 @@ namespace CAPPamari.Web.Models
 using System.Data.Entity.Infrastructure;
 
 
-public partial class JustinEntities : DbContext
+public partial class CappamariEntities : DbContext
 {
-    public JustinEntities()
-        : base("name=JustinEntities")
+    public CappamariEntities()
+        : base("name=CappamariEntities")
     {
 
     }

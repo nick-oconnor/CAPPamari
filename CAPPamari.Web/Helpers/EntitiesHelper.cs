@@ -695,9 +695,9 @@ namespace CAPPamari.Web.Helpers
         ///     Returns new entities object.
         /// </summary>
         /// <returns></returns>
-        private static JustinEntities GetEntityModel()
+        private static CappamariEntities GetEntityModel()
         {
-            return new JustinEntities();
+            return new CappamariEntities();
         }
 
         /// <summary>
@@ -707,7 +707,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="context">Current context</param>
         /// <returns>List of CourseFulfillments as they were found in the databse</returns>
         private static IEnumerable<CourseFulfillment> GetCourseFulfillmentsFromIds(IEnumerable<int> fulfillmentIds,
-            JustinEntities context)
+            CappamariEntities context)
         {
             return
                 fulfillmentIds.Select(id => context.CourseFulfillments.First(flfll => flfll.CourseFulfillmentID == id));

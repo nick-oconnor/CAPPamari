@@ -166,8 +166,8 @@ UpgradeLog*.htm
 App_Data/*.mdf
 App_Data/*.ldf
 
-# Connection Strings files
-*ConnectionStrings.config
+# Connection String file
+ConnectionStrings.config
 
 #############
 ## Windows detritus

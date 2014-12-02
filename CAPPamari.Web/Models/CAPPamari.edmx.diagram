@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c3ab7cbf3fa04a71b5d9940bdfeb29e8" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="CappamariModel.Advisor" Width="1.5" PointX="2.625" PointY="3.125" />
+        <EntityTypeShape EntityType="CappamariModel.ApplicationUser" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="CappamariModel.CAPPReport" Width="1.5" PointX="2.5" PointY="0.5" />
+        <EntityTypeShape EntityType="CappamariModel.Course" Width="1.5" PointX="7.125" PointY="3.625" />
+        <EntityTypeShape EntityType="CappamariModel.CourseFulfillment" Width="1.5" PointX="9.5" PointY="4.25" />
+        <EntityTypeShape EntityType="CappamariModel.Requirement" Width="1.5" PointX="8" PointY="0.625" />
+        <EntityTypeShape EntityType="CappamariModel.UserSession" Width="1.5" PointX="0.625" PointY="3.5" />
+        <AssociationConnector Association="CappamariModel.FK_CAPPReport_ApplicationUser" />
+        <AssociationConnector Association="CappamariModel.FK_UserSession_ApplicationUser" />
+        <AssociationConnector Association="CappamariModel.CAPPReportRequirement" />
+        <AssociationConnector Association="CappamariModel.RequirementFulfillment" />
+        <EntityTypeShape EntityType="CappamariModel.RequirementSet" Width="1.5" PointX="5.125" PointY="0.625" />
+        <AssociationConnector Association="CappamariModel.FK_RequirementSet_CAPPRerport" />
+        <AssociationConnector Association="CappamariModel.FK_Course_RequirementSet" />
+        <AssociationConnector Association="CappamariModel.Required" />
+        <AssociationConnector Association="CappamariModel.RequirementSetRequirement" />
+        <AssociationConnector Association="CappamariModel.Advises" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
