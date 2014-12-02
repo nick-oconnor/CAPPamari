@@ -44,8 +44,8 @@ namespace CAPPamari.Web.Helpers
         /// <summary>
         ///     Gets CAPPReport for the user
         /// </summary>
-        /// <param name="username">Username for user to get CAPP Report for</param>
-        /// <returns>CAPPReportModel or null if no CAPP Report exists</returns>
+        /// <param name="username">Username for user to get CAPP report for</param>
+        /// <returns>CAPPReportModel or null if no CAPP report exists</returns>
         public static CappReportModel GetCappReport(string username)
         {
             return EntitiesHelper.GetCappReport(username);
@@ -84,7 +84,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="username">UserName of user to create a computer science capp report for</param>
         private static void CreateComputerScienceCappReport(string username)
         {
-            CappReportModel cappreport = EntitiesHelper.CreateNewCappReport(username, "Computer Science");
+            var cappreport = EntitiesHelper.CreateNewCappReport(username, "Computer Science");
             EntitiesHelper.CreateCappReportRequirement(username, cappreport.Name, 4, 0, true, false, new List<int>
             {
                 EntitiesHelper.GetCourseFulfillmentId("CSCI", "4440")
@@ -133,7 +133,7 @@ namespace CAPPamari.Web.Helpers
             });
             EntitiesHelper.CreateRequirementSet(username, cappreport.Name, "Unapplied Courses", false, 0, 0);
             EntitiesHelper.CreateRequirementSet(username, cappreport.Name, "Free Electives", false, 33, 33);
-            RequirementSetModel mathReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name, "Math",
+            var mathReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name, "Math",
                 false, 16, 0);
             EntitiesHelper.CreateRequirementInRequirementSet(username, cappreport.Name, mathReqset.Name, 4, 0, false,
                 false, new List<int>
@@ -159,7 +159,7 @@ namespace CAPPamari.Web.Helpers
                     EntitiesHelper.GetCourseFulfillmentId("PHIL", "4140"),
                     EntitiesHelper.GetCourseFulfillmentId("PHIL", "4420")
                 });
-            RequirementSetModel scienceReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name, "Science",
+            var scienceReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name, "Science",
                 false, 12, 0);
             EntitiesHelper.CreateRequirementInRequirementSet(username, cappreport.Name, scienceReqset.Name, 4, 0, false,
                 false, new List<int>
@@ -196,7 +196,7 @@ namespace CAPPamari.Web.Helpers
                 {
                     EntitiesHelper.GetCourseFulfillmentId("ERTH", "1030"),
                 });
-            RequirementSetModel cscireqReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name,
+            var cscireqReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name,
                 "CSCI Required", false, 32, 0);
             EntitiesHelper.CreateRequirementInRequirementSet(username, cappreport.Name, cscireqReqset.Name, 3, 0, false,
                 false, new List<int>
@@ -242,7 +242,7 @@ namespace CAPPamari.Web.Helpers
                 {
                     EntitiesHelper.GetCourseFulfillmentId("CSCI", "2300")
                 });
-            RequirementSetModel csciOpReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name,
+            var csciOpReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name,
                 "CSCI Options", false, 11, 0);
             EntitiesHelper.CreateRequirementInRequirementSet(username, cappreport.Name, csciOpReqset.Name, 1, 0, false,
                 false, new List<int>
@@ -289,7 +289,7 @@ namespace CAPPamari.Web.Helpers
                     EntitiesHelper.GetCourseFulfillmentId("ECSE", "4640"),
                     EntitiesHelper.GetCourseFulfillmentId("ECSE", "4720")
                 });
-            RequirementSetModel hassReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name, "HASS", true,
+            var hassReqset = EntitiesHelper.CreateRequirementSet(username, cappreport.Name, "HASS", true,
                 24, 6);
             EntitiesHelper.CreateRequirementInRequirementSet(username, cappreport.Name, hassReqset.Name, 4, 4, false,
                 false, new List<int>

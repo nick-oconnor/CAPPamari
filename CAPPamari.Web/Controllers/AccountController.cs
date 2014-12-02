@@ -16,8 +16,8 @@ namespace CAPPamari.Web.Controllers
         [System.Web.Mvc.HttpPost]
         public JsonResult Login([FromBody] LoginRequest request)
         {
-            ValidationStatus validationStatus = ValidationHelper.Validate(request.Username, request.Password);
-            ApplicationUserModel badUser = ApplicationUserModel.InvalidUser();
+            var validationStatus = ValidationHelper.Validate(request.Username, request.Password);
+            var badUser = ApplicationUserModel.InvalidUser();
             switch (validationStatus)
             {
                 case ValidationStatus.BadInput:
@@ -30,11 +30,10 @@ namespace CAPPamari.Web.Controllers
                     return Json(ApiResponse<ApplicationUserModel>.FailureResponse("No such username exists", badUser));
                 case ValidationStatus.Validated:
                     UserHelper.CreateUserSession(request.Username);
-                    ApplicationUserModel user = UserHelper.GetApplicationUser(request.Username);
+                    var user = UserHelper.GetApplicationUser(request.Username);
                     return Json(ApiResponse<ApplicationUserModel>.SuccessResponse("Logged in successfully", user));
             }
-
-            return Json(ApiResponse<ApplicationUserModel>.FailureResponse("Unknown sing in failure", badUser));
+            return null;
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace CAPPamari.Web.Controllers
             UserHelper.CreateNewUser(request.Username, request.Password, request.Major);
             UserHelper.CreateUserSession(request.Username);
             CourseHelper.CreateNewCappReport(request.Username, SupportedMajors.CSCI);
-            ApplicationUserModel user = UserHelper.GetApplicationUser(request.Username);
+            var user = UserHelper.GetApplicationUser(request.Username);
             return Json(ApiResponse<ApplicationUserModel>.SuccessResponse("Registered successfully", user));
         }
 
@@ -70,8 +69,7 @@ namespace CAPPamari.Web.Controllers
         [System.Web.Mvc.HttpPost]
         public JsonResult CheckUsername(string userName)
         {
-            bool userNameExists = EntitiesHelper.UsernameExists(userName);
-            return Json(ApiResponse<bool>.SuccessResponse("Checked successfully", !userNameExists));
+            return Json(ApiResponse<bool>.SuccessResponse("Username checked successfully", !EntitiesHelper.UsernameExists(userName)));
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using CAPPamari.Web.Helpers;
-using CAPPamari.Web.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CAPPamari.Test
@@ -15,7 +13,7 @@ namespace CAPPamari.Test
         {
             //take a sample csv file and convert it to a string- this part works
             var reader = new StreamReader(File.OpenRead(@"testParser.csv"));
-            string input = "";
+            var input = "";
             while (!reader.EndOfStream)
             {
                 input = input + reader.ReadLine() + "\n";
@@ -23,7 +21,7 @@ namespace CAPPamari.Test
             reader.Close();
 
             //parse it
-            IEnumerable<CourseModel> courses = CsvParserHelper.Parse(input);
+            var courses = CsvParserHelper.Parse(input);
 
             if (courses == null)
             {
@@ -31,7 +29,8 @@ namespace CAPPamari.Test
             }
 
             // and spit out the info
-            foreach (CourseModel course in courses)
+            if (courses == null) return;
+            foreach (var course in courses)
             {
                 Debug.Print("{0} {1}, {2} credits, {3}, {4}, PNC {5}, Comm {6}", course.DepartmentCode,
                     course.CourseNumber, course.Credits,

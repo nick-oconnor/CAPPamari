@@ -17,7 +17,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="major">Major for new user</param>
         public static void CreateNewUser(string username, string password, string major)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
                 var newUser = new ApplicationUser
                 {
@@ -38,9 +38,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>True if Username is taken, false otherwise</returns>
         public static bool UsernameExists(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 return user != null;
             }
         }
@@ -52,9 +52,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Password for user with Username or string.Empty if no user is found</returns>
         public static string GetPassword(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
                 return user == null ? string.Empty : user.Password;
             }
@@ -69,9 +69,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>True if user was updated, false otherwise</returns>
         public static bool UpdateUser(string username, string password, string major)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
                 if (user == null) return false;
                 if (!string.IsNullOrEmpty(password))
@@ -92,9 +92,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>List of advisors for user with Username or empty list if no user is found</returns>
         public static List<Advisor> GetAdvisors(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
                 return user == null ? new List<Advisor>() : user.Advisors.ToList();
             }
@@ -107,9 +107,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Major or string.Empty if the user is not found.</returns>
         public static string GetMajor(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
 
                 return user == null ? string.Empty : user.Major;
             }
@@ -122,12 +122,12 @@ namespace CAPPamari.Web.Helpers
         /// <returns>SessionID of valid session or -1 if no such session exists</returns>
         public static int GetSessionId(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
                 if (user == null) return -1;
 
-                UserSession session = user.UserSessions.FirstOrDefault();
+                var session = user.UserSessions.FirstOrDefault();
                 if (session == null) return -1;
                 return session.Expiration < DateTime.Now ? -1 : session.SessionID;
             }
@@ -140,9 +140,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>SessionID of newly created session</returns>
         public static int CreateNewSession(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                UserSession session = entities.UserSessions.FirstOrDefault(sess => sess.Username == username);
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.Username == username);
                 if (session != null) entities.UserSessions.Remove(session);
 
                 var newSession = new UserSession
@@ -164,9 +164,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Expriation of session or DateTime.MinValue</returns>
         public static DateTime GetSessionExpiration(int sessionId)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                UserSession session = entities.UserSessions.FirstOrDefault(sess => sess.SessionID == sessionId);
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.SessionID == sessionId);
 
                 return session == null ? DateTime.MinValue : session.Expiration;
             }
@@ -179,9 +179,9 @@ namespace CAPPamari.Web.Helpers
         /// <param name="username">Username for session to clear</param>
         public static void RemoveSession(int sessionId, string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                UserSession session = entities.UserSessions.FirstOrDefault(sess => sess.SessionID == sessionId);
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.SessionID == sessionId);
                 if (session == null) return;
                 entities.UserSessions.Remove(session);
 
@@ -196,9 +196,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>True if session is active and refreshed, false otherwise</returns>
         public static bool UpdateSession(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                UserSession session = entities.UserSessions.FirstOrDefault(sess => sess.Username == username);
+                var session = entities.UserSessions.FirstOrDefault(sess => sess.Username == username);
                 if (session == null) return false;
 
                 session.Expiration = DateTime.Now.AddMinutes(30);
@@ -216,9 +216,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success status of change.</returns>
         public static bool ChangeMajor(string username, string major)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appUser => appUser.Username == username);
                 if (user == null) return false;
 
                 user.Major = major;
@@ -235,11 +235,11 @@ namespace CAPPamari.Web.Helpers
         /// <returns>The AdvisorID of the new advisor or -1 if the advisor already exists in the database</returns>
         public static int AddAdvisor(string name, string email)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                Advisor existingAdvisor =
+                var existingAdvisor =
                     entities.Advisors.FirstOrDefault(
-                        dbadvisor => dbadvisor.Name == name && dbadvisor.EmailAddress == email);
+                        dbadvisor => dbadvisor.Name == name);
                 if (existingAdvisor != null) return -1;
 
                 var newAdvisor = new Advisor
@@ -262,9 +262,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success status of the update</returns>
         public static bool UpdateAdvisor(string name, string email)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                Advisor advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.Name == name);
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.Name == name);
                 if (advisor == null) return false;
 
                 advisor.EmailAddress = email;
@@ -282,9 +282,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>AdvisorID corresponding to the right advisor or -1 if no such advisor exists</returns>
         public static int GetAdvisorId(string name, string email)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                Advisor advisor =
+                var advisor =
                     entities.Advisors.FirstOrDefault(
                         dbadvisor => dbadvisor.Name == name);
                 if (advisor == null) return -1;
@@ -301,12 +301,12 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success state of the association creation</returns>
         public static bool AssociateAdvisorAndUser(string username, int advisorId)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                Advisor advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == advisorId);
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == advisorId);
                 if (advisor == null) return false;
 
                 user.Advisors.Add(advisor);
@@ -324,15 +324,15 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success state of the association deletion</returns>
         public static bool DisassociateAdvisorAndUser(string username, int advisorId)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                Advisor advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == advisorId);
+                var advisor = entities.Advisors.FirstOrDefault(dbadvisor => dbadvisor.AdvisorID == advisorId);
                 if (advisor == null) return false;
 
-                bool success = user.Advisors.Remove(advisor);
+                var success = user.Advisors.Remove(advisor);
                 if (success) entities.SaveChanges();
                 return success;
             }
@@ -347,15 +347,15 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success state of the course addition</returns>
         public static bool AddNewCourse(string username, CourseModel newCourse, string requirementSetName)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                RequirementSet reqSet = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSetName);
+                var reqSet = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSetName);
                 if (reqSet == null) return false;
 
                 reqSet.Courses.Add(new Course
@@ -381,22 +381,22 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success state of course removal</returns>
         public static bool RemoveCourse(string username, CourseModel oldCourse)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                RequirementSet reqset =
+                var reqset =
                     report.RequirementSets.FirstOrDefault(set => set.Name == oldCourse.RequirementSetName);
                 if (reqset == null) return false;
 
-                Course courseToRemove =
+                var courseToRemove =
                     reqset.Courses.FirstOrDefault(course => course.Department == oldCourse.DepartmentCode &&
                                                             course.Number == oldCourse.CourseNumber &&
-                                                            course.Grade == oldCourse.Grade &&
+                                                            Math.Abs(course.Grade - oldCourse.Grade) < 0.01 &&
                                                             course.Credits == oldCourse.Credits &&
                                                             course.Semester == oldCourse.Semester &&
                                                             course.PassNC == oldCourse.PassNoCredit &&
@@ -417,15 +417,15 @@ namespace CAPPamari.Web.Helpers
         /// <returns>RequirementSet desired or null if no such RequirementSet exists</returns>
         public static RequirementSetModel GetRequirementSet(string username, string requirementSetName)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return null;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return null;
 
-                RequirementSet dbset = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSetName);
+                var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSetName);
                 return dbset == null ? null : dbset.ToRequirementSetModel();
             }
         }
@@ -439,22 +439,22 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success status of move</returns>
         public static bool ApplyCourse(string username, CourseModel course, RequirementSetModel requirementSet)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return false;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return false;
 
-                RequirementSet dbset = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSet.Name);
+                var dbset = report.RequirementSets.FirstOrDefault(set => set.Name == requirementSet.Name);
                 if (dbset == null) return false;
 
-                Course newCourse =
+                var newCourse =
                     entities.Courses.FirstOrDefault(c => c.CommunicationIntensive == course.CommIntensive &&
                                                          c.Credits == course.Credits &&
                                                          c.Department == course.DepartmentCode &&
-                                                         c.Grade == course.Grade &&
+                                                         Math.Abs(c.Grade - course.Grade) < 0.01 &&
                                                          c.Number == course.CourseNumber &&
                                                          c.PassNC == course.PassNoCredit &&
                                                          c.Semester == course.Semester &&
@@ -475,12 +475,12 @@ namespace CAPPamari.Web.Helpers
         /// <returns>List of all RequirementSets</returns>
         public static CappReportModel GetCappReport(string username)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return null;
 
-                CAPPReport report = user.CAPPReports.FirstOrDefault();
+                var report = user.CAPPReports.FirstOrDefault();
                 if (report == null) return null;
 
                 return report.ToCappReportModel();
@@ -495,9 +495,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>CappReportModel of the resulting capp report or null if the user is not found</returns>
         public static CappReportModel CreateNewCappReport(string username, string cappReportName)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return null;
 
                 var newCappReport = new CAPPReport
@@ -524,12 +524,12 @@ namespace CAPPamari.Web.Helpers
         public static void CreateCappReportRequirement(string username, string cappReportName,
             int creditsNeeded, int maxPnc, bool commIntensive, bool exclusion, List<int> fulfillments)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return;
 
-                CAPPReport cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == cappReportName);
+                var cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == cappReportName);
                 if (cappreport == null) return;
 
                 var req = new Requirement
@@ -559,12 +559,12 @@ namespace CAPPamari.Web.Helpers
             string requirementSetName,
             bool depthRequirement, int creditsNeeded, int maxPnc)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return null;
 
-                CAPPReport cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == cappReportName);
+                var cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == cappReportName);
                 if (cappreport == null) return null;
 
                 var reqset = new RequirementSet
@@ -597,15 +597,15 @@ namespace CAPPamari.Web.Helpers
             string requirementSetName,
             int creditsNeeded, int maxPnc, bool commIntensive, bool exclusion, List<int> fulfillments)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return;
 
-                CAPPReport cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == cappReportName);
+                var cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == cappReportName);
                 if (cappreport == null) return;
 
-                RequirementSet reqset = cappreport.RequirementSets.FirstOrDefault(rs => rs.Name == requirementSetName);
+                var reqset = cappreport.RequirementSets.FirstOrDefault(rs => rs.Name == requirementSetName);
                 if (reqset == null) return;
 
                 var req = new Requirement
@@ -636,15 +636,15 @@ namespace CAPPamari.Web.Helpers
             string requirementSetName,
             int creditsNeeded, int maxPnc, bool commIntensive, bool exclusion, List<int> fulfillments)
         {
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                ApplicationUser user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
+                var user = entities.ApplicationUsers.FirstOrDefault(appuser => appuser.Username == username);
                 if (user == null) return;
 
-                CAPPReport cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == cappReportName);
+                var cappreport = user.CAPPReports.FirstOrDefault(capp => capp.Name == cappReportName);
                 if (cappreport == null) return;
 
-                RequirementSet reqset = cappreport.RequirementSets.FirstOrDefault(rs => rs.Name == requirementSetName);
+                var reqset = cappreport.RequirementSets.FirstOrDefault(rs => rs.Name == requirementSetName);
                 if (reqset == null) return;
 
                 var req = new Requirement
@@ -672,9 +672,9 @@ namespace CAPPamari.Web.Helpers
             var numRegex = new Regex("^[1|2|4|6][0-9|x]{3}$");
             if (!deptRegex.IsMatch(deptCode)) return -1;
             if (!numRegex.IsMatch(courseCode)) return -1;
-            using (JustinEntities entities = GetEntityModel())
+            using (var entities = GetEntityModel())
             {
-                CourseFulfillment fulfillment =
+                var fulfillment =
                     entities.CourseFulfillments.FirstOrDefault(
                         flfll => flfll.DepartmentCode == deptCode && flfll.CourseNumber == courseCode);
                 if (fulfillment != null) return fulfillment.CourseFulfillmentID;

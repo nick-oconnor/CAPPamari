@@ -11,7 +11,7 @@ namespace CAPPamari.Web.Models
 
         public void CheckRequirementSetFulfillments()
         {
-            foreach (RequirementSetModel reqset in RequirementSets)
+            foreach (var reqset in RequirementSets)
             {
                 reqset.IsFull = reqset.IsFulfilled();
             }

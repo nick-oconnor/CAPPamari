@@ -1,7 +1,5 @@
 ﻿using System.Drawing;
 using System.Linq;
-using CAPPamari.Web.Models;
-using CAPPamari.Web.Models.Requirements;
 using Spire.Pdf;
 using Spire.Pdf.Graphics;
 
@@ -12,20 +10,20 @@ namespace CAPPamari.Web.Helpers
         public static PdfDocument PrintCappReport(string username)
         {
             if (EntitiesHelper.GetSessionId(username) == -1) return null;
-            ApplicationUserModel userData = UserHelper.GetApplicationUser(username);
-            CappReportModel courseData = CourseHelper.GetCappReport(username);
+            var userData = UserHelper.GetApplicationUser(username);
+            var courseData = CourseHelper.GetCappReport(username);
             var pdf = new PdfDocument();
-            PdfSection cappSection = pdf.Sections.Add();
-            PdfNewPage page = cappSection.Pages.Add();
+            var cappSection = pdf.Sections.Add();
+            var page = cappSection.Pages.Add();
             var font = new PdfFont(PdfFontFamily.TimesRoman, 11);
-            var format = new PdfStringFormat {LineSpacing = 20f};
-            PdfBrush brush = PdfBrushes.Black;
-            string stringData = "\n";
+            var format = new PdfStringFormat { LineSpacing = 20f };
+            var brush = PdfBrushes.Black;
+            var stringData = "\n";
             stringData += userData.Username + "\t" + userData.Major + "\n";
             stringData = userData.Advisors.Aggregate(stringData,
                 (current, adivsor) => current + (adivsor.Name + ": " + adivsor.Email + "\n"));
             stringData += "\n\n";
-            foreach (RequirementSetModel reqSet in courseData.RequirementSets)
+            foreach (var reqSet in courseData.RequirementSets)
             {
                 stringData += reqSet.Name + "\n";
                 stringData = reqSet.AppliedCourses.Aggregate(stringData,

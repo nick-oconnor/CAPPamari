@@ -46,8 +46,8 @@ namespace CAPPamari.Web.Models.Requirements
         {
             if (Name == "Unapplied Courses" || Name == "Free Electives") return true;
             ApplyCourses();
-            bool positiveMatch = false;
-            foreach (RequirementModel req in Requirements.Where(req => req.Match(course)))
+            var positiveMatch = false;
+            foreach (var req in Requirements.Where(req => req.Match(course)))
             {
                 if (req.Exclusion) return false;
                 positiveMatch |= !req.IsFulfilled();
@@ -57,24 +57,24 @@ namespace CAPPamari.Web.Models.Requirements
 
         private void ApplyCourses()
         {
-            List<Fulfillment> workingSet = Requirements.Select(req => new Fulfillment
+            var workingSet = Requirements.Select(req => new Fulfillment
             {
                 Requirement = req,
                 Courses = AppliedCourses.Where(req.Match).ToList()
             }).ToList();
             while (workingSet.Count > 0)
             {
-                IEnumerable<Fulfillment> positiveCounts = workingSet.Where(set => set.Courses.Any());
-                IList<Fulfillment> fulfillments = positiveCounts as IList<Fulfillment> ?? positiveCounts.ToList();
+                var positiveCounts = workingSet.Where(set => set.Courses.Any());
+                var fulfillments = positiveCounts as IList<Fulfillment> ?? positiveCounts.ToList();
                 if (!fulfillments.Any()) return;
-                int smallestListCount = fulfillments.Min(set => set.Courses.Count());
+                var smallestListCount = fulfillments.Min(set => set.Courses.Count());
 
-                Fulfillment weakestLink = workingSet.First(set => set.Courses.Count() == smallestListCount);
-                List<CourseCount> courseCounts =
+                var weakestLink = workingSet.First(set => set.Courses.Count() == smallestListCount);
+                var courseCounts =
                     weakestLink.Courses.Select(course => GetCourseCount(course, workingSet)).ToList();
-                int mostSelectiveClass = courseCounts.Min(cc => cc.Count);
+                var mostSelectiveClass = courseCounts.Min(cc => cc.Count);
 
-                CourseModel weakestCourse = courseCounts.First(cc => cc.Count == mostSelectiveClass).Course;
+                var weakestCourse = courseCounts.First(cc => cc.Count == mostSelectiveClass).Course;
                 RemoveCourseFromFulfillments(weakestCourse, workingSet);
                 if (weakestLink.Requirement.Apply(weakestCourse))
                 {
@@ -127,7 +127,7 @@ namespace CAPPamari.Web.Models.Requirements
 
         private static bool CheckDepthRequirement(List<CourseModel> courses)
         {
-            IEnumerable<string> twoThousandDepts =
+            var twoThousandDepts =
                 courses.Where(course => course.CourseNumber.StartsWith("2")).Select(course => course.DepartmentCode);
             return
                 courses.Any(
@@ -136,7 +136,7 @@ namespace CAPPamari.Web.Models.Requirements
 
         private static CourseCount GetCourseCount(CourseModel course, IEnumerable<Fulfillment> fulfillments)
         {
-            int count = fulfillments.Count(fulfillment => fulfillment.Courses.Contains(course));
+            var count = fulfillments.Count(fulfillment => fulfillment.Courses.Contains(course));
             return new CourseCount
             {
                 Count = count,
@@ -146,7 +146,7 @@ namespace CAPPamari.Web.Models.Requirements
 
         private static void RemoveCourseFromFulfillments(CourseModel course, IEnumerable<Fulfillment> fulfillments)
         {
-            foreach (Fulfillment fulfillment in fulfillments)
+            foreach (var fulfillment in fulfillments)
             {
                 fulfillment.Courses.Remove(course);
             }

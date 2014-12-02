@@ -14,7 +14,7 @@ $(window).load(function() {
     LoadUserFromCookie();
 
     if (!window.File || !window.FileReader) {
-        HideCsvImportAbility();
+        $('#importCsvForm').hide();
     }
 
     ko.applyBindings(viewModel);
@@ -61,7 +61,7 @@ AutoPopulateUnappliedCourses = function() {
             Alert(false, 'There is a problem with the server.  Please try again later');
         }
     });
-    $('#blockingDivSpan').text('Auto-populating courses, this may take a bit...');
+    $('#blockingDivSpan').text('Processing courses, this may take a bit...');
     $('#blockingDiv').show();
 };
 RemoveCourse = function(course) {
@@ -103,13 +103,6 @@ RemoveCourse = function(course) {
     });
     Alert(true, 'Removing course...');
 };
-HideCsvImportAbility = function() {
-    var importTable = $('#addCourseDialogRoot').find('table');
-    importTable.find('tr:nth-child(9n)').hide();
-    importTable.find('tr:nth-child(10n)').hide();
-    importTable.find('tr:nth-child(11n)').hide();
-    importTable.find('tr:nth-child(12n)').hide();
-};
 EmailToAdvisor = function(advisor) {
     var emailRequest = {
         Username: viewModel.user().username(),
@@ -147,7 +140,6 @@ RemoveAdvisor = function(advisor) {
         contentType: 'application/json',
         success: function(data) {
             if (!data.Success || !data.Payload) {
-                $('#blockingDiv').hide();
                 Alert(false, data.Message);
                 return;
             }
@@ -160,7 +152,10 @@ RemoveAdvisor = function(advisor) {
             Alert(false, 'There is an issue with the server, please try again later');
         }
     });
-    Alert(true, 'Deleting advisor...');
+    Alert(true, 'Removing advisor...');
+};
+ShowAdvisorDialog = function() {
+    $('#advisorDialogRoot').show();
 };
 EditAdvisorInfo = function(advisor) {
     editMode = 'edit';
@@ -168,9 +163,6 @@ EditAdvisorInfo = function(advisor) {
     $('#advisorEmail').val(advisor.emailAddress());
     $('#advisorName').attr('disabled', true);
     ShowAdvisorDialog();
-};
-ShowAdvisorDialog = function() {
-    $('#advisorDialogRoot').show();
 };
 AddNewAdvisor = function() {
     editMode = 'new';
@@ -197,7 +189,6 @@ SubmitAdvisorInformation = function() {
 
                 viewModel.user().advisors.push(new Advisor(name, email));
                 RedisplayHeader();
-                $('#blockingDiv').hide();
                 Alert(true, data.Message);
             },
             error: function() {
@@ -270,7 +261,6 @@ SetupDragAndDrop = function() {
     });
     $('.requirementBox').droppable({
         drop: function(event, ui) {
-            var requirementBox = $(this);
             var course = ko.dataFor(ui.draggable[0]);
             var requirementSet = ko.dataFor(this);
             var moveCourseRequest = {
@@ -337,7 +327,6 @@ ImportCsvFile = function() {
             contentType: 'application/json',
             success: function(data) {
                 viewModel.SetCappReport(data.Payload);
-                $('#addCourseDialogRoot').hide();
                 $('#blockingDiv').hide();
                 Alert(true, data.Message);
             },
@@ -346,18 +335,18 @@ ImportCsvFile = function() {
                 Alert(false, 'There is an error with the server.  Please try again later');
             }
         });
+        $('#addCourseDialogRoot').hide();
         $('#blockingDivSpan').text('Processing courses, this may take a bit...');
         $('#blockingDiv').show();
     };
     reader.onerror = function() {
-        $('#addCourseDialogRoot').hide();
         $('#blockingDiv').hide();
         Alert(false, 'Unable to read file');
     };
     $('#blockingDivSpan').text('Reading in CSV...');
     $('#blockingDiv').show();
 };
-SubmitAddClassInformation = function() {
+SubmitAddCourseInformation = function() {
     var deptCode = $('#addCourseDepartment').val();
     var courseNumber = $('#addCourseCourseNumber').val();
     var semesterCode = $('#addCourseSemesterCode').val();
@@ -414,16 +403,6 @@ SubmitAddClassInformation = function() {
 
             var course = new Course(deptCode, courseNumber, semesterCode, passNoCredit, grade, credits, commIntensive, 'Unapplied Courses');
             viewModel.AddCourse(course);
-            $('#addCourseDepartment').val('');
-            $('#addCourseCourseNumber').val('');
-            $('#addCourseSemesterCode').val('');
-            $('#addCoursePassNoCredit')[0].checked = false;
-            $('#addCourseCommIntensive')[0].checked = false;
-            $('#addCourseGrade').val('');
-            $('#addCourseCredits').val('');
-            var fileDialog = $('#csvFileInput');
-            fileDialog.replaceWith(fileDialog.val('').clone(true));
-            $('#blockingDiv').hide();
             Alert(true, data.Message);
         },
         error: function() {
@@ -433,7 +412,10 @@ SubmitAddClassInformation = function() {
     $('#addCourseDialogRoot').hide();
     Alert(true, 'Adding your course...');
 };
-CancelAddClass = function() {
+CancelAddCourse = function() {
+    $('#addCourseDialogRoot').hide();
+};
+ShowAddCourseDialog = function() {
     $('#addCourseDepartment').val('');
     $('#addCourseCourseNumber').val('');
     $('#addCourseSemesterCode').val('');
@@ -441,14 +423,18 @@ CancelAddClass = function() {
     $('#addCourseCommIntensive')[0].checked = false;
     $('#addCourseGrade').val('');
     $('#addCourseCredits').val('');
+    var fileDialog = $('#csvFileInput');
+    fileDialog.replaceWith(fileDialog.val('').clone(true));
 
-    $('#addCourseDialogRoot').hide();
-};
-ShowAddClassDialog = function() {
     $(".addCourseForm").show();
     $('#addCourseDialogRoot').show();
 };
 ShowRegistrationDialog = function() {
+    $('#registrationUsername').val('');
+    $('#registrationPassword1').val('');
+    $('#registrationPassword2').val('');
+    $('#registrationMajor').val('');
+
     $('#registrationDialogRoot').show();
 };
 EditUserInfo = function() {
@@ -463,6 +449,8 @@ SubmitRegistrationInformation = function() {
     var password = $('#registrationPassword1').val();
     var confirmPswd = $('#registrationPassword2').val();
     var major = $('#registrationMajor').val();
+
+    var registrationRequest;
     if (editMode === 'new') {
         $.ajax({
             url: window.location.origin + '/Account/CheckUsername',
@@ -494,20 +482,20 @@ SubmitRegistrationInformation = function() {
                     return;
                 }
 
-                var registrationRequest = { Username: username, Password: password, Major: major };
+                registrationRequest = { Username: username, Password: password, Major: major };
                 $.ajax({
                     url: window.location.origin + '/Account/Register',
                     data: JSON.stringify(registrationRequest),
                     type: 'POST',
                     contentType: 'application/json',
-                    success: function(data) {
-                        if (!data.Success) {
+                    success: function(data2) {
+                        if (!data2.Success) {
                             $('#blockingDiv').hide();
-                            Alert(false, data.Message);
+                            Alert(false, data2.Message);
                             return;
                         }
 
-                        var appUser = data.Payload;
+                        var appUser = data2.Payload;
                         viewModel.user(new User(appUser.SessionId, appUser.Username, appUser.Major));
                         ko.utils.arrayForEach(appUser.Advisors, function(advisor) {
                             viewModel.user().advisors.push(new Advisor(advisor.Name, advisor.Email));
@@ -515,7 +503,6 @@ SubmitRegistrationInformation = function() {
 
                         document.cookie = 'CAPPamariCredentials=' + appUser.SessionId + '#' + appUser.Username + ';';
 
-                        $('#registrationDialogRoot').hide();
                         $('#sidebarRoot').show();
                         SetupDragAndDrop();
                         RedisplayHeader();
@@ -527,6 +514,7 @@ SubmitRegistrationInformation = function() {
                         Alert(false, 'There is an issue with the server, please try again later');
                     }
                 });
+                $('#registrationDialogRoot').hide();
                 $('#blockingDivSpan').text('Setting up your CAPP report, this may take a bit...');
                 $('#blockingDiv').show();
             },
@@ -538,7 +526,7 @@ SubmitRegistrationInformation = function() {
         $('#blockingDivSpan').text('Checking Username...');
         $('#blockingDiv').show();
     } else if (editMode === 'edit') {
-        var registrationRequest = { Username: username, Password: password, Major: major };
+        registrationRequest = { Username: username, Password: password, Major: major };
         if (password != confirmPswd) {
             Alert(false, 'Passwords do not match!');
             $('#registrationPassword1').val('');
@@ -571,6 +559,7 @@ SubmitRegistrationInformation = function() {
                 Alert(true, data.Message);
             },
             error: function() {
+                $('#registrationDialogRoot').hide();
                 Alert(false, 'There is an issue with the server, please try again later');
             }
         });
@@ -578,11 +567,6 @@ SubmitRegistrationInformation = function() {
     }
 };
 CancelRegistration = function() {
-    $('#registrationUsername').val('');
-    $('#registrationPassword1').val('');
-    $('#registrationPassword2').val('');
-    $('#registrationMajor').val('');
-
     $('#registrationDialogRoot').hide();
 };
 SignInButtonClick = function() {
@@ -651,6 +635,7 @@ LoadUserFromCookie = function() {
         success: function(data) {
             if (!data.Success) {
                 $('#blockingDiv').hide();
+                Alert(false, data.message);
                 return;
             }
 
@@ -735,7 +720,7 @@ User = function(sessionId, username, major) {
             contentType: 'application/json',
             success: function() {
                 $('#blockingDiv').hide();
-                Alert(true, 'Sucessfully logged out');
+                Alert(true, 'Successfully logged out');
             },
             error: function() {
                 $('#blockingDiv').hide();
@@ -778,6 +763,7 @@ RequirementSet = function(name, full) {
     /* Functions */
     self.AddCourse = function(course) {
         self.appliedCourses.push(course);
+        MakeCoursesDraggable();
     };
     self.RemoveCourse = function(course) {
         return self.appliedCourses.remove(course)[0];
@@ -859,7 +845,7 @@ ViewModel = function() {
                 Alert(false, 'There is an issue with the server, please try again later');
             }
         });
-        $('#blockingDivSpan').text('Loading your CAPP Report...');
+        $('#blockingDivSpan').text('Loading your CAPP report...');
         $('#blockingDiv').show();
     };
 };

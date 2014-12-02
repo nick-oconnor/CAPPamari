@@ -88,30 +88,30 @@
                     <td style="text-align: left;"><input id="addCourseCredits" type="number" /></td>
                 </tr>
                 <tr class="addCourseForm">
-                    <td style="text-align: right;"><input id="addCourseSumbit" type="button" onclick=" SubmitAddClassInformation() " value="Submit" /></td>
-                    <td style="text-align: left;"><input id="addCourseCancel" type="button" onclick=" CancelAddClass() " value="Cancel" /></td>
+                    <td style="text-align: right;"><input id="addCourseSumbit" type="button" onclick=" SubmitAddCourseInformation() " value="Submit" /></td>
+                    <td style="text-align: left;"><input id="addCourseCancel" type="button" onclick=" CancelAddCourse() " value="Cancel" /></td>
                 </tr>
-                <tr class="addCourseForm">
+                <tr class="addCourseForm importCsvForm">
                     <td style="text-align: right;">O</td>
                     <td style="text-align: left;">R</td>
                 </tr>
-                <tr>
+                <tr class="importCsvForm">
                     <td></td>
                     <td style="text-align: left;"><input id="csvFileInput" type="file" accept=".csv" onchange=" CheckForCsvFile() " /></td>
                 </tr>
-                <tr>
+                <tr class="importCsvForm">
                     <td style="text-align: right;"><input id="csvAutoPopulateCheckbox" type="checkbox" checked="checked" /></td>
                     <td style="text-align: left;">Auto-populate courses</td>
                 </tr>
-                <tr>
-                    <td style="text-align: right;"><input id="csvImportbutton" type="button" value="Import" onclick=" ImportCsvFile() "/></td>
-                    <td style="text-align: left"><input type="button" value="Cancel" onclick=" CancelAddClass() " /></td>
+                <tr class="importCsvForm">
+                    <td style="text-align: right;"><input id="csvImportbutton" type="button" value="Import" onclick=" ImportCsvFile() " /></td>
+                    <td style="text-align: left"><input type="button" value="Cancel" onclick=" CancelAddCourse() " /></td>
                 </tr>
             </table>
         </div>
         <div id="headerBarRoot">
             <div id="headerBarWrapper">
-                <div style="font-size: 40px; position: absolute; text-align: center; width: 100%;">
+                <div id="siteName" style="font-size: 40px; position: absolute; text-align: center; width: 100%;">
                     <span style="font-family: 'Brush Script MT', cursive;">CAPPamari</span>
                 </div>
                 <div id="userHeader" style="display: none; position: relative; width: 100%;">
@@ -169,7 +169,7 @@
         <div id="mainScreen">
             <div id="sidebarRoot">
                 <div id="sidebarWrapper">
-                    <div id="addCourseButton" onclick=" ShowAddClassDialog() ">
+                    <div id="addCourseButton" onclick=" ShowAddCourseDialog() ">
                         <span>Add Course</span>
                     </div>
                     <div id="autoPopulationButton" onclick=" AutoPopulateUnappliedCourses() ">

@@ -236,8 +236,6 @@
     <Content Include="Content\themes\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\themes\fonts\FontAwesome.otf" />
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\Nicholas.pubxml" />
-    <None Include="Properties\PublishProfiles\Caroline.pubxml" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\knockout.js" />
@@ -247,6 +245,7 @@
     </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -258,13 +257,19 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <None Include="Properties\PublishProfiles\SDD.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DebugConnectionStrings.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReleaseConnectionStrings.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

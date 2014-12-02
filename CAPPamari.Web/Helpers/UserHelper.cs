@@ -25,9 +25,9 @@ namespace CAPPamari.Web.Helpers
         /// <returns>ApplicationUserModel for Username</returns>
         public static ApplicationUserModel GetApplicationUser(string username)
         {
-            int sessionId = EntitiesHelper.GetSessionId(username);
-            string major = EntitiesHelper.GetMajor(username);
-            List<Advisor> dbAdvisors = EntitiesHelper.GetAdvisors(username);
+            var sessionId = EntitiesHelper.GetSessionId(username);
+            var major = EntitiesHelper.GetMajor(username);
+            var dbAdvisors = EntitiesHelper.GetAdvisors(username);
             var advisors = new List<AdvisorModel>();
             dbAdvisors.ForEach(dbAd => advisors.Add(new AdvisorModel
             {
@@ -45,7 +45,7 @@ namespace CAPPamari.Web.Helpers
         /// <returns>SessionID of new session for Username</returns>
         public static int CreateUserSession(string username)
         {
-            int sessionId = EntitiesHelper.CreateNewSession(username);
+            var sessionId = EntitiesHelper.CreateNewSession(username);
             return sessionId;
         }
 
@@ -55,7 +55,7 @@ namespace CAPPamari.Web.Helpers
         /// <param name="username">Username for user to destory current session</param>
         public static void DestroySession(string username)
         {
-            int sessionId = EntitiesHelper.GetSessionId(username);
+            var sessionId = EntitiesHelper.GetSessionId(username);
             EntitiesHelper.RemoveSession(sessionId, username);
         }
 
@@ -79,7 +79,7 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success status of advisor add</returns>
         public static bool AddAdvisor(string username, AdvisorModel newAdvisor)
         {
-            int advisorId = EntitiesHelper.GetAdvisorId(newAdvisor.Name, newAdvisor.Email);
+            var advisorId = EntitiesHelper.GetAdvisorId(newAdvisor.Name, newAdvisor.Email);
             if (advisorId == -1)
             {
                 advisorId = EntitiesHelper.AddAdvisor(newAdvisor.Name, newAdvisor.Email);
@@ -105,7 +105,7 @@ namespace CAPPamari.Web.Helpers
         /// <returns>Success status of the addvisor remove</returns>
         public static bool RemoveAdvisor(string username, AdvisorModel oldAdvisor)
         {
-            int advisorId = EntitiesHelper.GetAdvisorId(oldAdvisor.Name, oldAdvisor.Email);
+            var advisorId = EntitiesHelper.GetAdvisorId(oldAdvisor.Name, oldAdvisor.Email);
             return advisorId != -1 && EntitiesHelper.DisassociateAdvisorAndUser(username, advisorId);
         }
 
@@ -116,7 +116,7 @@ namespace CAPPamari.Web.Helpers
         /// <returns>ApplicationUserModel extracted from the cookie or null if the session is old or nonexistent</returns>
         public static ApplicationUserModel GetUserFromCookie(string userCookie)
         {
-            string[] fields = userCookie.Split('#');
+            var fields = userCookie.Split('#');
             if (fields.Length != 2) return null;
 
             int sessionId;

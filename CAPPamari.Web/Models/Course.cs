@@ -11,11 +11,7 @@
 
 namespace CAPPamari.Web.Models
 {
-
-using System;
-    using System.Collections.Generic;
-    
-public partial class Course
+    public partial class Course
 {
 
     public int CourseID { get; set; }

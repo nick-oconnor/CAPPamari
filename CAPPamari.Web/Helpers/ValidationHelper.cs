@@ -13,17 +13,18 @@ namespace CAPPamari.Web.Helpers
         /// <returns>True if credentials are valid, false otherwise.</returns>
         public static ValidationStatus Validate(string username, string password = null, int sessionId = -1)
         {
-            if (password == null && sessionId == -1) return ValidationStatus.BadInput;
+            if (string.IsNullOrEmpty(username) || (password == null && sessionId == -1)) return ValidationStatus.BadInput;
+
+            if (!EntitiesHelper.UsernameExists(username)) return ValidationStatus.NoSuchUsername;
 
             if (password != null)
             {
-                string currentPassword = EntitiesHelper.GetPassword(username);
-                if (string.IsNullOrEmpty(password)) return ValidationStatus.NoSuchUsername;
+                var currentPassword = EntitiesHelper.GetPassword(username);
                 if (currentPassword == password) return ValidationStatus.Validated;
                 return ValidationStatus.IncorrectPassword;
             }
             if (sessionId <= -1) return ValidationStatus.BadInput;
-            int currentSessionId = EntitiesHelper.GetSessionId(username);
+            var currentSessionId = EntitiesHelper.GetSessionId(username);
             if (currentSessionId != sessionId) return ValidationStatus.InvalidSession;
             return DateTime.Now < EntitiesHelper.GetSessionExpiration(currentSessionId)
                 ? ValidationStatus.Validated

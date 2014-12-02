@@ -21,9 +21,9 @@ namespace CAPPamari.Web.Controllers
                     ApiResponse<ApplicationUserModel>.FailureResponse(
                         "Your session is bad, please refresh and sign back in");
             }
-            bool success = UserHelper.UpdateUser(request.Username, request.Password, request.Major);
-            ApplicationUserModel userData = success ? UserHelper.GetApplicationUser(request.Username) : null;
-            string message = success ? "Account updated successfully" : "Could not update account";
+            var success = UserHelper.UpdateUser(request.Username, request.Password, request.Major);
+            var userData = success ? UserHelper.GetApplicationUser(request.Username) : null;
+            var message = success ? "Account updated successfully" : "Could not update account";
             return ApiResponse<ApplicationUserModel>.From(success, message, userData);
         }
 
@@ -39,8 +39,8 @@ namespace CAPPamari.Web.Controllers
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = UserHelper.AddAdvisor(request.Username, request.Advisor);
-            string message = success ? "Advisor added successfully" : "Could not add advisor";
+            var success = UserHelper.AddAdvisor(request.Username, request.Advisor);
+            var message = success ? "Advisor added successfully" : "Could not add advisor";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
@@ -56,8 +56,8 @@ namespace CAPPamari.Web.Controllers
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = UserHelper.RemoveAdvisor(request.Username, request.Advisor);
-            string message = success ? "Advisor removed successfully" : "Advisor could not be removed";
+            var success = UserHelper.RemoveAdvisor(request.Username, request.Advisor);
+            var message = success ? "Advisor removed successfully" : "Advisor could not be removed";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
@@ -68,8 +68,8 @@ namespace CAPPamari.Web.Controllers
         /// <returns>Bool denoting whether or not the advisor was updated.</returns>
         public ApiResponse<bool> UpdateAdvisor([FromBody] AdvisorModel request)
         {
-            bool success = UserHelper.UpdateAdvisor(request);
-            string message = success ? "Advisor updated successfully" : "Could not update advisor";
+            var success = UserHelper.UpdateAdvisor(request);
+            var message = success ? "Advisor updated successfully" : "Could not update advisor";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
@@ -85,16 +85,16 @@ namespace CAPPamari.Web.Controllers
             {
                 return ApiResponse<bool>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            bool success = EmailHelper.EmailToAdvisor(request.Username, request.Advisor);
-            string message = success ? "Email sent successfully" : "Email could not be sent";
+            var success = EmailHelper.EmailToAdvisor(request.Username, request.Advisor);
+            var message = success ? "Email sent successfully" : "Email could not be sent";
             return ApiResponse<bool>.SuccessResponse(message, success);
         }
 
         /// <summary>
-        ///     Load a CAPP Report for a user
+        ///     Load a CAPP report for a user
         /// </summary>
-        /// <param name="userName">Username of user to load CAPP Report for</param>
-        /// <returns>CAPPReportModel containing user's CAPP Report</returns>
+        /// <param name="userName">Username of user to load CAPP report for</param>
+        /// <returns>CAPPReportModel containing user's CAPP report</returns>
         [HttpPost]
         public ApiResponse<CappReportModel> GetCappReport([FromBody] string userName)
         {
@@ -103,11 +103,11 @@ namespace CAPPamari.Web.Controllers
                 return
                     ApiResponse<CappReportModel>.FailureResponse("Your session is bad, please refresh and sign back in.");
             }
-            CappReportModel cappReport = CourseHelper.GetCappReport(userName);
-            string message = cappReport == null
-                ? "CAPP Report not found for user " + userName
-                : "CAPP Report loaded successfully";
-            cappReport.CheckRequirementSetFulfillments();
+            var cappReport = CourseHelper.GetCappReport(userName);
+            var message = cappReport == null
+                ? "CAPP report not found for user " + userName
+                : "CAPP report loaded successfully";
+            if (cappReport != null) cappReport.CheckRequirementSetFulfillments();
             return ApiResponse<CappReportModel>.From(cappReport != null, message, cappReport);
         }
 
@@ -118,10 +118,10 @@ namespace CAPPamari.Web.Controllers
         /// <returns>ApplicationUserModel for user or null if the cookie is bad</returns>
         public ApiResponse<ApplicationUserModel> LoadFromUserSessionCookie([FromBody] string userSessionCookie)
         {
-            ApplicationUserModel user = UserHelper.GetUserFromCookie(userSessionCookie);
-            bool success = user != null;
-            string message = success
-                ? "User loaded successfully from the session cookie"
+            var user = UserHelper.GetUserFromCookie(userSessionCookie);
+            var success = user != null;
+            var message = success
+                ? "User loaded from the session cookie successfully"
                 : "User could not be loaded from the session cookie";
             return ApiResponse<ApplicationUserModel>.From(success, message, user);
         }

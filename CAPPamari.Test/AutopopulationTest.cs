@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CAPPamari.Web.Helpers;
-using CAPPamari.Web.Models;
 using CAPPamari.Web.Models.Requirements;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,24 +19,24 @@ namespace CAPPamari.Test
 
             var csci4440 = new RequirementModel();
             csci4440.CourseFulfillments.Add(new CourseFulfillmentModel("CSCI", "4440"));
-            var csci1XXX = new RequirementModel();
-            csci1XXX.CourseFulfillments.Add(new CourseFulfillmentModel("CSCI", "1xxx"));
+            var csci1Xxx = new RequirementModel();
+            csci1Xxx.CourseFulfillments.Add(new CourseFulfillmentModel("CSCI", "1xxx"));
 
             csciSet.Requirements.Add(csci4440);
-            csciSet.Requirements.Add(csci1XXX);
+            csciSet.Requirements.Add(csci1Xxx);
 
             reqSets.Add(csciSet);
 
             //fill out courses
             var reader = new StreamReader(File.OpenRead(@"testParser.csv"));
-            string input = "";
+            var input = "";
             while (!reader.EndOfStream)
             {
                 input = input + reader.ReadLine() + "\n";
             }
             reader.Close();
 
-            List<CourseModel> courses = CsvParserHelper.Parse(input).ToList();
+            var courses = CsvParserHelper.Parse(input).ToList();
 
             AutoPopulationHelper.AutoPopulate(reqSets, courses);
 

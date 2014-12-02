@@ -8,7 +8,7 @@ namespace CAPPamari.Web.Models
     {
         public static CappReportModel ToCappReportModel(this CAPPReport entitiyCappReport)
         {
-            List<RequirementSetModel> reqsets = entitiyCappReport.RequirementSets.Count > 0
+            var reqsets = entitiyCappReport.RequirementSets.Count > 0
                 ? entitiyCappReport.RequirementSets.Select(reqset => reqset.ToRequirementSetModel()).ToList()
                 : new List<RequirementSetModel>();
             List<RequirementModel> reqs = entitiyCappReport.Requirements.Count > 0
@@ -30,7 +30,7 @@ namespace CAPPamari.Web.Models
             List<RequirementModel> reqReqs = entityRequirementSet.RequirementSetRequirements.Count > 0
                 ? entityRequirementSet.RequirementSetRequirements.Select(req => req.ToRequirementModel()).ToList()
                 : new List<RequirementModel>();
-            List<CourseModel> courses = entityRequirementSet.Courses.Count > 0
+            var courses = entityRequirementSet.Courses.Count > 0
                 ? entityRequirementSet.Courses.Select(course => course.ToCourseModel()).ToList()
                 : new List<CourseModel>();
             return new RequirementSetModel
