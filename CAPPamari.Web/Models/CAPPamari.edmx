@@ -4,363 +4,363 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CappamariModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Advises">
-          <Key>
-            <PropertyRef Name="AdvisorID" />
-            <PropertyRef Name="Username" />
-          </Key>
-          <Property Name="AdvisorID" Type="int" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Advisor">
-          <Key>
-            <PropertyRef Name="AdvisorID" />
-          </Key>
-          <Property Name="AdvisorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="EmailAddress" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ApplicationUser">
-          <Key>
-            <PropertyRef Name="Username" />
-          </Key>
-          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="Major" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CAPPReport">
-          <Key>
-            <PropertyRef Name="ReportID" />
-          </Key>
-          <Property Name="ReportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CAPPReportRequirement">
-          <Key>
-            <PropertyRef Name="CAPPReportID" />
-            <PropertyRef Name="RequirementID" />
-          </Key>
-          <Property Name="CAPPReportID" Type="int" Nullable="false" />
-          <Property Name="RequirementID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Course">
-          <Key>
-            <PropertyRef Name="CourseID" />
-          </Key>
-          <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Department" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Number" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Semester" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="PassNC" Type="bit" Nullable="false" />
-          <Property Name="Grade" Type="float" Nullable="false" />
-          <Property Name="Credits" Type="int" Nullable="false" />
-          <Property Name="RequirementSetID" Type="int" Nullable="false" />
-          <Property Name="CommunicationIntensive" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CourseFulfillment">
-          <Key>
-            <PropertyRef Name="CourseFulfillmentID" />
-          </Key>
-          <Property Name="CourseFulfillmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DepartmentCode" Type="varchar" MaxLength="4" Nullable="false" />
-          <Property Name="CourseNumber" Type="varchar" MaxLength="4" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Required">
-          <Key>
-            <PropertyRef Name="RequirementSetID" />
-            <PropertyRef Name="RequirementID" />
-          </Key>
-          <Property Name="RequirementSetID" Type="int" Nullable="false" />
-          <Property Name="RequirementID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Requirement">
-          <Key>
-            <PropertyRef Name="RequirementID" />
-          </Key>
-          <Property Name="RequirementID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CreditsNeeded" Type="int" Nullable="false" />
-          <Property Name="CommunicationIntensive" Type="bit" Nullable="false" />
-          <Property Name="Exclusion" Type="bit" Nullable="false" />
-          <Property Name="PassNoCreditCreditsAllowed" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RequirementFulfillment">
-          <Key>
-            <PropertyRef Name="RequirementID" />
-            <PropertyRef Name="CourseFulfillmentID" />
-          </Key>
-          <Property Name="RequirementID" Type="int" Nullable="false" />
-          <Property Name="CourseFulfillmentID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RequirementSet">
-          <Key>
-            <PropertyRef Name="RequirementSetID" />
-          </Key>
-          <Property Name="RequirementSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Credits" Type="int" Nullable="false" />
-          <Property Name="PassNCCredits" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CAPPReportID" Type="int" Nullable="false" />
-          <Property Name="DepthRSR" Type="bit" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="4096" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RequirementSetRequirement">
-          <Key>
-            <PropertyRef Name="RequirementSetID" />
-            <PropertyRef Name="RequirementID" />
-          </Key>
-          <Property Name="RequirementSetID" Type="int" Nullable="false" />
-          <Property Name="RequirementID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserSession">
-          <Key>
-            <PropertyRef Name="SessionID" />
-          </Key>
-          <Property Name="SessionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="Expiration" Type="datetime" Nullable="false" />
-        </EntityType>
-        <Association Name="FK__CAPPRepor__CAPPR__0E6E26BF">
-          <End Role="CAPPReport" Type="Self.CAPPReport" Multiplicity="1" />
-          <End Role="CAPPReportRequirement" Type="Self.CAPPReportRequirement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CAPPReport">
-              <PropertyRef Name="ReportID" />
-            </Principal>
-            <Dependent Role="CAPPReportRequirement">
-              <PropertyRef Name="CAPPReportID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__CAPPRepor__Requi__0F624AF8">
-          <End Role="Requirement" Type="Self.Requirement" Multiplicity="1" />
-          <End Role="CAPPReportRequirement" Type="Self.CAPPReportRequirement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Requirement">
-              <PropertyRef Name="RequirementID" />
-            </Principal>
-            <Dependent Role="CAPPReportRequirement">
-              <PropertyRef Name="RequirementID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Required__Requir__08B54D69">
-          <End Role="RequirementSet" Type="Self.RequirementSet" Multiplicity="1" />
-          <End Role="Required" Type="Self.Required" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RequirementSet">
-              <PropertyRef Name="RequirementSetID" />
-            </Principal>
-            <Dependent Role="Required">
-              <PropertyRef Name="RequirementSetID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Required__Requir__09A971A2">
-          <End Role="Requirement" Type="Self.Requirement" Multiplicity="1" />
-          <End Role="Required" Type="Self.Required" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Requirement">
-              <PropertyRef Name="RequirementID" />
-            </Principal>
-            <Dependent Role="Required">
-              <PropertyRef Name="RequirementID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requireme__Cours__06CD04F7">
-          <End Role="CourseFulfillment" Type="Self.CourseFulfillment" Multiplicity="1" />
-          <End Role="RequirementFulfillment" Type="Self.RequirementFulfillment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CourseFulfillment">
-              <PropertyRef Name="CourseFulfillmentID" />
-            </Principal>
-            <Dependent Role="RequirementFulfillment">
-              <PropertyRef Name="CourseFulfillmentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requireme__Requi__05D8E0BE">
-          <End Role="Requirement" Type="Self.Requirement" Multiplicity="1" />
-          <End Role="RequirementFulfillment" Type="Self.RequirementFulfillment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Requirement">
-              <PropertyRef Name="RequirementID" />
-            </Principal>
-            <Dependent Role="RequirementFulfillment">
-              <PropertyRef Name="RequirementID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requireme__Requi__0B91BA14">
-          <End Role="RequirementSet" Type="Self.RequirementSet" Multiplicity="1" />
-          <End Role="RequirementSetRequirement" Type="Self.RequirementSetRequirement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RequirementSet">
-              <PropertyRef Name="RequirementSetID" />
-            </Principal>
-            <Dependent Role="RequirementSetRequirement">
-              <PropertyRef Name="RequirementSetID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requireme__Requi__0C85DE4D">
-          <End Role="Requirement" Type="Self.Requirement" Multiplicity="1" />
-          <End Role="RequirementSetRequirement" Type="Self.RequirementSetRequirement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Requirement">
-              <PropertyRef Name="RequirementID" />
-            </Principal>
-            <Dependent Role="RequirementSetRequirement">
-              <PropertyRef Name="RequirementID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AdvisorID">
-          <End Role="Advisor" Type="Self.Advisor" Multiplicity="1" />
-          <End Role="Advises" Type="Self.Advises" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Advisor">
-              <PropertyRef Name="AdvisorID" />
-            </Principal>
-            <Dependent Role="Advises">
-              <PropertyRef Name="AdvisorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ApplicationUser">
-          <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
-          <End Role="Advises" Type="Self.Advises" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationUser">
-              <PropertyRef Name="Username" />
-            </Principal>
-            <Dependent Role="Advises">
-              <PropertyRef Name="Username" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CAPPReport_ApplicationUser">
-          <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
-          <End Role="CAPPReport" Type="Self.CAPPReport" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationUser">
-              <PropertyRef Name="Username" />
-            </Principal>
-            <Dependent Role="CAPPReport">
-              <PropertyRef Name="Username" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Course_RequirementSet">
-          <End Role="RequirementSet" Type="Self.RequirementSet" Multiplicity="1" />
-          <End Role="Course" Type="Self.Course" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RequirementSet">
-              <PropertyRef Name="RequirementSetID" />
-            </Principal>
-            <Dependent Role="Course">
-              <PropertyRef Name="RequirementSetID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RequirementSet_CAPPRerport">
-          <End Role="CAPPReport" Type="Self.CAPPReport" Multiplicity="1" />
-          <End Role="RequirementSet" Type="Self.RequirementSet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CAPPReport">
-              <PropertyRef Name="ReportID" />
-            </Principal>
-            <Dependent Role="RequirementSet">
-              <PropertyRef Name="CAPPReportID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserSession_ApplicationUser">
-          <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
-          <End Role="UserSession" Type="Self.UserSession" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationUser">
-              <PropertyRef Name="Username" />
-            </Principal>
-            <Dependent Role="UserSession">
-              <PropertyRef Name="Username" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="CappamariModelStoreContainer">
-          <EntitySet Name="Advises" EntityType="Self.Advises" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Advisor" EntityType="Self.Advisor" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ApplicationUser" EntityType="Self.ApplicationUser" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CAPPReport" EntityType="Self.CAPPReport" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CAPPReportRequirement" EntityType="Self.CAPPReportRequirement" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CourseFulfillment" EntityType="Self.CourseFulfillment" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Required" EntityType="Self.Required" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Requirement" EntityType="Self.Requirement" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RequirementFulfillment" EntityType="Self.RequirementFulfillment" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RequirementSet" EntityType="Self.RequirementSet" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RequirementSetRequirement" EntityType="Self.RequirementSetRequirement" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserSession" EntityType="Self.UserSession" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__CAPPRepor__CAPPR__0E6E26BF" Association="Self.FK__CAPPRepor__CAPPR__0E6E26BF">
-            <End Role="CAPPReport" EntitySet="CAPPReport" />
-            <End Role="CAPPReportRequirement" EntitySet="CAPPReportRequirement" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CAPPRepor__Requi__0F624AF8" Association="Self.FK__CAPPRepor__Requi__0F624AF8">
-            <End Role="Requirement" EntitySet="Requirement" />
-            <End Role="CAPPReportRequirement" EntitySet="CAPPReportRequirement" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Required__Requir__08B54D69" Association="Self.FK__Required__Requir__08B54D69">
-            <End Role="RequirementSet" EntitySet="RequirementSet" />
-            <End Role="Required" EntitySet="Required" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Required__Requir__09A971A2" Association="Self.FK__Required__Requir__09A971A2">
-            <End Role="Requirement" EntitySet="Requirement" />
-            <End Role="Required" EntitySet="Required" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requireme__Cours__06CD04F7" Association="Self.FK__Requireme__Cours__06CD04F7">
-            <End Role="CourseFulfillment" EntitySet="CourseFulfillment" />
-            <End Role="RequirementFulfillment" EntitySet="RequirementFulfillment" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requireme__Requi__05D8E0BE" Association="Self.FK__Requireme__Requi__05D8E0BE">
-            <End Role="Requirement" EntitySet="Requirement" />
-            <End Role="RequirementFulfillment" EntitySet="RequirementFulfillment" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requireme__Requi__0B91BA14" Association="Self.FK__Requireme__Requi__0B91BA14">
-            <End Role="RequirementSet" EntitySet="RequirementSet" />
-            <End Role="RequirementSetRequirement" EntitySet="RequirementSetRequirement" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requireme__Requi__0C85DE4D" Association="Self.FK__Requireme__Requi__0C85DE4D">
-            <End Role="Requirement" EntitySet="Requirement" />
-            <End Role="RequirementSetRequirement" EntitySet="RequirementSetRequirement" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AdvisorID" Association="Self.FK_AdvisorID">
-            <End Role="Advisor" EntitySet="Advisor" />
-            <End Role="Advises" EntitySet="Advises" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ApplicationUser" Association="Self.FK_ApplicationUser">
-            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
-            <End Role="Advises" EntitySet="Advises" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CAPPReport_ApplicationUser" Association="Self.FK_CAPPReport_ApplicationUser">
-            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
-            <End Role="CAPPReport" EntitySet="CAPPReport" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Course_RequirementSet" Association="Self.FK_Course_RequirementSet">
-            <End Role="RequirementSet" EntitySet="RequirementSet" />
-            <End Role="Course" EntitySet="Course" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RequirementSet_CAPPRerport" Association="Self.FK_RequirementSet_CAPPRerport">
-            <End Role="CAPPReport" EntitySet="CAPPReport" />
-            <End Role="RequirementSet" EntitySet="RequirementSet" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserSession_ApplicationUser" Association="Self.FK_UserSession_ApplicationUser">
-            <End Role="ApplicationUser" EntitySet="ApplicationUser" />
-            <End Role="UserSession" EntitySet="UserSession" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+    <Schema Namespace="CappamariModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="CappamariModelStoreContainer">
+    <EntitySet Name="Advisors" EntityType="CappamariModel.Store.Advisors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ApplicationUsers" EntityType="CappamariModel.Store.ApplicationUsers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CAPPReports" EntityType="CappamariModel.Store.CAPPReports" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Courses" EntityType="CappamariModel.Store.Courses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CourseFulfillments" EntityType="CappamariModel.Store.CourseFulfillments" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Requirements" EntityType="CappamariModel.Store.Requirements" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserSessions" EntityType="CappamariModel.Store.UserSessions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RequirementSets" EntityType="CappamariModel.Store.RequirementSets" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CAPPReportRequirement" EntityType="CappamariModel.Store.CAPPReportRequirement" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RequirementFulfillment" EntityType="CappamariModel.Store.RequirementFulfillment" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Required" EntityType="CappamariModel.Store.Required" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RequirementSetRequirement" EntityType="CappamariModel.Store.RequirementSetRequirement" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Advises" EntityType="CappamariModel.Store.Advises" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_CAPPReport_ApplicationUser" Association="CappamariModel.Store.FK_CAPPReport_ApplicationUser">
+      <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+      <End Role="CAPPReport" EntitySet="CAPPReports" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserSession_ApplicationUser" Association="CappamariModel.Store.FK_UserSession_ApplicationUser">
+      <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+      <End Role="UserSession" EntitySet="UserSessions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CAPPReportRequirement_CAPPReport" Association="CappamariModel.Store.FK_CAPPReportRequirement_CAPPReport">
+      <End Role="CAPPReport" EntitySet="CAPPReports" />
+      <End Role="CAPPReportRequirement" EntitySet="CAPPReportRequirement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CAPPReportRequirement_Requirement" Association="CappamariModel.Store.FK_CAPPReportRequirement_Requirement">
+      <End Role="Requirement" EntitySet="Requirements" />
+      <End Role="CAPPReportRequirement" EntitySet="CAPPReportRequirement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequirementFulfillment_CourseFulfillment" Association="CappamariModel.Store.FK_RequirementFulfillment_CourseFulfillment">
+      <End Role="CourseFulfillment" EntitySet="CourseFulfillments" />
+      <End Role="RequirementFulfillment" EntitySet="RequirementFulfillment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequirementFulfillment_Requirement" Association="CappamariModel.Store.FK_RequirementFulfillment_Requirement">
+      <End Role="Requirement" EntitySet="Requirements" />
+      <End Role="RequirementFulfillment" EntitySet="RequirementFulfillment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequirementSet_CAPPRerport" Association="CappamariModel.Store.FK_RequirementSet_CAPPRerport">
+      <End Role="CAPPReport" EntitySet="CAPPReports" />
+      <End Role="RequirementSet" EntitySet="RequirementSets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Course_RequirementSet" Association="CappamariModel.Store.FK_Course_RequirementSet">
+      <End Role="RequirementSet" EntitySet="RequirementSets" />
+      <End Role="Course" EntitySet="Courses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Required_RequirementSet" Association="CappamariModel.Store.FK_Required_RequirementSet">
+      <End Role="RequirementSet" EntitySet="RequirementSets" />
+      <End Role="Required" EntitySet="Required" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Required_Requirement" Association="CappamariModel.Store.FK_Required_Requirement">
+      <End Role="Requirement" EntitySet="Requirements" />
+      <End Role="Required" EntitySet="Required" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequirementSetRequirement_RequirementSet" Association="CappamariModel.Store.FK_RequirementSetRequirement_RequirementSet">
+      <End Role="RequirementSet" EntitySet="RequirementSets" />
+      <End Role="RequirementSetRequirement" EntitySet="RequirementSetRequirement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequirementSetRequirement_Requirement" Association="CappamariModel.Store.FK_RequirementSetRequirement_Requirement">
+      <End Role="Requirement" EntitySet="Requirements" />
+      <End Role="RequirementSetRequirement" EntitySet="RequirementSetRequirement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Advises_Advisor" Association="CappamariModel.Store.FK_Advises_Advisor">
+      <End Role="Advisor" EntitySet="Advisors" />
+      <End Role="Advises" EntitySet="Advises" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Advises_ApplicationUser" Association="CappamariModel.Store.FK_Advises_ApplicationUser">
+      <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+      <End Role="Advises" EntitySet="Advises" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Advisors">
+    <Key>
+      <PropertyRef Name="AdvisorID" />
+    </Key>
+    <Property Name="AdvisorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="EmailAddress" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ApplicationUsers">
+    <Key>
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="25" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="25" />
+    <Property Name="Major" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="CAPPReports">
+    <Key>
+      <PropertyRef Name="ReportID" />
+    </Key>
+    <Property Name="ReportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="25" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="Courses">
+    <Key>
+      <PropertyRef Name="CourseID" />
+    </Key>
+    <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Department" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Number" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Semester" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PassNC" Type="bit" Nullable="false" />
+    <Property Name="Grade" Type="float" Nullable="false" />
+    <Property Name="Credits" Type="int" Nullable="false" />
+    <Property Name="RequirementSetID" Type="int" Nullable="false" />
+    <Property Name="CommunicationIntensive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CourseFulfillments">
+    <Key>
+      <PropertyRef Name="CourseFulfillmentID" />
+    </Key>
+    <Property Name="CourseFulfillmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DepartmentCode" Type="varchar" Nullable="false" MaxLength="4" />
+    <Property Name="CourseNumber" Type="varchar" Nullable="false" MaxLength="4" />
+  </EntityType>
+  <EntityType Name="Requirements">
+    <Key>
+      <PropertyRef Name="RequirementID" />
+    </Key>
+    <Property Name="RequirementID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreditsNeeded" Type="int" Nullable="false" />
+    <Property Name="CommunicationIntensive" Type="bit" Nullable="false" />
+    <Property Name="Exclusion" Type="bit" Nullable="false" />
+    <Property Name="PassNoCreditCreditsAllowed" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserSessions">
+    <Key>
+      <PropertyRef Name="SessionID" />
+    </Key>
+    <Property Name="SessionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="25" />
+    <Property Name="Expiration" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RequirementSets">
+    <Key>
+      <PropertyRef Name="RequirementSetID" />
+    </Key>
+    <Property Name="RequirementSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Credits" Type="int" Nullable="false" />
+    <Property Name="PassNCCredits" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="CAPPReportID" Type="int" Nullable="false" />
+    <Property Name="DepthRSR" Type="bit" Nullable="false" />
+    <Property Name="Description" Type="varchar" Nullable="false" MaxLength="4096" />
+  </EntityType>
+  <EntityType Name="CAPPReportRequirement">
+    <Key>
+      <PropertyRef Name="CAPPReports_ReportID" />
+      <PropertyRef Name="Requirements_RequirementID" />
+    </Key>
+    <Property Name="CAPPReports_ReportID" Type="int" Nullable="false" />
+    <Property Name="Requirements_RequirementID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RequirementFulfillment">
+    <Key>
+      <PropertyRef Name="CourseFulfillments_CourseFulfillmentID" />
+      <PropertyRef Name="Requirements_RequirementID" />
+    </Key>
+    <Property Name="CourseFulfillments_CourseFulfillmentID" Type="int" Nullable="false" />
+    <Property Name="Requirements_RequirementID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Required">
+    <Key>
+      <PropertyRef Name="RequirementSets_RequirementSetID" />
+      <PropertyRef Name="Requirements_RequirementID" />
+    </Key>
+    <Property Name="RequirementSets_RequirementSetID" Type="int" Nullable="false" />
+    <Property Name="Requirements_RequirementID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RequirementSetRequirement">
+    <Key>
+      <PropertyRef Name="RequirementSets1_RequirementSetID" />
+      <PropertyRef Name="RequirementSetRequirements_RequirementID" />
+    </Key>
+    <Property Name="RequirementSets1_RequirementSetID" Type="int" Nullable="false" />
+    <Property Name="RequirementSetRequirements_RequirementID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Advises">
+    <Key>
+      <PropertyRef Name="Advisors_AdvisorID" />
+      <PropertyRef Name="ApplicationUsers_Username" />
+    </Key>
+    <Property Name="Advisors_AdvisorID" Type="int" Nullable="false" />
+    <Property Name="ApplicationUsers_Username" Type="varchar" Nullable="false" MaxLength="25" />
+  </EntityType>
+  <Association Name="FK_CAPPReport_ApplicationUser">
+    <End Role="ApplicationUser" Type="CappamariModel.Store.ApplicationUsers" Multiplicity="1" />
+    <End Role="CAPPReport" Type="CappamariModel.Store.CAPPReports" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApplicationUser">
+        <PropertyRef Name="Username" />
+      </Principal>
+      <Dependent Role="CAPPReport">
+        <PropertyRef Name="Username" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserSession_ApplicationUser">
+    <End Role="ApplicationUser" Type="CappamariModel.Store.ApplicationUsers" Multiplicity="1" />
+    <End Role="UserSession" Type="CappamariModel.Store.UserSessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApplicationUser">
+        <PropertyRef Name="Username" />
+      </Principal>
+      <Dependent Role="UserSession">
+        <PropertyRef Name="Username" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequirementSet_CAPPRerport">
+    <End Role="CAPPReport" Type="CappamariModel.Store.CAPPReports" Multiplicity="1" />
+    <End Role="RequirementSet" Type="CappamariModel.Store.RequirementSets" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CAPPReport">
+        <PropertyRef Name="ReportID" />
+      </Principal>
+      <Dependent Role="RequirementSet">
+        <PropertyRef Name="CAPPReportID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Course_RequirementSet">
+    <End Role="RequirementSet" Type="CappamariModel.Store.RequirementSets" Multiplicity="1" />
+    <End Role="Course" Type="CappamariModel.Store.Courses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequirementSet">
+        <PropertyRef Name="RequirementSetID" />
+      </Principal>
+      <Dependent Role="Course">
+        <PropertyRef Name="RequirementSetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CAPPReportRequirement_CAPPReport">
+    <End Role="CAPPReport" Type="CappamariModel.Store.CAPPReports" Multiplicity="1" />
+    <End Role="CAPPReportRequirement" Type="CappamariModel.Store.CAPPReportRequirement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CAPPReport">
+        <PropertyRef Name="ReportID" />
+      </Principal>
+      <Dependent Role="CAPPReportRequirement">
+        <PropertyRef Name="CAPPReports_ReportID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CAPPReportRequirement_Requirement">
+    <End Role="CAPPReportRequirement" Type="CappamariModel.Store.CAPPReportRequirement" Multiplicity="*" />
+    <End Role="Requirement" Type="CappamariModel.Store.Requirements" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Requirement">
+        <PropertyRef Name="RequirementID" />
+      </Principal>
+      <Dependent Role="CAPPReportRequirement">
+        <PropertyRef Name="Requirements_RequirementID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequirementFulfillment_CourseFulfillment">
+    <End Role="CourseFulfillment" Type="CappamariModel.Store.CourseFulfillments" Multiplicity="1" />
+    <End Role="RequirementFulfillment" Type="CappamariModel.Store.RequirementFulfillment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CourseFulfillment">
+        <PropertyRef Name="CourseFulfillmentID" />
+      </Principal>
+      <Dependent Role="RequirementFulfillment">
+        <PropertyRef Name="CourseFulfillments_CourseFulfillmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequirementFulfillment_Requirement">
+    <End Role="RequirementFulfillment" Type="CappamariModel.Store.RequirementFulfillment" Multiplicity="*" />
+    <End Role="Requirement" Type="CappamariModel.Store.Requirements" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Requirement">
+        <PropertyRef Name="RequirementID" />
+      </Principal>
+      <Dependent Role="RequirementFulfillment">
+        <PropertyRef Name="Requirements_RequirementID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Required_RequirementSet">
+    <End Role="RequirementSet" Type="CappamariModel.Store.RequirementSets" Multiplicity="1" />
+    <End Role="Required" Type="CappamariModel.Store.Required" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequirementSet">
+        <PropertyRef Name="RequirementSetID" />
+      </Principal>
+      <Dependent Role="Required">
+        <PropertyRef Name="RequirementSets_RequirementSetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Required_Requirement">
+    <End Role="Required" Type="CappamariModel.Store.Required" Multiplicity="*" />
+    <End Role="Requirement" Type="CappamariModel.Store.Requirements" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Requirement">
+        <PropertyRef Name="RequirementID" />
+      </Principal>
+      <Dependent Role="Required">
+        <PropertyRef Name="Requirements_RequirementID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequirementSetRequirement_RequirementSet">
+    <End Role="RequirementSet" Type="CappamariModel.Store.RequirementSets" Multiplicity="1" />
+    <End Role="RequirementSetRequirement" Type="CappamariModel.Store.RequirementSetRequirement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequirementSet">
+        <PropertyRef Name="RequirementSetID" />
+      </Principal>
+      <Dependent Role="RequirementSetRequirement">
+        <PropertyRef Name="RequirementSets1_RequirementSetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequirementSetRequirement_Requirement">
+    <End Role="RequirementSetRequirement" Type="CappamariModel.Store.RequirementSetRequirement" Multiplicity="*" />
+    <End Role="Requirement" Type="CappamariModel.Store.Requirements" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Requirement">
+        <PropertyRef Name="RequirementID" />
+      </Principal>
+      <Dependent Role="RequirementSetRequirement">
+        <PropertyRef Name="RequirementSetRequirements_RequirementID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Advises_Advisor">
+    <End Role="Advisor" Type="CappamariModel.Store.Advisors" Multiplicity="1" />
+    <End Role="Advises" Type="CappamariModel.Store.Advises" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Advisor">
+        <PropertyRef Name="AdvisorID" />
+      </Principal>
+      <Dependent Role="Advises">
+        <PropertyRef Name="Advisors_AdvisorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Advises_ApplicationUser">
+    <End Role="Advises" Type="CappamariModel.Store.Advises" Multiplicity="*" />
+    <End Role="ApplicationUser" Type="CappamariModel.Store.ApplicationUsers" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="ApplicationUser">
+        <PropertyRef Name="Username" />
+      </Principal>
+      <Dependent Role="Advises">
+        <PropertyRef Name="ApplicationUsers_Username" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CappamariModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -578,131 +578,131 @@
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="CappamariModelStoreContainer" CdmEntityContainer="CappamariEntities">
-          <EntitySetMapping Name="Advisors">
-            <EntityTypeMapping TypeName="CappamariModel.Advisor">
-              <MappingFragment StoreEntitySet="Advisor">
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ApplicationUsers">
-            <EntityTypeMapping TypeName="CappamariModel.ApplicationUser">
-              <MappingFragment StoreEntitySet="ApplicationUser">
-                <ScalarProperty Name="Major" ColumnName="Major" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CAPPReports">
-            <EntityTypeMapping TypeName="CappamariModel.CAPPReport">
-              <MappingFragment StoreEntitySet="CAPPReport">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="ReportID" ColumnName="ReportID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Courses">
-            <EntityTypeMapping TypeName="CappamariModel.Course">
-              <MappingFragment StoreEntitySet="Course">
-                <ScalarProperty Name="CommunicationIntensive" ColumnName="CommunicationIntensive" />
-                <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
-                <ScalarProperty Name="Credits" ColumnName="Credits" />
-                <ScalarProperty Name="Grade" ColumnName="Grade" />
-                <ScalarProperty Name="PassNC" ColumnName="PassNC" />
-                <ScalarProperty Name="Semester" ColumnName="Semester" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
-                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CourseFulfillments">
-            <EntityTypeMapping TypeName="CappamariModel.CourseFulfillment">
-              <MappingFragment StoreEntitySet="CourseFulfillment">
-                <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
-                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
-                <ScalarProperty Name="CourseFulfillmentID" ColumnName="CourseFulfillmentID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Requirements">
-            <EntityTypeMapping TypeName="CappamariModel.Requirement">
-              <MappingFragment StoreEntitySet="Requirement">
-                <ScalarProperty Name="PassNoCreditCreditsAllowed" ColumnName="PassNoCreditCreditsAllowed" />
-                <ScalarProperty Name="Exclusion" ColumnName="Exclusion" />
-                <ScalarProperty Name="CommunicationIntensive" ColumnName="CommunicationIntensive" />
-                <ScalarProperty Name="CreditsNeeded" ColumnName="CreditsNeeded" />
-                <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserSessions">
-            <EntityTypeMapping TypeName="CappamariModel.UserSession">
-              <MappingFragment StoreEntitySet="UserSession">
-                <ScalarProperty Name="Expiration" ColumnName="Expiration" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="CAPPReportRequirement" TypeName="CappamariModel.CAPPReportRequirement" StoreEntitySet="CAPPReportRequirement">
-            <EndProperty Name="Requirement">
-              <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
-            </EndProperty>
-            <EndProperty Name="CAPPReport">
-              <ScalarProperty Name="ReportID" ColumnName="CAPPReportID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="RequirementFulfillment" TypeName="CappamariModel.RequirementFulfillment" StoreEntitySet="RequirementFulfillment">
-            <EndProperty Name="Requirement">
-              <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
-            </EndProperty>
-            <EndProperty Name="CourseFulfillment">
-              <ScalarProperty Name="CourseFulfillmentID" ColumnName="CourseFulfillmentID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="RequirementSets">
-            <EntityTypeMapping TypeName="CappamariModel.RequirementSet">
-              <MappingFragment StoreEntitySet="RequirementSet">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DepthRSR" ColumnName="DepthRSR" />
-                <ScalarProperty Name="CAPPReportID" ColumnName="CAPPReportID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="PassNCCredits" ColumnName="PassNCCredits" />
-                <ScalarProperty Name="Credits" ColumnName="Credits" />
-                <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="Required" TypeName="CappamariModel.Required" StoreEntitySet="Required">
-            <EndProperty Name="Requirement">
-              <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
-            </EndProperty>
-            <EndProperty Name="RequirementSet">
-              <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="RequirementSetRequirement" TypeName="CappamariModel.RequirementSetRequirement" StoreEntitySet="RequirementSetRequirement">
-            <EndProperty Name="Requirement">
-              <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
-            </EndProperty>
-            <EndProperty Name="RequirementSet">
-              <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="Advises" TypeName="CappamariModel.Advises" StoreEntitySet="Advises">
-            <EndProperty Name="ApplicationUser">
-              <ScalarProperty Name="Username" ColumnName="Username" />
-            </EndProperty>
-            <EndProperty Name="Advisor">
-              <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
-            </EndProperty>
-          </AssociationSetMapping>
-        </EntityContainerMapping>
+    <EntitySetMapping Name="Advisors">
+      <EntityTypeMapping TypeName="IsTypeOf(CappamariModel.Advisor)">
+        <MappingFragment StoreEntitySet="Advisors">
+          <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ApplicationUsers">
+      <EntityTypeMapping TypeName="IsTypeOf(CappamariModel.ApplicationUser)">
+        <MappingFragment StoreEntitySet="ApplicationUsers">
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Major" ColumnName="Major" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CAPPReports">
+      <EntityTypeMapping TypeName="IsTypeOf(CappamariModel.CAPPReport)">
+        <MappingFragment StoreEntitySet="CAPPReports">
+          <ScalarProperty Name="ReportID" ColumnName="ReportID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Courses">
+      <EntityTypeMapping TypeName="IsTypeOf(CappamariModel.Course)">
+        <MappingFragment StoreEntitySet="Courses">
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="Semester" ColumnName="Semester" />
+          <ScalarProperty Name="PassNC" ColumnName="PassNC" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="Credits" ColumnName="Credits" />
+          <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+          <ScalarProperty Name="CommunicationIntensive" ColumnName="CommunicationIntensive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CourseFulfillments">
+      <EntityTypeMapping TypeName="IsTypeOf(CappamariModel.CourseFulfillment)">
+        <MappingFragment StoreEntitySet="CourseFulfillments">
+          <ScalarProperty Name="CourseFulfillmentID" ColumnName="CourseFulfillmentID" />
+          <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+          <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Requirements">
+      <EntityTypeMapping TypeName="IsTypeOf(CappamariModel.Requirement)">
+        <MappingFragment StoreEntitySet="Requirements">
+          <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
+          <ScalarProperty Name="CreditsNeeded" ColumnName="CreditsNeeded" />
+          <ScalarProperty Name="CommunicationIntensive" ColumnName="CommunicationIntensive" />
+          <ScalarProperty Name="Exclusion" ColumnName="Exclusion" />
+          <ScalarProperty Name="PassNoCreditCreditsAllowed" ColumnName="PassNoCreditCreditsAllowed" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserSessions">
+      <EntityTypeMapping TypeName="IsTypeOf(CappamariModel.UserSession)">
+        <MappingFragment StoreEntitySet="UserSessions">
+          <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Expiration" ColumnName="Expiration" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RequirementSets">
+      <EntityTypeMapping TypeName="IsTypeOf(CappamariModel.RequirementSet)">
+        <MappingFragment StoreEntitySet="RequirementSets">
+          <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSetID" />
+          <ScalarProperty Name="Credits" ColumnName="Credits" />
+          <ScalarProperty Name="PassNCCredits" ColumnName="PassNCCredits" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CAPPReportID" ColumnName="CAPPReportID" />
+          <ScalarProperty Name="DepthRSR" ColumnName="DepthRSR" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="CAPPReportRequirement" TypeName="CappamariModel.CAPPReportRequirement" StoreEntitySet="CAPPReportRequirement">
+      <EndProperty Name="CAPPReport">
+        <ScalarProperty Name="ReportID" ColumnName="CAPPReports_ReportID" />
+      </EndProperty>
+      <EndProperty Name="Requirement">
+        <ScalarProperty Name="RequirementID" ColumnName="Requirements_RequirementID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RequirementFulfillment" TypeName="CappamariModel.RequirementFulfillment" StoreEntitySet="RequirementFulfillment">
+      <EndProperty Name="CourseFulfillment">
+        <ScalarProperty Name="CourseFulfillmentID" ColumnName="CourseFulfillments_CourseFulfillmentID" />
+      </EndProperty>
+      <EndProperty Name="Requirement">
+        <ScalarProperty Name="RequirementID" ColumnName="Requirements_RequirementID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Required" TypeName="CappamariModel.Required" StoreEntitySet="Required">
+      <EndProperty Name="RequirementSet">
+        <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSets_RequirementSetID" />
+      </EndProperty>
+      <EndProperty Name="Requirement">
+        <ScalarProperty Name="RequirementID" ColumnName="Requirements_RequirementID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RequirementSetRequirement" TypeName="CappamariModel.RequirementSetRequirement" StoreEntitySet="RequirementSetRequirement">
+      <EndProperty Name="RequirementSet">
+        <ScalarProperty Name="RequirementSetID" ColumnName="RequirementSets1_RequirementSetID" />
+      </EndProperty>
+      <EndProperty Name="Requirement">
+        <ScalarProperty Name="RequirementID" ColumnName="RequirementSetRequirements_RequirementID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Advises" TypeName="CappamariModel.Advises" StoreEntitySet="Advises">
+      <EndProperty Name="Advisor">
+        <ScalarProperty Name="AdvisorID" ColumnName="Advisors_AdvisorID" />
+      </EndProperty>
+      <EndProperty Name="ApplicationUser">
+        <ScalarProperty Name="Username" ColumnName="ApplicationUsers_Username" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->

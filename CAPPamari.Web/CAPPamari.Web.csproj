@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -226,6 +226,7 @@
     <Content Include="Models\CAPPamari.edmx.diagram">
       <DependentUpon>CAPPamari.edmx</DependentUpon>
     </Content>
+    <Content Include="Models\CAPPamari.edmx.sql" />
     <Content Include="Models\CAPPamari.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>CAPPamari.edmx</DependentUpon>
