@@ -131,7 +131,7 @@ namespace CAPPamari.Web.Controllers
                 success &= CourseHelper.ApplyCourse(username, course, reqSet);
             }
             var message = success
-                ? "All courses were processed seccussfully"
+                ? "All courses were processed successfully"
                 : "One or more courses were skipped while processing";
             cappReport = CourseHelper.GetCappReport(username);
             cappReport.CheckRequirementSetFulfillments();
@@ -156,7 +156,7 @@ namespace CAPPamari.Web.Controllers
             }
             var reqset = EntitiesHelper.GetRequirementSet(request.UserName, request.RequirementSetname);
             var isFull = reqset.IsFulfilled();
-            return ApiResponse<bool>.SuccessResponse("Fulfillment found seccussfully", isFull);
+            return ApiResponse<bool>.SuccessResponse("Fulfillment found successfully", isFull);
         }
     }
 }
